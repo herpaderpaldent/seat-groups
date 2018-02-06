@@ -1,0 +1,23 @@
+{
+    "name": "herpaderpaldent/seat-groups",
+    "description": "A module for SeAT that adds the ability of using goups to assign roles to user that are in a group",
+    "type": "seat-plugin",
+    "require": {
+        "eveseat/services": "^2.0",
+        "eveseat/eseye": "^0.0.11",
+        "eveseat/eveapi": "^2.0",
+        "eveseat/web": "^2.0"
+    },
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Felix Huber",
+            "email": "felix.a.huber@gmx.net"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "autoload": {
+        "psr-4": {
+            "HerpaderpAldent\\Seat\\SeatGroups\\": "src/"
+        }
+}
