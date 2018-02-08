@@ -20,4 +20,5 @@
         "psr-4": {
             "HerpaderpAldent\\Seat\\SeatGroups\\": "src/"
         }
+    }
 }
