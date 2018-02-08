@@ -9,7 +9,11 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
-class seatGroupsUsersUpdate extends Command
+use Illuminate\Console\Command;
+use Seat\Web\Acl\AccessManager;
+use Seat\Web\Models\User;
+
+class SeatGroupsUsersUpdate extends Command
 {
     use AccessManager;
 
@@ -25,7 +29,8 @@ class seatGroupsUsersUpdate extends Command
         $userList = User::all();
 
         foreach ($userList as $user) {
-            echo $user;
+            //echo $user;
+            //logger()->debug('bindingSlackUser');
         }
     }
 }

@@ -18,7 +18,7 @@
     "minimum-stability": "alpha",
     "autoload": {
         "psr-4": {
-            "HerpaderpAldent\\Seat\\SeatGroups\\": "src/"
+            "Herpaderpaldent\\Seat\\SeatGroups\\": "src/"
         }
     }
 }

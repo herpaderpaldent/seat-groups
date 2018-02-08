@@ -3,7 +3,7 @@
 namespace Herpaderpaldent\Seat\SeatGroups;
 
 use Illuminate\Support\ServiceProvider;
-use Herpaderpaldent\Seat\SeatGroups\Commands\seatGroupsUsersUpdate;
+use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUsersUpdate;
 
 class GroupsServiceProvider extends ServiceProvider
 {
@@ -31,7 +31,7 @@ class GroupsServiceProvider extends ServiceProvider
     private function addCommands()
     {
         $this->commands([
-            seatGroupsUsersUpdate::class,
+            SeatGroupsUsersUpdate::class,
         ]);
     }
 }
