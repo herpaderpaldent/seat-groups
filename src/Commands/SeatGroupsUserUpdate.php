@@ -10,7 +10,10 @@ namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
 use Illuminate\Console\Command;
+use Seat\Eveapi\Models\Character\CharacterCorporationHistory;
+use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Web\Acl\AccessManager;
+use Seat\Web\Models\Acl\AffiliationUser;
 use Seat\Web\Models\User;
 
 class SeatGroupsUsersUpdate extends Command
@@ -26,11 +29,24 @@ class SeatGroupsUsersUpdate extends Command
     }
     public function handle()
     {
-        $userList = User::all();
+        $userList =User::all();
+        $corporationList =CharacterInfo::all();
+        //$this->info($userList);
+
+
+        //$userList = CharacterInfo::all();
+        //logger()->debug("i do something");
+
+        // This does not work since the order is random i need to look for the entry with the character ID.
+        //$this->info($corporationList->where('corporation_id',)corporation_id);
+        //$corp->$corporation->coproation();
 
         foreach ($userList as $user) {
-            //echo $user;
-            //logger()->debug('bindingSlackUser');
+            // this prints out the corporation id of every member
+            $this->info(
+                "name of user " . $user->name .
+                " of corporation " .$corporationList->whereStrict('character_id', $user->id)->first()['corporation_id']
+            );
         }
     }
 }
