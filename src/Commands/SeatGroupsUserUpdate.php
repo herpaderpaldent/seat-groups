@@ -47,6 +47,16 @@ class SeatGroupsUsersUpdate extends Command
                 "name of user " . $user->name .
                 " of corporation " .$corporationList->whereStrict('character_id', $user->id)->first()['corporation_id']
             );
-        }
+        };
+
+        /*
+         * First: get collection of roles for 1 role
+         * Second: compare to collection of how it should be
+         * Third: call ->diff() : https://laravel.com/docs/5.5/collections#method-diff
+         * Forth: handle the diff collection
+         *
+         * Handle: The ones present in the current->delete and the ones not present in current->add
+         *
+         */
     }
 }

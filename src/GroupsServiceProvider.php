@@ -15,7 +15,11 @@ class GroupsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->addCommands();
+        $this->addRoutes();
+        $this->addViews();
+        $this->addPublications();
     }
+
     /**
      * Register the application services.
      *
@@ -27,11 +31,32 @@ class GroupsServiceProvider extends ServiceProvider
             __DIR__ . '/Config/seatgroups.config.php',
             'seatgroups.config'
         );
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
     }
+
     private function addCommands()
     {
         $this->commands([
             SeatGroupsUsersUpdate::class,
         ]);
+    }
+
+    private function addPublications()
+    {
+        $this->publishes([
+            __DIR__ . '/database/migrations/' => database_path('migrations'),
+        ]);
+    }
+    private function addRoutes()
+    {
+        if (!$this->app->routesAreCached()) {
+            include __DIR__ . '/Http/routes.php';
+        }
+    }
+
+    private function addViews()
+    {
+        $this->loadViewsFrom(__DIR__ . '/resources/views/seatgroups', 'seatgroups');
     }
 }
