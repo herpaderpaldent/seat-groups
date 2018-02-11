@@ -16,10 +16,7 @@ class SeatGroupsController extends Controller
 {
     public $restful =true;
 
-    public function get_index(){
-       return View::make('seatgroups.index');
-    }
-    public function get_index2(){
+    public function index(){
         return view('seatgroups::index');
     }
 }

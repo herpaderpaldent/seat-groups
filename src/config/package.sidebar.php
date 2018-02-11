@@ -9,12 +9,12 @@
 return [
     'slackbot' => [
         'name'          => 'Seat Groups',
-        'icon'          => 'fa-slack',
+        'icon'          => 'fa-group',
         'route_segment' => 'seatgroups',
         'entries' => [
             [
-                'name'  => 'Slack Access Management',
-                'icon'  => 'fa-shield',
+                'name'  => 'Seat Group Management',
+                'icon'  => 'fa-gear',
                 'route' => 'seatgroups.index',
             ]
         ]

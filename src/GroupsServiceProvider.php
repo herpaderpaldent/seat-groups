@@ -18,6 +18,7 @@ class GroupsServiceProvider extends ServiceProvider
         $this->addRoutes();
         $this->addViews();
         $this->addPublications();
+        $this->addTranslations();
     }
 
     /**
@@ -58,5 +59,9 @@ class GroupsServiceProvider extends ServiceProvider
     private function addViews()
     {
         $this->loadViewsFrom(__DIR__ . '/resources/views/seatgroups', 'seatgroups');
+    }
+    private function addTranslations()
+    {
+        $this->loadTranslationsFrom(__DIR__ . '/lang', 'seatgroups');
     }
 }
