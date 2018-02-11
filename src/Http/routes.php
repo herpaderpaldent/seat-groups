@@ -12,9 +12,9 @@ Route::group([
     ], function() {
     Route::get('test', [
         'as'   => 'seatgroups.index',
-        'uses' => 'SeatGroupsController@index'
+        'uses' => 'SeatGroupsController@get_index'
     ]);
-    Route::get('bar', 'seatGroup@index');
+    Route::get('bar', 'SeatGroupsController@get_index2');
 
     Route::get('foo', function () {
         return 'Hello World';

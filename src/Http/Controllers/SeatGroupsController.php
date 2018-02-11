@@ -9,13 +9,17 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
 
+
 use Seat\Web\Http\Controllers\Controller;
 
 class SeatGroupsController extends Controller
 {
-    //public $restful =true;
+    public $restful =true;
 
-    public function index(){
-       return view('seatgroups.index');
+    public function get_index(){
+       return View::make('seatgroups.index');
+    }
+    public function get_index2(){
+        return view('seatgroups::index');
     }
 }
