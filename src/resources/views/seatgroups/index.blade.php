@@ -10,8 +10,8 @@
  <h1>something</h1>
 
     <ul>
-        @foreach($roles as $role)
-            <li>{{$role->title}}</li>
+        @foreach($groupname as $groupname)
+            <li>{{$groupname->name}}</li>
         @endforeach
     </ul>
 @stop

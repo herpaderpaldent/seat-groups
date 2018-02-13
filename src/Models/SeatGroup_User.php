@@ -3,15 +3,15 @@
  * Created by PhpStorm.
  *  * User: Herpaderp Aldent
  * Date: 13.02.2018
- * Time: 21:42
+ * Time: 21:47
  */
 
-namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
+namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
 
-class SeatGroup_Manager extends Model
+class Seatgroup_user extends Model
 {
 
 }
