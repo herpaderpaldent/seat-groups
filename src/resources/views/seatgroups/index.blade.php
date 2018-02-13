@@ -9,4 +9,9 @@
 
  <h1>something</h1>
 
+    <ul>
+        @foreach($roles as $role)
+            <li>{{$role->title}}</li>
+        @endforeach
+    </ul>
 @stop
