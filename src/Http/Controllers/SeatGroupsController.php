@@ -18,4 +18,11 @@ class SeatGroupsController extends Controller
         return view('seatgroups::index')
             ->with('groupname',SeatGroup_Group::all());
     }
+    public function edit($group_id){
+        return view('seatgroups::edit')
+            ->with('group',SeatGroup_Group::find($group_id));
+    }
+    public function new(){
+        return view('seatgroups::new');
+    }
 }

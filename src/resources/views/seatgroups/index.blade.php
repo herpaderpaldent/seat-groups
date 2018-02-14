@@ -11,7 +11,9 @@
 
     <ul>
         @foreach($groupname as $groupname)
-            <li>{{$groupname->name}}</li>
+            <li><a href="{!! url('seatgroups/edit',$groupname->id) !!}">{{$groupname->name}}</a></li>
         @endforeach
     </ul>
+
+    <a href="{!! 'seatgroups/new' !!}">New Group</a>
 @stop

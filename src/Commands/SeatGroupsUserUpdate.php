@@ -10,10 +10,8 @@ namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
 use Illuminate\Console\Command;
-use Seat\Eveapi\Models\Character\CharacterCorporationHistory;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Web\Acl\AccessManager;
-use Seat\Web\Models\Acl\AffiliationUser;
 use Seat\Web\Models\User;
 
 class SeatGroupsUsersUpdate extends Command
@@ -32,6 +30,7 @@ class SeatGroupsUsersUpdate extends Command
         $userList =User::all();
         $corporationList =CharacterInfo::all();
         //$this->info($userList);
+        //$this->info($user->id)
 
 
         //$userList = CharacterInfo::all();
@@ -47,6 +46,8 @@ class SeatGroupsUsersUpdate extends Command
                 "name of user " . $user->name .
                 " of corporation " .$corporationList->whereStrict('character_id', $user->id)->first()['corporation_id']
             );
+            //$this->info("test2 " . $user->);
+
         };
 
         /*
