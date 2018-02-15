@@ -11,7 +11,9 @@ namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Seatgroup_group extends Model
+class Seatgroup extends Model
 {
-
+    public function role(){
+        return $this->belongsTo('Seat\Web\Models\Acl\Role', 'role_id','id');
+    }
 }
