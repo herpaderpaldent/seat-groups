@@ -11,7 +11,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Seatgroup_corporation extends Model
+class Seatgroupcorporation extends Model
 {
 
 }

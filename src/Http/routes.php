@@ -23,18 +23,31 @@ Route::group([
         );
         // Admin Route
         Route::group([
-            'middleware' => ['web','bouncer:superuser']
+            'middleware' => ['web']
         ], function (){
-            Route::get('/edit/{group_id}', [
+            Route::get('/{group_id}/edit', [
                 'as'   => 'seatgroups.edit',
                 'uses' => 'SeatGroupsController@edit'
                 ]);
 
-            Route::get('/new', [
-                'as'   => 'seatgroups.new',
-                'uses' => 'SeatGroupsController@new'
+            Route::get('/create', [
+                'as' => 'seatgroups.create',
+                'uses' => 'SeatGroupsController@create'
                 ]);
-            }
+
+            Route::post('/{group_id}', [
+                'as' => 'seatgroups.update',
+                'uses' => 'SeatGroupsController@update'
+            ]);
+            Route::post('/', [
+                'uses' => 'SeatGroupsController@store'
+            ]);
+            Route::delete('/{group_id}', [
+                'as' => 'seatgroups.destroy',
+                'uses' => 'SeatGroupsController@destroy'
+            ]);
+        }
+
         );
     }
 );

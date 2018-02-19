@@ -10,9 +10,9 @@ namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup_alliance;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup_corporation;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup_user;
+use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupalliance;
+use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupcorporation;
+use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupuser;
 use Illuminate\Console\Command;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Web\Acl\AccessManager;
@@ -39,24 +39,31 @@ class SeatGroupsUsersUpdate extends Command
         foreach ($Users as $user){
             $Roles = [];
             $this->info('Updating User: ' . $user->name);
+
             foreach ($SeatGroups as $seatGroup){
-                // Alliance
-                if(Seatgroup_alliance::where('alliance_id', '=',CharacterInfo::find($user->id)['alliance_id'])->count() >0){
-                    array_push($Roles,$seatGroup->role['id']);
+                // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
+                if($seatGroup['type'] == 'auto' ){
+                    // Alliance
+                    if(SeatGroupAlliance::where('alliance_id', '=',CharacterInfo::find($user->id)['alliance_id'])->count() >0){
+                        array_push($Roles,$seatGroup->role['id']);
+                    }
+                    // Corporation
+                    elseif (Seatgroupcorporation::where('corporation_id', '=',CharacterInfo::find($user->id)['corporation_id'])->count() >0) {
+                        array_push($Roles,$seatGroup->role['id']);
+                    }
                 }
-                // Corporation
-                elseif (Seatgroup_corporation::where('corporation_id', '=',CharacterInfo::find($user->id)['corporation_id'])->count() >0) {
-                    array_push($Roles,$seatGroup->role['id']);
-                }
-                // Character
-                elseif (Seatgroup_user::where('user_id', '=',CharacterInfo::find($user->id)['user_id'])->count() >0){
+                /**
+                 * As soon as someone is on the Seatgroup_user table he gets synced to the corresponing
+                 * Role
+                 **/
+                if (Seatgroupuser::where('user_id', '=',CharacterInfo::find($user->id)['user_id'])->count() >0){
                     array_push($Roles,$seatGroup->role['id']);
                 }
             }
 
             // Assign Roles to user
             $user->roles()->sync($Roles);
-
+            //$this->info('User now is in Role: ' . print_r($Roles,true));
         }
 
 
