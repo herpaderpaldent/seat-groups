@@ -44,6 +44,7 @@ Route::group([
             ]);
             Route::delete('/{group_id}', [
                 'as' => 'seatgroups.destroy',
+                'middleware' => 'bouncer:superuser',
                 'uses' => 'SeatGroupsController@destroy'
             ]);
         }

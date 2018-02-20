@@ -1,11 +1,11 @@
-@extends('web::layouts.grids.12')
+@extends('web::layouts.grids.4-4-4')
 
 
 @section('title', trans('seat-groups::seat_groups_admin'))
 @section('page_header', trans('seatgroups::seat.seat_groups_admin'))
 @section('page_description', trans('web::seat.dashboard'))
 
-@section('full')
+@section('left')
 
     <h2>Editing {{$seatgroup->name}}</h2>
 
@@ -58,4 +58,26 @@
     </form>
 
 
-@stop
+@endsection
+
+@section('center')
+
+    <div class="form-group">
+        <label for="corporations">{{ trans('web::seat.available_corporations') }}</label>
+        <select name="corporations[]" id="available_corporations" style="width: 100%" multiple>
+
+            <option value="0">All Corporations</option>
+            @foreach($all_corporations as $corporation)
+                <option value="{{ $corporation->corporationID }}">
+                    {{ $corporation->corporationName }}
+                </option>
+            @endforeach
+
+        </select>
+    </div>
+
+@endsection
+
+@section('right')
+
+@endsection

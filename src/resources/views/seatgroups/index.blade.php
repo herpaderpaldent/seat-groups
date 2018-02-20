@@ -2,16 +2,19 @@
 @push('head')
     <link href="{{ asset('web/css/seat-groups.css') }}" rel="stylesheet">
 @endpush
-@extends('web::layouts.grids.4-4-4')
+
 
 @section('title', trans('seat-groups::seat_groups_admin'))
 @section('page_header', trans('seatgroups::seat.seat_groups_admin'))
 @section('page_description', trans('web::seat.dashboard'))
 
 
+@extends('web::layouts.grids.4-4-4')
+
 @section('left')
 
- <h3>Auto-Groups</h3>
+    <h3>Auto Groups</h3>
+    <p>To these Groups you are automatically assigned based on the corporation or alliance you beloi</p>
 
     @foreach($autogroups as $groupname)
         <div class="panel panel-default">
@@ -20,15 +23,16 @@
 
                 <!-- ToDo: Adapt to buttongroup -->
                 <button class="btn btn-link pull-right">
-                @if($groupname->isManager(auth()->user(),$groupname->id))
+                @if($groupname->isManager(auth()->user(),$groupname->id) || Auth::user()->hasRole('Superuser'))
 
                         <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
 
-                        <form action="{{route('seatgroups.destroy', $groupname->id)}}" method="post">
-                            {{csrf_field()}}
-                            <input name="_method" type="hidden" value="DELETE">
-                            <button class="btn btn-danger pull-right" type="submit"><i class="fa fa-remove btn-danger"></i></button>
-                        </form>
+                        @if(Auth::user()->hasRole('Superuser'))
+                        {!! Form::open(['method' => 'DELETE','route' => ['seatgroups.destroy', $groupname->id],'style'=>'display:inline']) !!}
+                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::close() !!}
+                        @endif
+
 
                 @endif
                 </button>
@@ -70,11 +74,6 @@
             </div>
         </div>
     @endforeach
-
-
-    @if (auth()->user()->has('Superuser'))
-    <a href="{!! 'seatgroups/create' !!}">New Group</a>
-    @endif
 
 @endsection
 

@@ -8,14 +8,20 @@
 
 return [
     'slackbot' => [
-        'name'          => 'Seat Groups',
+        'name'          => 'SeAT Groups',
         'icon'          => 'fa-group',
         'route_segment' => 'seatgroups',
         'entries' => [
             [
-                'name'  => 'Seat Group Management',
+                'name'  => 'SeAT Groups',
                 'icon'  => 'fa-gear',
                 'route' => 'seatgroups.index',
+            ],
+            [
+                'name'  => 'Add new SeAT Group',
+                'icon'  => 'fa-plus-square',
+                'permission' => 'Superuser',
+                'route' => 'seatgroups.create',
             ]
         ]
     ]
