@@ -7,16 +7,18 @@ use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupmanager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Services\Repositories\Character\Character;
 use Seat\Services\Repositories\Configuration\UserRespository;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Web\Models\Acl\Role;
+use Seat\Web\Models\User;
 
 class SeatGroupsController extends Controller
 {
-    use AccessManager, UserRespository, Character, Corporation;
+    use Character, Corporation;
     /**
      * Display a listing of the resource.
      *
@@ -86,15 +88,13 @@ class SeatGroupsController extends Controller
     public function edit($id)
     {
 
-        $all_users = $this->getAllUsers()
-            ->pluck('name')
-            ->toArray();
+        //$all_users = User::all()
+        //    ->pluck('name')
+        //    ->toArray();
 
         //$all_characters = $this->getAllCharacters();
 
-
-        //$all_corporations = $this->getAllCorporations();
-        $all_corporations = $this->getAllCharacters(); // TODO: Remove this line
+        $all_corporations = $this->getAllCorporations();
 
 
         $seatgroup = Seatgroup::find($id);

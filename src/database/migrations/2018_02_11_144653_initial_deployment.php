@@ -22,46 +22,22 @@ class InitialDeployment extends Migration
            $table->timestamps();
         });
 
-        Schema::create("seatgroupmanagers",function ($table){
-            $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('seatgroups');
+        Schema::create('seatgroup_user', function (Blueprint $table) {
+            $table->integer('seatgroup_id')->unsigned()->index();
+            $table->foreign('seatgroup_id')->references('id')->on('seatgroups')->onDelete('cascade');
             $table->bigInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->boolean('is_manager');
+            $table->boolean('on_waitlist');
+            $table->primary(['seatgroup_id', 'user_id']);
         });
 
-        Schema::create("seatgroupalliances",function ($table){
-            $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('seatgroups');
-            $table->integer('alliance_id')->index();
-            $table->foreign('alliance_id')->references('alliance_id')->on('corporation_infos');
-        });
-
-        Schema::create("seatgroupcorporations",function ($table){
-            $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('seatgroups');
+        Schema::create('corporation_info_seatgroup', function (Blueprint $table) {
             $table->bigInteger('corporation_id')->index();
-            $table->foreign('corporation_id')->references('corporation_id')->on('corporation_infos');
-        });
-
-        Schema::create("seatgroupusers",function ($table){
-            $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('seatgroups');
-            $table->bigInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users');
-        });
-
-        Schema::create("seatgroupwaitlists",function ($table){
-            $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('seatgroups');
-            $table->bigInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users');
-        });
-
-        Schema::create("seatgroupmanager_users",function ($table){
-            $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('seatgroups');
-            $table->bigInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('corporation_id')->references('corporation_id')->on('corporation_infos')->onDelete('cascade');
+            $table->integer('seatgroup_id')->unsigned()->index();
+            $table->foreign('seatgroup_id')->references('id')->on('seatgroups')->onDelete('cascade');
+            $table->primary(['corporation_id', 'seatgroup_id']);
         });
 
     }
@@ -73,12 +49,8 @@ class InitialDeployment extends Migration
      */
     public function down()
     {
-        Schema::drop('seatgroupmanager_users');
-        Schema::drop("seatgroupwaitlist");
-        Schema::drop("seatgroupmanagers");
-        Schema::drop("seatgroupalliances");
-        Schema::drop("seatgroupcorporations");
-        Schema::drop("seatgroupusers");
+        Schema::drop('corporation_info_seatgroup');
+        Schema::drop('seatgroup_user');
         Schema::drop("seatgroups");
     }
 }

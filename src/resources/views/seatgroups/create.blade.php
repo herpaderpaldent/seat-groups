@@ -30,14 +30,11 @@
             <div class="col-md-12"></div>
             <div class="form-group col-md-12">
                 <label for="type">Select SeAT-Group Type</label>
-                <select class="form-control" name="type" id="type">
-                    <option>auto</option>
-                    <option>hidden</option>
-                    <optgroup label="Managed">
-                        <option>open</option>
-                        <option>managed</option>
-                    </optgroup>
-                </select>
+                {{Form::select('type',[
+                    'auto' => 'auto',
+                    'managed'=>[
+                        'open'=>'open',
+                ]],null,['class'=>'form-control'])}}
             </div>
         </div>
 

@@ -43,10 +43,11 @@ class SeatGroupsUsersUpdate extends Command
             foreach ($SeatGroups as $seatGroup){
                 // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
                 if($seatGroup['type'] == 'auto' ){
-                    // Alliance
+                    /* Alliance
                     if(SeatGroupAlliance::where('alliance_id', '=',CharacterInfo::find($user->id)['alliance_id'])->count() >0){
                         array_push($Roles,$seatGroup->role['id']);
-                    }
+                    }*/
+
                     // Corporation
                     elseif (Seatgroupcorporation::where('corporation_id', '=',CharacterInfo::find($user->id)['corporation_id'])->count() >0) {
                         array_push($Roles,$seatGroup->role['id']);

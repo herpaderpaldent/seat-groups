@@ -24,22 +24,14 @@
                 <!-- ToDo: Adapt to buttongroup -->
                 <button class="btn btn-link pull-right">
                 @if($groupname->isManager(auth()->user(),$groupname->id) || Auth::user()->hasRole('Superuser'))
-
                         <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-
-                        @if(Auth::user()->hasRole('Superuser'))
-                        {!! Form::open(['method' => 'DELETE','route' => ['seatgroups.destroy', $groupname->id],'style'=>'display:inline']) !!}
-                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                        {!! Form::close() !!}
-                        @endif
-
-
                 @endif
                 </button>
                 <div class="clearfix"></div>
             </div>
             <div class="panel-body">
                 {{$groupname->description}}
+                {{$groupname->manager}}
 
             </div>
             <!-- TODO: with Groupmanagers to extend
