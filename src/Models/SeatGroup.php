@@ -31,7 +31,7 @@ class Seatgroup extends Model
     }
 
     public function corporation(){
-        return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo','corporation_info_seatgroup','corporation_id');
+        return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo','corporation_info_seatgroup','seatgroup_id', 'corporation_id');
     }
 
     public function manager()

@@ -21,7 +21,7 @@ Route::group([
                 ]);
             }
         );
-        // Admin Route
+        // Admin Route TODO: make this a real route file
         Route::group([
             'middleware' => ['web']
         ], function (){
@@ -47,8 +47,19 @@ Route::group([
                 'middleware' => 'bouncer:superuser',
                 'uses' => 'SeatGroupsController@destroy'
             ]);
+            Route::post('/{group_id}/corporation', [
+                'as' => 'seatgroupcorporation.update',
+                'uses' => 'SeatGroupCorporationController@update'
+            ]);
+            Route::delete('/{group_id}/corporation/{corporation_id}', [
+                'as' => 'seatgroupcorporation.destroy',
+                'uses' => 'SeatGroupCorporationController@destroy'
+            ]);
         }
 
         );
+
     }
 );
+
+

@@ -99,9 +99,11 @@ class SeatGroupsController extends Controller
 
         $seatgroup = Seatgroup::find($id);
         $Roles=Role::pluck('title','id');
+        $corporations=$seatgroup->corporation()->get();
 
         return view('seatgroups::edit', compact('seatgroup','id','all_corporations'))
-            ->with('roles',$Roles);
+            ->with('roles',$Roles)
+            ->with('corporations',$corporations);
 
     }
 
@@ -137,12 +139,10 @@ class SeatGroupsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($group_id)
     {
         if(Auth::user()->hasRole('Superuser')){
-            $seatgroupmanager = Seatgroupmanager::with('group_id','=',$id);
-            $seatgroupmanager->delete();
-            $seatgroup = Seatgroup::find($id);
+            $seatgroup = Seatgroup::find($group_id);
             $seatgroup->delete();
         return redirect()->route('seatgroups.index')
             ->with('success', 'SeAT-Group has been deleted');
