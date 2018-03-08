@@ -87,13 +87,6 @@ class SeatGroupsController extends Controller
      */
     public function edit($id)
     {
-
-        //$all_users = User::all()
-        //    ->pluck('name')
-        //    ->toArray();
-
-        //$all_characters = $this->getAllCharacters();
-
         $all_corporations = $this->getAllCorporations();
 
 

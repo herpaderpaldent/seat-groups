@@ -26,13 +26,17 @@ class Seatgroup extends Model
     }
 
     public function user(){
-        return $this->belongsToMany('Seat\Web\Models\User', 'seatgroup_user','user_id')
+        return $this->belongsToMany('Seat\Web\Models\User', 'seatgroup_user','seatgroup_id','user_id')
             ->withPivot('is_manager','on_waitlist');
     }
 
     public function corporation(){
         return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo','corporation_info_seatgroup','seatgroup_id', 'corporation_id');
     }
+
+    /*public function corporation2(){
+        return $this->$this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo');
+    }*/
 
     public function manager()
     {

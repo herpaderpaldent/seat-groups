@@ -34,9 +34,27 @@ class SeatGroupsUsersUpdate extends Command
     public function handle()
     {
 
+        $SeatGroups = Seatgroup::all();
+        /*
+                foreach ($SeatGroups as $seatGroup){
+                    $userarray = [];
+
+                    foreach ($seatGroup->corporation->pluck('corporation_id') as $corporation){
+                        $this->info('Test: ' .$corporation);
+                        $users = CharacterInfo::all()->where('corporation_id','=',$corporation);
+
+                        foreach ($users as $user){
+                            array_push($userarray, $user->character_id);
+                            //$this->info('user ' .$seatGroup->role);
+                        }
+                    }
+                    $this->info('Array: '.print_r($userarray));
+                    $seatGroup->user()
+                        ->sync($userarray);
+                }*/
+
 
         $Users = User::all();
-        $SeatGroups = Seatgroup::all();
 
         foreach ($Users as $user) {
             $Roles = [];
@@ -44,19 +62,17 @@ class SeatGroupsUsersUpdate extends Command
 
             foreach ($SeatGroups as $seatGroup) {
                 // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
-                $helper2 = $seatGroup->corporation()->pluck('corporation_id')->toArray();
-                $this->info('Updating User: ' . $helper2);
-                if ($seatGroup['type'] == 'auto') {
-                    $helper1 = $user->id;
 
-                    if (in_array($helper1, $helper2)) {
-                        array_push($Roles, $seatGroup->role['id']);
+                if ($seatGroup->type == 'auto') {
+                    $corporations = $seatGroup->corporation->pluck('corporation_id')->toArray();
+
+                    if (in_array(CharacterInfo::find($user->id)->corporation_id,$corporations)) {
+                        array_push($Roles, $seatGroup->role_id);
                     }
                 }
-
                 // Assign Roles to user
-                $user->roles()->sync($Roles);
-                //$this->info('User now is in Role: ' . print_r($Roles,true));
+                $user->roles()->sync(array_unique($Roles));
+
             }
         }
     }

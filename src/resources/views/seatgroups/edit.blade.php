@@ -66,8 +66,6 @@
         </div>
     </div>
 
-
-
 @endsection
 
 @section('center')
@@ -86,10 +84,13 @@
                     <label for="corporations">{{ trans('web::seat.available_corporations') }}</label>
                     <select name="corporations[]" id="available_corporations" style="width: 100%" multiple>
 
+
                         @foreach($all_corporations as $corporation)
+                            @if(!in_array($corporation->corporation_id,$seatgroup->corporation->pluck('corporation_id')->toArray()))
                             <option value="{{ $corporation->corporation_id }}">
                                 {{ $corporation->name }}
                             </option>
+                            @endif
                         @endforeach
 
                     </select>
@@ -146,6 +147,8 @@
             @endif
         </div>
     </div>
+
+
 
     {{--
     <div class="panel panel-default">
