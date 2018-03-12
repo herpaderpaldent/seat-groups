@@ -47,6 +47,9 @@
 
     <h3>Open Groups</h3>
     <p>In these Groups you can opt-in and opt-out as you like.</p>
+
+    <p>{{auth()->user()->getAuthIdentifier()}}</p>
+
     @foreach($opengroups as $groupname)
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -54,8 +57,26 @@
 
                 @if($groupname->isManager(auth()->user(),$groupname->id))
                     <button class="btn btn-link pull-right">
-                        <a href="{!! action('SeatGroupsController@edit', $groupname->id) !!}"><i class="fa fa-edit"></i></a>
+                        <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                     </button>
+                @endif
+
+                @if(!$groupname->isMember(auth()->user()->getAuthIdentifier(),$groupname->id))
+                {!! Form::open(['method' => 'POST',
+                            'route' => ['seatgroupuser.update', $groupname->id],
+                            'style'=>'display:inline'
+                            ]) !!}
+                {!! Form::submit(trans('web::seat.joingroup'), ['class' => 'btn btn-success pull-right']) !!}
+                {!! Form::close() !!}
+                @endif
+
+                @if($groupname->isMember(auth()->user()->getAuthIdentifier(),$groupname->id))
+                    {!! Form::open(['method' => 'DELETE',
+                                'route' => ['seatgroupuser.update', $groupname->id],
+                                'style'=>'display:inline'
+                                ]) !!}
+                    {!! Form::submit(trans('web::seat.leavegroup'), ['class' => 'btn btn-danger pull-right']) !!}
+                    {!! Form::close() !!}
                 @endif
 
                 <div class="clearfix"></div>

@@ -72,6 +72,7 @@
 
     <h2>Available for whom</h2>
     <small>here blade for each type of group</small>
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Corporations</h3>
@@ -148,71 +149,66 @@
         </div>
     </div>
 
+    <div class="row"> <br> </div>
 
-
-    {{--
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ trans_choice('web::seat.user', 2) }}</h3>
+            <h3 class="panel-title">Manager</h3>
         </div>
         <div class="panel-body">
-
-            TODO: Adapt route for SeatGroupManager
-            <form role="form" action="{{ route('configuration.access.roles.edit.users') }}" method="post">
-                {{ csrf_field() }}
-                <input type="hidden" name="role_id" value="{{ $seatgroup->id }}">
-
+            <form method="post" action="{{route('seatgroupuser.update', $id)}}">
+                {{csrf_field()}}
+                <input name="_method3" type="hidden" value="PATCH">
                 <div class="form-group">
-                    <label for="users">{{ trans('web::seat.available_users') }}</label>
-                    <select name="users[]" id="available_users" style="width: 100%" multiple>
+                    <label for="users">{{ trans('web::seat.available_user') }}</label>
+                    <select name="users[]" id="available_corporations" style="width: 100%" multiple>
 
-                        @foreach($all_users as $user)
 
-                            @if(!in_array($user, $role_users)) TODO: check for already assigned user and don't list as option
-                                <option value="{{ $user }}">{{ $user }}</option>
+                        @foreach($all_corporations as $corporation)
+                            @if(!in_array($corporation->corporation_id,$seatgroup->corporation->pluck('corporation_id')->toArray()))
+                                <option value="{{ $corporation->corporation_id }}">
+                                    {{ $corporation->name }}
+                                </option>
                             @endif
-
-                    @endforeach
+                        @endforeach
 
                     </select>
                 </div>
-
-                <button type="submit"
-                        class="btn btn-success btn-block">{{ trans_choice('web::seat.add_user', 2) }}</button>
-
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Add Manager</button>
+                    </div>
+                </div>
             </form>
-            {{--
             <hr>
-
             <table class="table table-hover table-condensed">
                 <tbody>
 
                 <tr>
-                    <th colspan="2" class="text-center">{{ trans('web::seat.current_users') }}</th>
+                    <th colspan="2" class="text-center">Current Manager</th>
                 </tr>
-
-                @foreach($role->users as $user)
+                @foreach($corporations as $corperation)
 
                     <tr>
-                        <td>{{ $user->name }}</td>
+                        <td>{{$corperation ->name}}</td>
                         <td>
-                            <a href="{{ route('configuration.access.roles.edit.remove.user', ['role_id' => $role->id, 'user_id' => $user->id]) }}"
-                               type="button" class="btn btn-danger btn-xs pull-right">
-                                {{ trans('web::seat.remove') }}
-                            </a>
+                            {!! Form::open(['method' => 'DELETE',
+                            'route' => ['seatgroupuser.destroy',$seatgroup->id,$corperation->corporation_id],
+                            'style'=>'display:inline'
+                            ]) !!}
+                            {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
+                            {!! Form::close() !!}
                         </td>
                     </tr>
 
                 @endforeach
-
                 </tbody>
             </table>
+        </div>
+    </div>
 
-        </div>
-        <div class="panel-footer">
-            <b>{{ count($role->users) }}</b> {{ trans_choice('web::seat.user', count($role->users)) }}
-        </div>
-    </div>--}}
+
 
 @endsection
 

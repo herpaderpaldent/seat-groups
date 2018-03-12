@@ -72,4 +72,16 @@ class Seatgroup extends Model
             return (string) null;
         } else return null;
     }
+    public function isMember(int $userId, int $groupId){
+        try{
+            if(count(Seatgroup::find($groupId)->user->firstwhere('id','=',$userId))>0){
+                return true;
+            } else return false;
+        } catch (\Exception $e) {
+            return false;
+        }
+
+
+
+    }
 }

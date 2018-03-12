@@ -55,6 +55,14 @@ Route::group([
                 'as' => 'seatgroupcorporation.destroy',
                 'uses' => 'SeatGroupCorporationController@destroy'
             ]);
+            Route::post('/{group_id}/user', [
+                'as' => 'seatgroupuser.update',
+                'uses' => 'SeatGroupUserController@update'
+            ]);
+            Route::delete('/{group_id}/user', [
+                'as' => 'seatgroupuser.destroy',
+                'uses' => 'SeatGroupUserController@destroy'
+            ]);
         }
 
         );

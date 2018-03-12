@@ -61,8 +61,8 @@ class SeatGroupsUsersUpdate extends Command
             $this->info('Updating User: ' . $user->name);
 
             foreach ($SeatGroups as $seatGroup) {
-                // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
 
+                // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
                 if ($seatGroup->type == 'auto') {
                     $corporations = $seatGroup->corporation->pluck('corporation_id')->toArray();
 
@@ -70,7 +70,10 @@ class SeatGroupsUsersUpdate extends Command
                         array_push($Roles, $seatGroup->role_id);
                     }
                 }
-                // Assign Roles to user
+
+                // TODO: SeatUser next
+
+                // Assign Roles to user & using unique role
                 $user->roles()->sync(array_unique($Roles));
 
             }

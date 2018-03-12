@@ -27,8 +27,8 @@ class InitialDeployment extends Migration
             $table->foreign('seatgroup_id')->references('id')->on('seatgroups')->onDelete('cascade');
             $table->bigInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->boolean('is_manager');
-            $table->boolean('on_waitlist');
+            $table->boolean('is_manager')->default(false);
+            $table->boolean('on_waitlist')->default(false);
             $table->primary(['seatgroup_id', 'user_id']);
         });
 
