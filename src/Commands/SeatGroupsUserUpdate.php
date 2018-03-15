@@ -21,6 +21,7 @@ use Seat\Web\Models\User;
 
 class SeatGroupsUsersUpdate extends Command
 {
+
     use AccessManager, Corporation;
 
     protected $signature = 'seat-groups:users:update';
@@ -35,23 +36,7 @@ class SeatGroupsUsersUpdate extends Command
     {
 
         $SeatGroups = Seatgroup::all();
-        /*
-                foreach ($SeatGroups as $seatGroup){
-                    $userarray = [];
 
-                    foreach ($seatGroup->corporation->pluck('corporation_id') as $corporation){
-                        $this->info('Test: ' .$corporation);
-                        $users = CharacterInfo::all()->where('corporation_id','=',$corporation);
-
-                        foreach ($users as $user){
-                            array_push($userarray, $user->character_id);
-                            //$this->info('user ' .$seatGroup->role);
-                        }
-                    }
-                    $this->info('Array: '.print_r($userarray));
-                    $seatGroup->user()
-                        ->sync($userarray);
-                }*/
 
 
         $Users = User::all();
@@ -71,8 +56,15 @@ class SeatGroupsUsersUpdate extends Command
                     }
                 }
 
-                // TODO: SeatUser next
+                // Opt-In Group Check
+                // check if user's corp is allowed in the seatgroup
+                if (count($seatGroup->corporation->firstwhere('corporation_id','=',$user->character->corporation_id))>0){
+                    // check if user is Opt-in into a group
+                    if($seatGroup->isMember($user->getAuthIdentifier(),$seatGroup->id)){
+                        array_push($Roles, $seatGroup->role_id);
+                    }
 
+                }
                 // Assign Roles to user & using unique role
                 $user->roles()->sync(array_unique($Roles));
 

@@ -151,6 +151,8 @@
 
     <div class="row"> <br> </div>
 
+    @if(!$seatgroup->type == 'open')
+        <!--TODO: write controller for making Manager-->
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Manager</h3>
@@ -164,10 +166,10 @@
                     <select name="users[]" id="available_corporations" style="width: 100%" multiple>
 
 
-                        @foreach($all_corporations as $corporation)
-                            @if(!in_array($corporation->corporation_id,$seatgroup->corporation->pluck('corporation_id')->toArray()))
-                                <option value="{{ $corporation->corporation_id }}">
-                                    {{ $corporation->name }}
+                        @foreach($all_characters as $character)
+                            @if(!in_array($character->character_id,$seatgroup->user->pluck('character_id')->toArray()))
+                                <option value="{{ $character->character_id }}">
+                                    {{ $character->name }}
                                 </option>
                             @endif
                         @endforeach
@@ -188,13 +190,13 @@
                 <tr>
                     <th colspan="2" class="text-center">Current Manager</th>
                 </tr>
-                @foreach($corporations as $corperation)
+                @foreach($characters as $character)
 
                     <tr>
-                        <td>{{$corperation ->name}}</td>
+                        <td>{{$character ->name}}</td>
                         <td>
                             {!! Form::open(['method' => 'DELETE',
-                            'route' => ['seatgroupuser.destroy',$seatgroup->id,$corperation->corporation_id],
+                            'route' => ['seatgroupuser.destroy',$seatgroup->id],
                             'style'=>'display:inline'
                             ]) !!}
                             {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
@@ -207,7 +209,7 @@
             </table>
         </div>
     </div>
-
+    @endif
 
 
 @endsection

@@ -5,6 +5,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Seat\Web\Http\Controllers\Controller;
+use Seat\Web\Models\User;
 
 class SeatGroupUserController extends Controller
 {
@@ -75,9 +76,14 @@ class SeatGroupUserController extends Controller
 
         if($seatgroup->type == 'open'){
             $user=auth()->user()->getAuthIdentifier();
-            $seatgroup->user()->attach($user);
-        }
 
+            if(count($seatgroup->corporation->firstwhere('corporation_id','=',auth()->user()->character->corporation_id))>0){
+                $seatgroup->user()->attach($user);
+            } else {
+                return redirect()->back()->with('error', 'You are not allowed to opt-in into this group');
+            }
+
+        }
 
         return redirect()->back()->with('success', 'Updated');
     }

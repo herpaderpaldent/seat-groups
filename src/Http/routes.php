@@ -21,7 +21,7 @@ Route::group([
                 ]);
             }
         );
-        // Admin Route TODO: make this a real route file
+        // Admin Route
         Route::group([
             'middleware' => ['web']
         ], function (){

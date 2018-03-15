@@ -1,6 +1,11 @@
 {
     "name": "herpaderpaldent/seat-groups",
     "description": "A module for SeAT that adds the ability of using goups to assign roles to user that are in a group",
+    "autoload": {
+        "psr-4": {
+            "Herpaderpaldent\\Seat\\SeatGroups\\": "src/"
+        }
+    },
     "type": "seat-plugin",
     "require": {
         "eveseat/services": "^2.0",
@@ -15,10 +20,5 @@
             "email": "felix.a.huber@gmx.net"
         }
     ],
-    "minimum-stability": "alpha",
-    "autoload": {
-        "psr-4": {
-            "Herpaderpaldent\\Seat\\SeatGroups\\": "src/"
-        }
-    }
+    "minimum-stability": "stable"
 }

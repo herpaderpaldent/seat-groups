@@ -88,15 +88,18 @@ class SeatGroupsController extends Controller
     public function edit($id)
     {
         $all_corporations = $this->getAllCorporations();
+        $all_characters = CharacterInfo::all();
 
         $seatgroup = Seatgroup::find($id);
         $Roles=Role::pluck('title','id');
         $corporations=$seatgroup->corporation()->get();
+        $characters= $seatgroup->user;
 
 
-        return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_users'))
+        return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_characters'))
             ->with('roles',$Roles)
-            ->with('corporations',$corporations);
+            ->with('corporations',$corporations)
+            ->with('characters',$characters);
 
     }
 

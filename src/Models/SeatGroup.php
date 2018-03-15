@@ -48,8 +48,17 @@ class Seatgroup extends Model
 
     public function isManager(User $user, int $groupint){
 
+
+        $seatgroup = Seatgroup::find($group);
+
+
         // TODO: clear this up create checker for manager
         return true;
+
+
+
+
+
         //if(Seatgroupmanager::where('group_id','=',$groupint)->where('user_id', '=', $user['id'])->count() >0){
         //    return true;
         //} else {return false;}
@@ -59,14 +68,9 @@ class Seatgroup extends Model
     public function listManager(int $group){
         $managersHelper= Seatgroupmanager::where('group_id','=',$group)->get();
 
-        //
-        /**
-         * TODO: when a Seatgroupmanager is created with the relation extend this function to call managers
-         *
-         *
-         */
+        $seatgroup = Seatgroup::find($group);
 
-        $helper2 = $managersHelper->users();
+
 
         if(true){
             return (string) null;
