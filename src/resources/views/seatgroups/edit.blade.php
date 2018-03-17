@@ -1,9 +1,9 @@
 @extends('web::layouts.grids.4-4-4')
 
 
-@section('title', trans('seat-groups::seat_groups_admin'))
-@section('page_header', trans('seatgroups::seat.seat_groups_admin'))
-@section('page_description', trans('web::seat.dashboard'))
+@section('title', trans('seatgroups::seat.seat_groups'))
+@section('page_header', trans('seatgroups::seat.seat_groups'))
+@section('page_description', trans('seatgroups::seat.seat_groups_edit'))
 
 
 
@@ -13,7 +13,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Editing {{$seatgroup->name}}</h3>
+            <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_editing')}} {{$seatgroup->name}}</h3>
         </div>
 
         <div class="panel-body">
@@ -23,14 +23,14 @@
                 <div class="row">
                     <div class="col-md-12"></div>
                     <div class="form-group col-md-12">
-                        <label for="name">Name:</label>
+                        <label for="name">{{trans('seatgroups::seat.seat_groups_name')}}</label>
                         <input type="text" class="form-control" name="name" value="{{$seatgroup->name}}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12"></div>
                     <div class="form-group col-md-12">
-                        <label for="description">SeAT-Group Description:</label>
+                        <label for="description">{{trans('seatgroups::seat.seat_groups_description')}}</label>
                         <textarea type="text" class="form-control" rows="5" name="description" >{{$seatgroup->description}}</textarea>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="col-md-12"></div>
                     <div class="form-group col-md-12">
-                        <label for="type">Select SeAT-Group Type</label>
+                        <label for="type">{{trans('seatgroups::seat.seat_groups_type')}}</label>
                         {{Form::select('type',[
                             'auto' => 'auto',
                             'managed'=>[
@@ -51,15 +51,15 @@
                 <div class="row">
                     <div class="col-md-12"></div>
                     <div class="form-group col-md-12">
-                        <label for="role_id">Select corresponding SeAT-Role</label>
+                        <label for="role_id">{{trans('seatgroups::seat.seat_groups_role')}}</label>
                         {!! Form::select('role_id', $roles, $seatgroup->role_id, ['class' => 'form-control']) !!}
                     </div>
                 </div>
 
-                    <div class="col-md-12"></div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-warning ">Update SeatGroup</button>
-                    </div>
+                <div class="col-md-12"></div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-warning ">{{trans('seatgroups::seat.seat_groups_update')}}</button>
+                </div>
 
             </form>
 
@@ -71,7 +71,7 @@
 @section('center')
 
     <h2>Available for whom</h2>
-    <small>here blade for each type of group</small>
+    <p>here blade for each type of group</p>
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -88,9 +88,9 @@
 
                         @foreach($all_corporations as $corporation)
                             @if(!in_array($corporation->corporation_id,$seatgroup->corporation->pluck('corporation_id')->toArray()))
-                            <option value="{{ $corporation->corporation_id }}">
-                                {{ $corporation->name }}
-                            </option>
+                                <option value="{{ $corporation->corporation_id }}">
+                                    {{ $corporation->name }}
+                                </option>
                             @endif
                         @endforeach
 
@@ -153,62 +153,62 @@
 
     @if(!$seatgroup->type == 'open')
         <!--TODO: write controller for making Manager-->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Manager</h3>
-        </div>
-        <div class="panel-body">
-            <form method="post" action="{{route('seatgroupuser.update', $id)}}">
-                {{csrf_field()}}
-                <input name="_method3" type="hidden" value="PATCH">
-                <div class="form-group">
-                    <label for="users">{{ trans('web::seat.available_user') }}</label>
-                    <select name="users[]" id="available_corporations" style="width: 100%" multiple>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Manager</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post" action="{{route('seatgroupuser.update', $id)}}">
+                    {{csrf_field()}}
+                    <input name="_method3" type="hidden" value="PATCH">
+                    <div class="form-group">
+                        <label for="users">{{ trans('web::seat.available_user') }}</label>
+                        <select name="users[]" id="available_corporations" style="width: 100%" multiple>
 
 
-                        @foreach($all_characters as $character)
-                            @if(!in_array($character->character_id,$seatgroup->user->pluck('character_id')->toArray()))
-                                <option value="{{ $character->character_id }}">
-                                    {{ $character->name }}
-                                </option>
-                            @endif
-                        @endforeach
+                            @foreach($all_characters as $character)
+                                @if(!in_array($character->character_id,$seatgroup->user->pluck('character_id')->toArray()))
+                                    <option value="{{ $character->character_id }}">
+                                        {{ $character->name }}
+                                    </option>
+                                @endif
+                            @endforeach
 
-                    </select>
-                </div>
-                <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="form-group col-md-12">
-                        <button type="submit" class="btn btn-success btn-block">Add Manager</button>
+                        </select>
                     </div>
-                </div>
-            </form>
-            <hr>
-            <table class="table table-hover table-condensed">
-                <tbody>
-
-                <tr>
-                    <th colspan="2" class="text-center">Current Manager</th>
-                </tr>
-                @foreach($characters as $character)
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-success btn-block">Add Manager</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="table table-hover table-condensed">
+                    <tbody>
 
                     <tr>
-                        <td>{{$character ->name}}</td>
-                        <td>
-                            {!! Form::open(['method' => 'DELETE',
-                            'route' => ['seatgroupuser.destroy',$seatgroup->id],
-                            'style'=>'display:inline'
-                            ]) !!}
-                            {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
-                            {!! Form::close() !!}
-                        </td>
+                        <th colspan="2" class="text-center">Current Manager</th>
                     </tr>
+                    @foreach($characters as $character)
 
-                @endforeach
-                </tbody>
-            </table>
+                        <tr>
+                            <td>{{$character ->name}}</td>
+                            <td>
+                                {!! Form::open(['method' => 'DELETE',
+                                'route' => ['seatgroupuser.destroy',$seatgroup->id],
+                                'style'=>'display:inline'
+                                ]) !!}
+                                {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     @endif
 
 

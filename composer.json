@@ -17,5 +17,12 @@
             "email": "felix.a.huber@gmx.net"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Herpaderpaldent\\Seat\\SeatGroups\\GroupsServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "stable"
 }
