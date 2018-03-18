@@ -49,7 +49,7 @@ class Seatgroup extends Model
     public function isManager(User $user, int $groupint){
 
 
-        $seatgroup = Seatgroup::find($group);
+        //$seatgroup = Seatgroup::find($group);
 
 
         // TODO: clear this up create checker for manager
