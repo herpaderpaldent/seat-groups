@@ -21,6 +21,8 @@ return [
 
     'seat_groups_managedgroup' => 'Managed SeAT Groups',
     'seat_groups_managedgroup_description' => 'Here you can apply for certain groups. The managers of this group will approve or deny your request.',
+    'seat_join_opengroup'=>'Opt in',
+    'seat_leave_opengroup'=>'Opt out',
 
     'seat_groups_create' => 'Create',
     'seat_groups_create_new' => 'Create a new SeAT Group',

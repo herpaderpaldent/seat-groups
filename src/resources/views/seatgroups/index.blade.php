@@ -69,14 +69,14 @@
                                         'route' => ['seatgroupuser.update', $groupname->id],
                                         'style'=>'display:inline'
                                         ]) !!}
-                            {!! Form::submit(trans('web::seat.joingroup'), ['class' => 'btn btn-success pull-right']) !!}
+                            {!! Form::submit(trans('seatgroups::seat.seat_join_opengroup'), ['class' => 'btn btn-success pull-right']) !!}
                             {!! Form::close() !!}
                         @elseif($groupname->isMember(auth()->user()->getAuthIdentifier(),$groupname->id))
                             {!! Form::open(['method' => 'DELETE',
                                         'route' => ['seatgroupuser.update', $groupname->id],
                                         'style'=>'display:inline'
                                         ]) !!}
-                            {!! Form::submit(trans('web::seat.leavegroup'), ['class' => 'btn btn-danger pull-right']) !!}
+                            {!! Form::submit(trans('seatgroups::seat.seat_leave_opengroup'), ['class' => 'btn btn-danger pull-right']) !!}
                             {!! Form::close() !!}
                         @endif
                     @endif
