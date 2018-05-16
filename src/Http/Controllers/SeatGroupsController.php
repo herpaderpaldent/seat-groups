@@ -14,6 +14,7 @@ use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Web\Models\Acl\Role;
+use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
 class SeatGroupsController extends Controller
@@ -88,7 +89,8 @@ class SeatGroupsController extends Controller
     public function edit($id)
     {
         $all_corporations = $this->getAllCorporations();
-        $all_characters = CharacterInfo::all();
+        $all_character_groups = Group::all();
+
 
         $seatgroup = Seatgroup::find($id);
         $Roles=Role::pluck('title','id');
@@ -96,7 +98,7 @@ class SeatGroupsController extends Controller
         $characters= $seatgroup->user;
 
 
-        return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_characters'))
+        return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_character_groups'))
             ->with('roles',$Roles)
             ->with('corporations',$corporations)
             ->with('characters',$characters);

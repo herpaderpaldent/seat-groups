@@ -40,6 +40,14 @@ class InitialDeployment extends Migration
             $table->primary(['corporation_id', 'seatgroup_id']);
         });
 
+        Schema::create('role_seatgroup', function (Blueprint $table) {
+            $table->bigInteger('role_id')->index();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->integer('seatgroup_id')->unsigned()->index();
+            $table->foreign('seatgroup_id')->references('id')->on('seatgroups')->onDelete('cascade');
+            $table->primary(['role_id', 'seatgroup_id']);
+        });
+
     }
 
     /**
@@ -49,6 +57,7 @@ class InitialDeployment extends Migration
      */
     public function down()
     {
+        Schema::drop('role_seatgroup');
         Schema::drop('corporation_info_seatgroup');
         Schema::drop('seatgroup_user');
         Schema::drop("seatgroups");

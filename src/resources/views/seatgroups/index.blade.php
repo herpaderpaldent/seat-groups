@@ -23,7 +23,9 @@
                 <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
 
                 <button class="btn btn-link pull-right">
-                    @if($groupname->isManager(auth()->user(),$groupname->id) || Auth::user()->hasRole('Superuser'))
+                    @if($groupname->isManager(auth()->user()->group->main_character_id,$groupname->id)
+                        || Auth::user()->hasRole('Superuser')
+                    )
                         <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                     @endif
                 </button>
@@ -32,10 +34,10 @@
             <div class="panel-body">
                 {{$groupname->description}}
                 {{$groupname->manager}}
-
             </div>
         </div>
     @endforeach
+
 
 @endsection
 
@@ -45,8 +47,8 @@
     <p>{{trans('seatgroups::seat.seat_groups_opengroup_description')}}</p>
 
     @foreach($opengroups as $groupname)
-        @if(count($groupname->corporation->firstwhere('corporation_id','=',auth()->user()->character->corporation_id))>0 ||
-        $groupname->isManager(auth()->user(),$groupname->id) ||
+        @if(count($groupname->corporation->firstwhere('corporation_id','=',\Seat\Eveapi\Models\Corporation\CorporationInfo::find(auth()->user()->group->main_character_id)->corporation))>0 ||
+        $groupname->isManager(auth()->user()->group->main_character_id,$groupname->id) ||
         auth()->user()->hasRole('Superuser'))
             <div class="panel panel-default">
                 <div class="panel-heading">

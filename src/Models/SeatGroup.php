@@ -22,16 +22,18 @@ class Seatgroup extends Model
 
 
     public function role(){
-        return $this->belongsTo('Seat\Web\Models\Acl\Role', 'role_id','id');
+        return $this->belongsToMany('Seat\Web\Models\Acl\Role', 'role_id','id');
     }
 
     public function user(){
-        return $this->belongsToMany('Seat\Web\Models\User', 'seatgroup_user','seatgroup_id','user_id')
+        return $this->belongsToMany('Seat\Web\Models\User', 'seatgroup_user','seatgroup_id',
+            'user_id')
             ->withPivot('is_manager','on_waitlist');
     }
 
     public function corporation(){
-        return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo','corporation_info_seatgroup','seatgroup_id', 'corporation_id');
+        return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo',
+            'corporation_info_seatgroup','seatgroup_id', 'corporation_id');
     }
 
     /*public function corporation2(){
@@ -46,7 +48,7 @@ class Seatgroup extends Model
 
 
 
-    public function isManager(User $user, int $groupint){
+    public function isManager(int $user, int $groupint){
 
 
         //$seatgroup = Seatgroup::find($group);
