@@ -41,11 +41,24 @@
                     </div>
                 </div>
 
+
+
                 <div class="row">
                     <div class="col-md-12"></div>
                     <div class="form-group col-md-12">
                         <label for="role_id">{{trans('seatgroups::seat.seat_groups_role')}}</label>
-                        {!! Form::select('role_id', $roles, null, ['class' => 'form-control']) !!}
+                        <select name="roles[]" id="available_roles" style="width: 100%" multiple>
+
+
+                            @foreach($roles as $role)
+                                @if(true)
+                                    <option value="{{ $role->id }}">
+                                        {{ $role->title }}
+                                    </option>
+                                @endif
+                            @endforeach
+
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -67,3 +80,14 @@
 
 @endsection
 
+        @push('javascript')
+
+            @include('web::includes.javascript.id-to-name')
+
+            <script>
+              $("#available_roles").select2({
+                placeholder: "{{ trans('web::seat.select_item_add') }}"
+              });
+            </script>
+
+    @endpush

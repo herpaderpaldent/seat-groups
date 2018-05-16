@@ -11,16 +11,18 @@ return [
         'name'          => 'SeAT Groups',
         'icon'          => 'fa-group',
         'route_segment' => 'seatgroups',
+        'permission'    => 'seatgroups.view',
         'entries' => [
             [
                 'name'  => 'SeAT Groups',
                 'icon'  => 'fa-gear',
                 'route' => 'seatgroups.index',
+                'permission'    => 'seatgroups.view',
             ],
             [
                 'name'  => 'Add new SeAT Group',
                 'icon'  => 'fa-plus-square',
-                'permission' => 'Superuser',
+                'permission' => 'seatgroups.create',
                 'route' => 'seatgroups.create',
             ]
         ]

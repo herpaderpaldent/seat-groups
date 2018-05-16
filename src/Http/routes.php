@@ -13,17 +13,18 @@ Route::group([
 
         // General Group of Links open for Everyone
         Route::group([
-            'middleware' => 'web'
+            'middleware' => ['web', 'auth']
         ], function (){
             Route::get('/', [
                 'as'   => 'seatgroups.index',
-                'uses' => 'SeatGroupsController@index'
+                'uses' => 'SeatGroupsController@index',
+                'middleware' => 'bouncer:seatgroups.view'
                 ]);
             }
         );
         // Admin Route
         Route::group([
-            'middleware' => ['web']
+            'middleware' => ['web', 'auth']
         ], function (){
             Route::get('/{group_id}/edit', [
                 'as'   => 'seatgroups.edit',

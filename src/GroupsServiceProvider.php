@@ -29,11 +29,13 @@ class GroupsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/Config/seatgroups.config.php',
-            'seatgroups.config'
+            __DIR__ . '/Config/seatgroups.permission.php', 'web.permissions');
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/seatgroups.config.php', 'seatgroups.config'
         );
         $this->mergeConfigFrom(
-            __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
+            __DIR__ . '/Config/seatgroups.sidebar.php', 'package.sidebar');
     }
 
     private function addCommands()

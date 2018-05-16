@@ -14,6 +14,7 @@ use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Web\Models\Acl\Role;
+use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
 class SeatGroupsController extends Controller
@@ -41,7 +42,7 @@ class SeatGroupsController extends Controller
     public function create()
     {
         //
-        $Roles=Role::pluck('title','id');
+        $Roles=Role::all();
 
         return view('seatgroups::create')
             ->with('roles',$Roles);
@@ -63,6 +64,13 @@ class SeatGroupsController extends Controller
         ]);
 
         $group=Seatgroup::create($seatgroup);
+
+        $role_ids = $request->get('roles');
+        foreach ($role_ids as $role_id){
+            $group->role()->attach($role_id);
+        }
+
+
         //ToDo: if logic implementation for failed validation + forward to view
         return redirect()->route('seatgroups.edit', $group->id)
             ->with('success', 'SeAT-Group has been added');
@@ -88,15 +96,16 @@ class SeatGroupsController extends Controller
     public function edit($id)
     {
         $all_corporations = $this->getAllCorporations();
-        $all_characters = CharacterInfo::all();
+        $all_character_groups = Group::all();
 
+        // ToDo: show selected roles on Edit blade
         $seatgroup = Seatgroup::find($id);
         $Roles=Role::pluck('title','id');
         $corporations=$seatgroup->corporation()->get();
         $characters= $seatgroup->user;
 
 
-        return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_characters'))
+        return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_character_groups'))
             ->with('roles',$Roles)
             ->with('corporations',$corporations)
             ->with('characters',$characters);

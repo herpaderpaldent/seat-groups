@@ -19,34 +19,33 @@ class Seatgroup extends Model
     use Corporation;
     protected $fillable = ['name','description','type','role_id' ];
 
-
-
     public function role(){
-        return $this->belongsTo('Seat\Web\Models\Acl\Role', 'role_id','id');
+        return $this->belongsToMany('Seat\Web\Models\Acl\Role');
     }
 
-    public function user(){
-        return $this->belongsToMany('Seat\Web\Models\User', 'seatgroup_user','seatgroup_id','user_id')
+    public function group(){
+        return $this->belongsToMany('Seat\Web\Models\Group')
             ->withPivot('is_manager','on_waitlist');
     }
 
     public function corporation(){
-        return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo','corporation_info_seatgroup','seatgroup_id', 'corporation_id');
+        return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo',
+            'corporation_info_seatgroup','seatgroup_id', 'corporation_id');
     }
 
     /*public function corporation2(){
         return $this->$this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo');
     }*/
 
-    public function manager()
+    /*public function manager()
     {
-        return $this->belongsToMany('Seat\Web\Models\User', 'seatgroup_user','user_id')
+        return $this->belongsToMany('Seat\Web\Models\Group', 'seatgroup_user','user_id')
             ->wherePivot('is_manager',"=", true);
-    }
+    }*/
 
 
 
-    public function isManager(User $user, int $groupint){
+    public function isManager(int $user, int $groupint){
 
 
         //$seatgroup = Seatgroup::find($group);

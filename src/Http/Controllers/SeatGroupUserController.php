@@ -4,7 +4,10 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Web\Http\Controllers\Controller;
+use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\User;
 
 class SeatGroupUserController extends Controller
@@ -75,10 +78,9 @@ class SeatGroupUserController extends Controller
         $seatgroup=Seatgroup::find($id);
 
         if($seatgroup->type == 'open'){
-            $user=auth()->user()->getAuthIdentifier();
 
-            if(count($seatgroup->corporation->firstwhere('corporation_id','=',auth()->user()->character->corporation_id))>0){
-                $seatgroup->user()->attach($user);
+            if(true){
+                $seatgroup->group()->attach(Auth::user()->group->id);
             } else {
                 return redirect()->back()->with('error', 'You are not allowed to opt-in into this group');
             }
@@ -98,7 +100,7 @@ class SeatGroupUserController extends Controller
     {
         $seatgroup=Seatgroup::find($id);
         if($seatgroup->type == 'open'){
-            $user=auth()->user()->getAuthIdentifier();
+            $user=auth()->user()->group->main_character_id;
             $seatgroup->user()->detach($user);
         }
 

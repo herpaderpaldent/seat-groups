@@ -18,24 +18,29 @@
 
 
     @foreach($autogroups as $groupname)
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
+        @foreach($groupname->corporation as $corporation)
+            @if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
 
-                <button class="btn btn-link pull-right">
-                    @if($groupname->isManager(auth()->user(),$groupname->id) || Auth::user()->hasRole('Superuser'))
-                        <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                    @endif
-                </button>
-                <div class="clearfix"></div>
-            </div>
-            <div class="panel-body">
-                {{$groupname->description}}
-                {{$groupname->manager}}
+                        <button class="btn btn-link pull-right">
+                            @if(Auth::user()->hasRole('seatgroups.edit'))
+                                <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                            @endif
+                        </button>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        {{$groupname->description}}
+                    </div>
+                </div>
+                @break
+            @endif
+        @endforeach
 
-            </div>
-        </div>
     @endforeach
+
 
 @endsection
 
@@ -45,14 +50,12 @@
     <p>{{trans('seatgroups::seat.seat_groups_opengroup_description')}}</p>
 
     @foreach($opengroups as $groupname)
-        @if(count($groupname->corporation->firstwhere('corporation_id','=',auth()->user()->character->corporation_id))>0 ||
-        $groupname->isManager(auth()->user(),$groupname->id) ||
-        auth()->user()->hasRole('Superuser'))
+        @if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
 
-                    @if($groupname->isManager(auth()->user(),$groupname->id))
+                    @if(Auth::user()->hasRole('seatgroups.edit'))
                         <button class="btn btn-link pull-right">
                             <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         </button>
@@ -63,15 +66,15 @@
                 <div class="panel-body">
                     {{$groupname->description}}
 
-                    @if(count($groupname->corporation->firstwhere('corporation_id','=',auth()->user()->character->corporation_id))>0)
-                        @if(!$groupname->isMember(auth()->user()->getAuthIdentifier(),$groupname->id))
+                    @if(true)
+                        @if(true)
                             {!! Form::open(['method' => 'POST',
                                         'route' => ['seatgroupuser.update', $groupname->id],
                                         'style'=>'display:inline'
                                         ]) !!}
                             {!! Form::submit(trans('seatgroups::seat.seat_join_opengroup'), ['class' => 'btn btn-success pull-right']) !!}
                             {!! Form::close() !!}
-                        @elseif($groupname->isMember(auth()->user()->getAuthIdentifier(),$groupname->id))
+                        @elseif(false)
                             {!! Form::open(['method' => 'DELETE',
                                         'route' => ['seatgroupuser.update', $groupname->id],
                                         'style'=>'display:inline'
