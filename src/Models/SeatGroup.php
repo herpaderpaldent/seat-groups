@@ -11,6 +11,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Auth;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Models\User;
 
@@ -75,13 +76,18 @@ class Seatgroup extends Model
             return (string) null;
         } else return null;
     }
-    public function isMember(int $userId, int $groupId){
+    public function isMember(){
+
         try{
-            if(count(Seatgroup::find($groupId)->user->firstwhere('id','=',$userId))>0){
-                return true;
-            } else return false;
-        } catch (\Exception $e) {
+            if(in_array(Auth::user()->group->main_character->character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())){
+                if(in_array(Auth::user()->group->id , $this->group->pluck('id')->toArray())){
+                    return true;
+                }
+            }
+
             return false;
+        } catch (\Exception $e) {
+            return $e;
         }
 
 

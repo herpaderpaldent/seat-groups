@@ -48,17 +48,35 @@
                     </div>
                 </div>
 
+
                 <div class="row">
                     <div class="col-md-12"></div>
                     <div class="form-group col-md-12">
                         <label for="role_id">{{trans('seatgroups::seat.seat_groups_role')}}</label>
-                        {!! Form::select('role_id', $roles, $seatgroup->role_id, ['class' => 'form-control']) !!}
+                        <select name="roles[]" id="available_roles" style="width: 100%" multiple>
+
+
+                            @foreach($seatgroup->role as $role)
+                                <option selected="selected" value="{{ $role->id }}">
+                                    {{ $role->title }}
+                                </option>
+                            @endforeach
+                            @foreach($roles as $role)
+                            @if(!in_array($role->id,$seatgroup->role->pluck('id')->toArray()))
+                                    <option  value="{{ $role->id }}">
+                                        {{ $role->title }}
+                                    </option>
+                            @endif
+                            @endforeach
+
+                        </select>
                     </div>
                 </div>
-
-                <div class="col-md-12"></div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-warning ">{{trans('seatgroups::seat.seat_groups_update')}}</button>
+                <div class="row">
+                    <div class="col-md-12"></div>
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success">{{trans('seatgroups::seat.seat_groups_update')}}</button>
+                    </div>
                 </div>
 
             </form>
@@ -222,6 +240,7 @@
         $("#available_permissions," +
             "#available_users," +
             "#available_characters," +
+            "#available_roles," +
             "#available_corporations").select2({
             placeholder: "{{ trans('web::seat.select_item_add') }}"
         });

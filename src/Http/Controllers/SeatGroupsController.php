@@ -95,20 +95,23 @@ class SeatGroupsController extends Controller
      */
     public function edit($id)
     {
+
+
         $all_corporations = $this->getAllCorporations();
         $all_character_groups = Group::all();
 
         // ToDo: show selected roles on Edit blade
         $seatgroup = Seatgroup::find($id);
-        $Roles=Role::pluck('title','id');
-        $corporations=$seatgroup->corporation()->get();
-        $characters= $seatgroup->user;
+        $roles=Role::all();
+        $selectedRoles = $seatgroup->groups;
+        $corporations = $seatgroup->corporation;
 
 
         return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_character_groups'))
-            ->with('roles',$Roles)
+            ->with('roles',$roles)
             ->with('corporations',$corporations)
-            ->with('characters',$characters);
+            ->with('selectedroles',$selectedRoles);
+
 
     }
 
@@ -132,8 +135,10 @@ class SeatGroupsController extends Controller
         $seatgroup->name = $request->get('name');
         $seatgroup->description = $request->get('description');
         $seatgroup->type = $request->get('type');
-        $seatgroup->role_id = $request->get('role_id');
         $seatgroup->save();
+        $role_ids = $request->get('roles');
+        $seatgroup->role()->sync($role_ids);
+
         return redirect()->route('seatgroups.index')
             ->with('success', 'SeAT-Group has been updated');
     }

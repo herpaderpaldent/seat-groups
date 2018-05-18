@@ -78,7 +78,9 @@ class SeatGroupCorporationController extends Controller
         ]);
 
         $corporationarray = $request->get('corporations');
-        $seatgroup->corporation()->sync($corporationarray);
+        foreach ($corporationarray as $corporation){
+            $seatgroup->corporation()->attach($corporation);
+        }
 
         return redirect()->back()->with('success', 'Updated');
     }

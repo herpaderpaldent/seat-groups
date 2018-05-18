@@ -50,6 +50,7 @@
     <p>{{trans('seatgroups::seat.seat_groups_opengroup_description')}}</p>
 
     @foreach($opengroups as $groupname)
+        @foreach($groupname->corporation as $corporation)
         @if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -66,15 +67,15 @@
                 <div class="panel-body">
                     {{$groupname->description}}
 
-                    @if(true)
-                        @if(true)
+                    @if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id)
+                        @if(!$groupname->isMember())
                             {!! Form::open(['method' => 'POST',
                                         'route' => ['seatgroupuser.update', $groupname->id],
                                         'style'=>'display:inline'
                                         ]) !!}
                             {!! Form::submit(trans('seatgroups::seat.seat_join_opengroup'), ['class' => 'btn btn-success pull-right']) !!}
                             {!! Form::close() !!}
-                        @elseif(false)
+                        @elseif($groupname->isMember())
                             {!! Form::open(['method' => 'DELETE',
                                         'route' => ['seatgroupuser.update', $groupname->id],
                                         'style'=>'display:inline'
@@ -84,10 +85,14 @@
                         @endif
                     @endif
 
+
                 </div>
             </div>
         @endif
+        @endforeach
     @endforeach
+
+
 
 @endsection
 

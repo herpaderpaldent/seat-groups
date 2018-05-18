@@ -79,6 +79,7 @@ class SeatGroupUserController extends Controller
 
         if($seatgroup->type == 'open'){
 
+            //ToDo: add check if allowed to opt in
             if(true){
                 $seatgroup->group()->attach(Auth::user()->group->id);
             } else {
@@ -99,9 +100,9 @@ class SeatGroupUserController extends Controller
     public function destroy($id)
     {
         $seatgroup=Seatgroup::find($id);
+
         if($seatgroup->type == 'open'){
-            $user=auth()->user()->group->main_character_id;
-            $seatgroup->user()->detach($user);
+            $seatgroup->group()->detach(Auth::user()->group->id);
         }
 
         return redirect()->back()->with('success', ' removed');

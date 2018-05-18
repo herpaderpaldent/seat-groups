@@ -8,6 +8,9 @@
     },
     "type": "seat-plugin",
     "require": {
+        "php": ">=7.1",
+        "laravel/framework": "5.5.*",
+        "eveseat/web": "3.0.*"
     },
 
     "license": "GPL-2.0-only",
@@ -24,5 +27,5 @@
             ]
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "alpha"
 }
