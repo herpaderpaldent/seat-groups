@@ -12,6 +12,8 @@ namespace Herpaderpaldent\Seat\SeatGroups\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Auth;
+use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Models\User;
 
@@ -44,7 +46,17 @@ class Seatgroup extends Model
             ->wherePivot('is_manager',"=", true);
     }*/
 
+    public function isAllowedToSeeSeatGroup(){
+        $main_character_id = setting('main_character_id');
+        foreach ($this->corporation as $corporation){
+            if($corporation->corporation_id === CharacterInfo::find($main_character_id)->corporation_id) {
+                return "ja drinn";
+            }
 
+            //return $corporation->corporation_id;
+        } return "fehler";
+
+    }
 
     public function isManager(int $user, int $groupint){
 

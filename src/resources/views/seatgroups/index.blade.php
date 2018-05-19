@@ -19,7 +19,14 @@
 
     @foreach($autogroups as $groupname)
         @foreach($groupname->corporation as $corporation)
-            @if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))
+            {{\Seat\Services\Settings\Profile::get("main_character_id")}}
+            {{setting('main_character_id', 5)}} <br>
+            {{auth()->user()->email}} <br>
+
+
+            {{$groupname->isAllowedToSeeSeatGroup()}}
+            {{--@if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))--}}
+            @if(Auth::user()->hasRole('seatgroups.edit'))
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
@@ -51,7 +58,7 @@
 
     @foreach($opengroups as $groupname)
         @foreach($groupname->corporation as $corporation)
-        @if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))
+        @if( Auth::user()->hasRole('seatgroups.edit'))
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
@@ -67,7 +74,7 @@
                 <div class="panel-body">
                     {{$groupname->description}}
 
-                    @if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id)
+                    @if(true)
                         @if(!$groupname->isMember())
                             {!! Form::open(['method' => 'POST',
                                         'route' => ['seatgroupuser.update', $groupname->id],
