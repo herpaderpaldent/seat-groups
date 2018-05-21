@@ -16,33 +16,30 @@
         <h3>{{trans('seatgroups::seat.seat_groups_autogroup')}}</h3>
         <p>{{trans('seatgroups::seat.seat_groups_autogroup_description')}}</p>
 
+        {{auth()->user()->group->main_character->corporation_id}}
 
     @foreach($autogroups as $groupname)
         @foreach($groupname->corporation as $corporation)
-            {{\Seat\Services\Settings\Profile::get("main_character_id")}}
-            {{setting('main_character_id', 5)}} <br>
-            {{auth()->user()->email}} <br>
 
+            @if($corporation->corporation_id === Auth::user()->group->main_character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))
+              @if(Auth::user()->hasRole('seatgroups.edit'))
+                  <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
 
-            {{$groupname->isAllowedToSeeSeatGroup()}}
-            {{--@if($corporation->corporation_id === Auth::user()->group->main_character->character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))--}}
-            @if(Auth::user()->hasRole('seatgroups.edit'))
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
-
-                        <button class="btn btn-link pull-right">
-                            @if(Auth::user()->hasRole('seatgroups.edit'))
-                                <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                            @endif
-                        </button>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="panel-body">
-                        {{$groupname->description}}
-                    </div>
-                </div>
-                @break
+                          <button class="btn btn-link pull-right">
+                              @if(Auth::user()->hasRole('seatgroups.edit'))
+                                  <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                              @endif
+                          </button>
+                          <div class="clearfix"></div>
+                      </div>
+                      <div class="panel-body">
+                          {{$groupname->description}}
+                      </div>
+                  </div>
+                  @break
+              @endif
             @endif
         @endforeach
 
@@ -73,6 +70,8 @@
                 </div>
                 <div class="panel-body">
                     {{$groupname->description}}
+
+                    {{$groupname->isAllowedToSeeSeatGroup()}}
 
                     @if(true)
                         @if(!$groupname->isMember())

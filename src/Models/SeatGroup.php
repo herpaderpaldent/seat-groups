@@ -49,7 +49,7 @@ class Seatgroup extends Model
     public function isAllowedToSeeSeatGroup(){
         $main_character_id = setting('main_character_id');
         foreach ($this->corporation as $corporation){
-            if($corporation->corporation_id === CharacterInfo::find($main_character_id)->corporation_id) {
+            if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())) {
                 return "ja drinn";
             }
 
@@ -91,12 +91,18 @@ class Seatgroup extends Model
     public function isMember(){
 
         try{
-            if(in_array(Auth::user()->group->main_character->character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())){
-                if(in_array(Auth::user()->group->id , $this->group->pluck('id')->toArray())){
-                    return true;
+            if($this->open === "auto"){
+                if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())){
+                        return true;
                 }
             }
-
+            if($this->type === "open"){
+                if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())){
+                    if(in_array(Auth::user()->group->id , $this->group->pluck('id')->toArray())){
+                        return true;
+                    }
+                }
+            }
             return false;
         } catch (\Exception $e) {
             return $e;
