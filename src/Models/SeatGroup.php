@@ -47,14 +47,11 @@ class Seatgroup extends Model
     }*/
 
     public function isAllowedToSeeSeatGroup(){
-        $main_character_id = setting('main_character_id');
-        foreach ($this->corporation as $corporation){
-            if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())) {
-                return "ja drinn";
-            }
 
-            //return $corporation->corporation_id;
-        } return "fehler";
+        if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())) {
+            return true;
+        }
+        return false;
 
     }
 

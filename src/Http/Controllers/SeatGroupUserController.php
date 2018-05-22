@@ -79,9 +79,9 @@ class SeatGroupUserController extends Controller
 
         if($seatgroup->type == 'open'){
 
-            //ToDo: add check if allowed to opt in
-            if(true){
+            if($seatgroup->isAllowedToSeeSeatGroup()){
                 $seatgroup->group()->attach(Auth::user()->group->id);
+                //TODO: Auth::user()->group()->roles()->attach($seatgroup->)
             } else {
                 return redirect()->back()->with('error', 'You are not allowed to opt-in into this group');
             }

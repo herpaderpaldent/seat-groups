@@ -16,34 +16,29 @@
         <h3>{{trans('seatgroups::seat.seat_groups_autogroup')}}</h3>
         <p>{{trans('seatgroups::seat.seat_groups_autogroup_description')}}</p>
 
-        {{auth()->user()->group->main_character->corporation_id}}
+        {{auth()->user()->group->main_character}} <br>
 
-    @foreach($autogroups as $groupname)
-        @foreach($groupname->corporation as $corporation)
 
-            @if($corporation->corporation_id === Auth::user()->group->main_character->corporation_id || Auth::user()->hasRole('seatgroups.edit'))
-              @if(Auth::user()->hasRole('seatgroups.edit'))
-                  <div class="panel panel-default">
-                      <div class="panel-heading">
-                          <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
+        @foreach($seatgroups as $seatgroup)
+            @if($seatgroup->type === 'auto')
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title pull-left">{{$seatgroup->name}}</h3>
 
-                          <button class="btn btn-link pull-right">
-                              @if(Auth::user()->hasRole('seatgroups.edit'))
-                                  <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                              @endif
-                          </button>
-                          <div class="clearfix"></div>
-                      </div>
-                      <div class="panel-body">
-                          {{$groupname->description}}
-                      </div>
-                  </div>
-                  @break
-              @endif
+                        <button class="btn btn-link pull-right">
+                            @if(Auth::user()->hasRole('seatgroups.edit'))
+                                <a href="{{route('seatgroups.edit', $seatgroup->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                            @endif
+                        </button>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        {{$seatgroup->description}}
+                    </div>
+                </div>
             @endif
         @endforeach
 
-    @endforeach
 
 
 @endsection
@@ -53,50 +48,46 @@
     <h3>{{trans('seatgroups::seat.seat_groups_opengroup')}}</h3>
     <p>{{trans('seatgroups::seat.seat_groups_opengroup_description')}}</p>
 
-    @foreach($opengroups as $groupname)
-        @foreach($groupname->corporation as $corporation)
-        @if( Auth::user()->hasRole('seatgroups.edit'))
+
+    @foreach($seatgroups as $seatgroup)
+        @if($seatgroup->type === 'open')
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
+                    <h3 class="panel-title pull-left">{{$seatgroup->name}}</h3>
 
                     @if(Auth::user()->hasRole('seatgroups.edit'))
                         <button class="btn btn-link pull-right">
-                            <a href="{{route('seatgroups.edit', $groupname->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                            <a href="{{route('seatgroups.edit', $seatgroup->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         </button>
                     @endif
 
                     <div class="clearfix"></div>
                 </div>
                 <div class="panel-body">
-                    {{$groupname->description}}
+                    {{$seatgroup->description}}
 
-                    {{$groupname->isAllowedToSeeSeatGroup()}}
-
-                    @if(true)
-                        @if(!$groupname->isMember())
+                        @if(!$seatgroup->isMember())
                             {!! Form::open(['method' => 'POST',
-                                        'route' => ['seatgroupuser.update', $groupname->id],
+                                        'route' => ['seatgroupuser.update', $seatgroup->id],
                                         'style'=>'display:inline'
                                         ]) !!}
                             {!! Form::submit(trans('seatgroups::seat.seat_join_opengroup'), ['class' => 'btn btn-success pull-right']) !!}
                             {!! Form::close() !!}
-                        @elseif($groupname->isMember())
+                        @elseif($seatgroup->isMember())
                             {!! Form::open(['method' => 'DELETE',
-                                        'route' => ['seatgroupuser.update', $groupname->id],
+                                        'route' => ['seatgroupuser.update', $seatgroup->id],
                                         'style'=>'display:inline'
                                         ]) !!}
                             {!! Form::submit(trans('seatgroups::seat.seat_leave_opengroup'), ['class' => 'btn btn-danger pull-right']) !!}
                             {!! Form::close() !!}
                         @endif
-                    @endif
-
 
                 </div>
             </div>
         @endif
-        @endforeach
+
     @endforeach
+
 
 
 
@@ -106,24 +97,29 @@
 
     <h3>{{trans('seatgroups::seat.seat_groups_managedgroup')}}</h3>
     <p>{{trans('seatgroups::seat.seat_groups_managedgroup_description')}}</p>
-    @foreach($managedgroups as $groupname)
+    @if(false)
+    @foreach($seatgroups as $seatgroup)
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title pull-left">{{$groupname->name}}</h3>
+                <h3 class="panel-title pull-left">{{$seatgroup->name}}</h3>
 
-                @if($groupname->isManager(auth()->user(),$groupname->id))
+
+
+                @if(false))
                     <button class="btn btn-link pull-right">
-                        <a href="{!! url('seatgroups/edit',$groupname->id) !!}"><i class="fa fa-edit"></i></a>
+                        <a href="{!! url('seatgroups/edit',$seatgroup->id) !!}"><i class="fa fa-edit"></i></a>
                     </button>
                 @endif
 
                 <div class="clearfix"></div>
             </div>
             <div class="panel-body">
-                {{$groupname->description}}
+                {{$seatgroup->description}}
+                {{$seatgroup->type}}
             </div>
 
         </div>
     @endforeach
+    @endif
 
 @endsection
