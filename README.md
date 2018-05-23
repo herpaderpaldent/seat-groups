@@ -22,6 +22,6 @@ the corresponding Role
 
 ## Screenshots
 
-!(GroupSetup)[https://i.imgur.com/7qElUyB.png]
+![GroupSetup](https://i.imgur.com/7qElUyB.png)
 
-!(Overview)[https://i.imgur.com/Yo6Ugyk.png]
+![Overview](https://i.imgur.com/Yo6Ugyk.png)
