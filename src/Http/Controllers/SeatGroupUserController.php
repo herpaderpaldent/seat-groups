@@ -6,12 +6,14 @@ use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\User;
 
 class SeatGroupUserController extends Controller
 {
+    use AccessManager;
     /**
      * Display a listing of the resource.
      *
@@ -81,7 +83,12 @@ class SeatGroupUserController extends Controller
 
             if($seatgroup->isAllowedToSeeSeatGroup()){
                 $seatgroup->group()->attach(Auth::user()->group->id);
-                //TODO: Auth::user()->group()->roles()->attach($seatgroup->)
+
+                // Add Role to UserGroup
+                foreach ($seatgroup->role as $role){
+                    $this->giveGroupRole(Auth::user()->group->id,$role->id);
+                }
+
             } else {
                 return redirect()->back()->with('error', 'You are not allowed to opt-in into this group');
             }
@@ -103,7 +110,12 @@ class SeatGroupUserController extends Controller
 
         if($seatgroup->type == 'open'){
             $seatgroup->group()->detach(Auth::user()->group->id);
+            // Remove Role from UserGroup
+            foreach ($seatgroup->role as $role){
+                $this->removeGroupFromRole(Auth::user()->group->id,$role->id);
+            }
         }
+
 
         return redirect()->back()->with('success', ' removed');
 

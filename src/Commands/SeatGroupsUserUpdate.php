@@ -13,16 +13,18 @@ use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupalliance;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupcorporation;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupuser;
+use http\Exception;
 use Illuminate\Console\Command;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Acl\AccessManager;
+use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
 class SeatGroupsUsersUpdate extends Command
 {
 
-    use AccessManager, Corporation;
+    use AccessManager;
 
     protected $signature = 'seat-groups:users:update';
     protected $description = 'This command adds and removes roles to all users depending on their SeAT-Group Association';
@@ -35,47 +37,51 @@ class SeatGroupsUsersUpdate extends Command
     public function handle()
     {
 
-        $SeatGroups = Seatgroup::all();
+        $Seat_Groups = Seatgroup::all();
+        $Users_Groups = Group::all();
 
+        foreach ($Users_Groups as $users_group) {
 
-
-        $Users = User::all();
-
-        foreach ($Users as $user) {
-            $Roles = [];
-
-            if($user->name === 'Admin' || $user->id === 1 ){
+            if($users_group->main_character_id === "0"){
                 continue;
             }
 
-            $this->info('Updating User: ' . $user->name);
+            $this->info('Updating User: ' . $users_group->main_character->name);
 
-            foreach ($SeatGroups as $seatGroup) {
+            foreach ($Seat_Groups as $seat_group) {
 
                 // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
-                if ($seatGroup->type == 'auto') {
-                    $corporations = $seatGroup->corporation->pluck('corporation_id')->toArray();
-
-                    if (in_array(CharacterInfo::find($user->id)->corporation_id,$corporations)) {
-                        array_push($Roles, $seatGroup->role_id);
-                    }
-                }
-
-                // Opt-In Group Check
-                if ($seatGroup->type == 'open'){
-                    // check if user's corp is allowed in the seatgroup
-                    if (count($seatGroup->corporation->firstwhere('corporation_id','=',$user->character->corporation_id))>0){
-                        // check if user is Opt-in into a group
-                        if($seatGroup->isMember($user->getAuthIdentifier(),$seatGroup->id)){
-                            array_push($Roles, $seatGroup->role_id);
+                if ($seat_group->type == 'auto') {
+                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
+                        foreach ($seat_group->role as $role){
+                            $this->giveGroupRole($users_group->id,$role->id);
+                        }
+                    } elseif (!in_array($users_group->main_character->corporation_id,$seat_group->corporation->pluck('corporation_id')->toArray())){
+                        foreach ($seat_group->role as $role){
+                            $this->removeGroupFromRole($users_group->id,$role->id);
                         }
                     }
                 }
 
-                // Assign Roles to user & using unique role
-                $user->roles()->sync(array_unique($Roles));
-
             }
+
+            // Opt-In Group Check
+            if ($seat_group->type == 'open'){
+                // check if user's corp is allowed in the seatgroup
+                if (in_array($users_group->main_character->corporation_id,$seat_group->corporation->pluck('corporation_id')->toArray())){
+                    // check if user is Opt-in into a group
+                    if(in_array($users_group->id , $seat_group->group->pluck('id')->toArray())){
+                        foreach ($seat_group->role as $role){
+                            $this->giveGroupRole($users_group->id,$role->id);
+                        }
+                    }
+                } elseif (!in_array($users_group->main_character->corporation_id,$seat_group->corporation->pluck('corporation_id')->toArray())){
+                    foreach ($seat_group->role as $role){
+                        $this->removeGroupFromRole($users_group->id,$role->id);
+                    }
+                }
+            }
+
         }
     }
 }

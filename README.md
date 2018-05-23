@@ -19,3 +19,9 @@ Members of set corporation are getting assigned the corresponding Role
 ### opt-in group
 Members of set corporation can opt-in into a seat group and get then assigned
 the corresponding Role
+
+## Screenshots
+
+!(GroupSetup)[https://i.imgur.com/7qElUyB.png]
+
+!(Overview)[https://i.imgur.com/Yo6Ugyk.png]

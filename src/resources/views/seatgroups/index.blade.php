@@ -16,10 +16,10 @@
         <h3>{{trans('seatgroups::seat.seat_groups_autogroup')}}</h3>
         <p>{{trans('seatgroups::seat.seat_groups_autogroup_description')}}</p>
 
-        {{auth()->user()->group->main_character}} <br>
-
-
         @foreach($seatgroups as $seatgroup)
+          @if(!$seatgroup->isAllowedToSeeSeatGroup())
+            @continue
+          @endif
             @if($seatgroup->type === 'auto')
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -50,6 +50,9 @@
 
 
     @foreach($seatgroups as $seatgroup)
+      @if(!$seatgroup->isAllowedToSeeSeatGroup())
+        @continue
+      @endif
         @if($seatgroup->type === 'open')
             <div class="panel panel-default">
                 <div class="panel-heading">

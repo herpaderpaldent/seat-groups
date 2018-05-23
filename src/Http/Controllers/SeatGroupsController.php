@@ -27,24 +27,7 @@ class SeatGroupsController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->hasRole('Superuser')){
             return view('seatgroups::index')->with('seatgroups',SeatGroup::all());
-        }
-
-        $seatgroups = Seatgroup::all()->map(function($item){
-           if ($item->isAllowedToSeeSeatGroup()){
-               return $item;
-           }
-        });
-
-        // Some logic if no SeAT Group is available
-        if($seatgroups[0] === null){
-            return redirect()->back()->with('warning', 'no SeAT Group for you available');
-        }
-
-
-        return view('seatgroups::index')
-            ->with('seatgroups', $seatgroups);
     }
 
     /**
