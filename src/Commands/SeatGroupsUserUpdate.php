@@ -80,6 +80,18 @@ class SeatGroupsUsersUpdate extends Command
                         }
                     }
                 }
+                // Managed Group Check
+                if($seat_group->type == 'managed') {
+                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
+                        // check if user is member of the managed group
+                        if (in_array($users_group->id, $seat_group->member->map(function ($user){ return $user->id; } )->toArray())) {
+                            foreach ($seat_group->role as $role) {
+                                array_push($roles, $role->id);
+                            }
+                        }
+                    }
+                }
+
                 $users_group->roles()->sync(array_unique($roles));
             }
         }
