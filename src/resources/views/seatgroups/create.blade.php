@@ -37,7 +37,7 @@
                             'auto' => 'auto',
                             'managed'=>[
                                 'open'=>'open',
-                                'managed' => 'managed'
+                                'managed' =>'managed'
                         ]],null,['class'=>'form-control'])}}
                     </div>
                 </div>
