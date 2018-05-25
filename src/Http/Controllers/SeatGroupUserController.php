@@ -29,9 +29,14 @@ class SeatGroupUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function acceptApplication($seat_group_id,$group_id)
     {
-        //
+        $seatgroup=Seatgroup::find($seat_group_id);
+
+        $seatgroup->group()->updateExistingPivot($group_id,['on_waitlist' => 0]);
+
+        return redirect()->back()->with('success', 'User accepted');
+
     }
 
     /**
@@ -40,9 +45,14 @@ class SeatGroupUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function removeMember($seat_group_id,$group_id)
     {
-        //
+        $seatgroup=Seatgroup::find($seat_group_id);
+
+        $seatgroup->group()->detach($group_id);
+
+        return redirect()->back()->with('success', 'User removed');
+
     }
 
     /**
@@ -51,9 +61,14 @@ class SeatGroupUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function removeManager($seat_group_id,$group_id)
     {
-        //
+        $seatgroup=Seatgroup::find($seat_group_id);
+
+        $seatgroup->group()->updateExistingPivot($group_id,['is_manager' => 0]);
+
+        return redirect()->back()->with('success', 'Manager removed');
+
     }
 
     /**
@@ -62,9 +77,29 @@ class SeatGroupUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function addManager(Request $request,$id)
     {
         //
+        $seatgroup=Seatgroup::find($id);
+
+        $this->validate(request(),[
+            'groups'=>'required'
+        ]);
+
+        $groups = $request->get('groups');
+        foreach ($groups as $group){
+            if(in_array($group, $seatgroup->waitlist->map(function($group) { return $group->id; })->toArray())){
+                redirect()->back()->with('warning', 'User must be first member before made manager');
+            }
+            elseif(in_array($group, $seatgroup->member->map(function($group) { return $group->id; })->toArray())){
+                $seatgroup->group()->updateExistingPivot($group,['is_manager' => 1]);
+            } else {
+                $seatgroup->group()->attach($group,['is_manager' => 1]);
+            }
+
+        }
+
+        return redirect()->back()->with('success', 'Updated');
     }
 
     /**
@@ -79,23 +114,29 @@ class SeatGroupUserController extends Controller
         //
         $seatgroup=Seatgroup::find($id);
 
+        //Handle open group
         if($seatgroup->type == 'open'){
-
+            //First check if the user is allowed to opt-in into a group
             if($seatgroup->isAllowedToSeeSeatGroup()){
+                //Secound attach user group to SeAT-group
                 $seatgroup->group()->attach(Auth::user()->group->id);
-
-                // Add Role to UserGroup
+                // Add Role to user group
                 foreach ($seatgroup->role as $role){
                     $this->giveGroupRole(Auth::user()->group->id,$role->id);
-                }
-
-            } else {
-                return redirect()->back()->with('error', 'You are not allowed to opt-in into this group');
-            }
-
+                } return redirect()->back()->with('success', 'Updated');
+            } else return redirect()->back()->with('error', 'You are not allowed to opt-in into this group');
         }
+        //Handle managed group
+        if($seatgroup->type == 'managed'){
+            //First check if the user is allowed to opt-in into a group
+            if($seatgroup->isAllowedToSeeSeatGroup()){
+                //Secound attach user group to SeAT-group
+                $seatgroup->group()->attach(Auth::user()->group->id, ['on_waitlist' => 1]);
 
-        return redirect()->back()->with('success', 'Updated');
+                return redirect()->back()->with('info', 'you sucessfully applied to ' . $seatgroup->name);
+                } return redirect()->back()->with('error', 'You are not allowed to apply for this group');
+        }
+        return redirect()->back()->with('warning', 'ups something went wrong');
     }
 
     /**
@@ -115,9 +156,15 @@ class SeatGroupUserController extends Controller
                 $this->removeGroupFromRole(Auth::user()->group->id,$role->id);
             }
         }
-
+        if($seatgroup->type == 'managed'){
+            $seatgroup->group()->detach(Auth::user()->group->id);
+            if($seatgroup->onWaitlist()){
+                return redirect()->back()->with('success', ' removed');
+            }
+            // Remove Role from UserGroup
+            // TODO: Dispatch sync job
+        }
 
         return redirect()->back()->with('success', ' removed');
-
     }
 }

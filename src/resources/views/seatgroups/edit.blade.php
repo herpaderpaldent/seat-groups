@@ -9,11 +9,24 @@
 
 @section('left')
 
+    <div class="panel-body">
+        @if(Auth::user()->hasRole('Superuser'))
+            {!! Form::open([
+            'method' => 'DELETE',
+            'route' => ['seatgroups.destroy', $seatgroup->id],
+            'style'=>'display:inline']) !!}
+            {!! Form::submit('Delete SeATGroup', ['class' => 'btn btn-danger']) !!}
+            {!! Form::close() !!}
+        @endif
+    </div>
+
 
 
     <div class="panel panel-default">
         <div class="panel-heading">
+
             <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_editing')}} {{$seatgroup->name}}</h3>
+
         </div>
 
         <div class="panel-body">
@@ -43,6 +56,7 @@
                             'auto' => 'auto',
                             'managed'=>[
                                 'open'=>'open',
+                                'managed' => 'managed'
                         ]], $seatgroup->type,['class'=>'form-control'])}}
 
                     </div>
@@ -62,11 +76,11 @@
                                 </option>
                             @endforeach
                             @foreach($roles as $role)
-                            @if(!in_array($role->id,$seatgroup->role->pluck('id')->toArray()))
+                                @if(!in_array($role->id,$seatgroup->role->pluck('id')->toArray()))
                                     <option  value="{{ $role->id }}">
                                         {{ $role->title }}
                                     </option>
-                            @endif
+                                @endif
                             @endforeach
 
                         </select>
@@ -88,7 +102,7 @@
 
 @section('center')
 
-    <h2>Available for whom</h2>
+    <h3>Available for whom</h3>
     <p>here blade for each type of group</p>
 
     <div class="panel panel-default">
@@ -152,43 +166,26 @@
 
 @section('right')
 
-    <h3>test</h3>
+    <h3>Managed Groups</h3>
 
-    <div class="row">
-        <div class="col-md-3">
-            @if(Auth::user()->hasRole('Superuser'))
-                {!! Form::open([
-                'method' => 'DELETE',
-                'route' => ['seatgroups.destroy', $seatgroup->id],
-                'style'=>'display:inline']) !!}
-                {!! Form::submit('Delete SeATGroup', ['class' => 'btn btn-danger']) !!}
-                {!! Form::close() !!}
-            @endif
-        </div>
-    </div>
-
-    <div class="row"> <br> </div>
-
-    @if(!$seatgroup->type == 'open')
-        <!--TODO: write controller for making Manager-->
+    @if($seatgroup->type == 'managed')
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Manager</h3>
             </div>
             <div class="panel-body">
-                <form method="post" action="{{route('seatgroupuser.update', $id)}}">
+                <form method="post" action="{{route('seatgroupuser.addmanager', $id)}}">
                     {{csrf_field()}}
                     <input name="_method3" type="hidden" value="PATCH">
                     <div class="form-group">
-                        <label for="users">{{ trans('web::seat.available_user') }}</label>
-                        <select name="users[]" id="available_corporations" style="width: 100%" multiple>
+                        <label for="groups">{{ trans_choice('web::seat.available_groups',2) }}</label>
+                        <select name="groups[]" id="available_users" style="width: 100%" multiple>
 
-
-                            @foreach($all_characters as $character)
-                                @if(!in_array($character->character_id,$seatgroup->user->pluck('character_id')->toArray()))
-                                    <option value="{{ $character->character_id }}">
-                                        {{ $character->name }}
-                                    </option>
+                            @foreach($all_groups as $group)
+                                @if(!in_array($group->id,$seatgroup->manager->pluck('id')->toArray())))
+                                <option value="{{ $group->id }}">
+                                    {{ $group->users->map(function($user) { return $user->name; })->implode(', ') }}
+                                </option>
                                 @endif
                             @endforeach
 
@@ -208,21 +205,25 @@
                     <tr>
                         <th colspan="2" class="text-center">Current Manager</th>
                     </tr>
-                    @foreach($characters as $character)
+
+                    @foreach($seatgroup->manager as $group)
 
                         <tr>
-                            <td>{{$character ->name}}</td>
+                            <td>
+                                {{ $group->users->map(function($user) { return $user->name; })->implode(', ') }}
+                            </td>
                             <td>
                                 {!! Form::open(['method' => 'DELETE',
-                                'route' => ['seatgroupuser.destroy',$seatgroup->id],
-                                'style'=>'display:inline'
-                                ]) !!}
+                            'route' => ['seatgroupuser.removemanager',$seatgroup->id,$group->id],
+                            'style'=>'display:inline'
+                            ]) !!}
                                 {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
                                 {!! Form::close() !!}
                             </td>
                         </tr>
 
                     @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -237,13 +238,13 @@
     @include('web::includes.javascript.id-to-name')
 
     <script>
-        $("#available_permissions," +
-            "#available_users," +
-            "#available_characters," +
-            "#available_roles," +
-            "#available_corporations").select2({
-            placeholder: "{{ trans('web::seat.select_item_add') }}"
-        });
+      $("#available_permissions," +
+          "#available_users," +
+          "#available_characters," +
+          "#available_roles," +
+          "#available_corporations").select2({
+        placeholder: "{{ trans('web::seat.select_item_add') }}"
+      });
     </script>
 
 @endpush

@@ -64,6 +64,22 @@ Route::group([
                 'as' => 'seatgroupuser.destroy',
                 'uses' => 'SeatGroupUserController@destroy'
             ]);
+            Route::post('/{group_id}/manager', [
+                'as' => 'seatgroupuser.addmanager',
+                'uses' => 'SeatGroupUserController@addManager'
+            ]);
+            Route::delete('/{seat_group_id}/manager/{group_id}', [
+                'as' => 'seatgroupuser.removemanager',
+                'uses' => 'SeatGroupUserController@removeManager'
+            ]);
+            Route::delete('/{seat_group_id}/member/{group_id}', [
+                'as' => 'seatgroupuser.removemember',
+                'uses' => 'SeatGroupUserController@removeMember'
+            ]);
+            Route::post('/{seat_group_id}/member/{group_id}', [
+                'as' => 'seatgroupuser.acceptmember',
+                'uses' => 'SeatGroupUserController@acceptApplication'
+            ]);
         }
 
         );

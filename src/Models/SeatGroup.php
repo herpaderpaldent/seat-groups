@@ -35,56 +35,44 @@ class Seatgroup extends Model
         return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo',
             'corporation_info_seatgroup','seatgroup_id', 'corporation_id');
     }
+    public function manager(){
 
-    /*public function corporation2(){
-        return $this->$this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo');
-    }*/
+        return $this->belongsToMany('Seat\Web\Models\Group')
+            ->wherePivot('is_manager',1);
+    }
+    public function member(){
 
-    /*public function manager()
-    {
-        return $this->belongsToMany('Seat\Web\Models\Group', 'seatgroup_user','user_id')
-            ->wherePivot('is_manager',"=", true);
-    }*/
+        return $this->belongsToMany('Seat\Web\Models\Group')
+            ->wherePivot('on_waitlist',0);
+    }
+    public function waitlist(){
+
+        return $this->belongsToMany('Seat\Web\Models\Group')
+            ->wherePivot('on_waitlist',1);
+    }
+
+    public function isManager(){
+        if(in_array(Auth::user()->group->id , $this->manager->map(function($group) { return $group->id; })->toArray()) || Auth::user()->hasRole('Superuser')) {
+            return true;
+        }
+        return false;
+    }
 
     public function isAllowedToSeeSeatGroup(){
 
-        if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())) {
+        if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()) || Auth::user()->hasRole('Superuser')) {
             return true;
         }
         return false;
 
     }
 
-    public function isManager(int $user, int $groupint){
-
-
-        //$seatgroup = Seatgroup::find($group);
-
-
-        // TODO: clear this up create checker for manager
-        return true;
-
-
-
-
-
-        //if(Seatgroupmanager::where('group_id','=',$groupint)->where('user_id', '=', $user['id'])->count() >0){
-        //    return true;
-        //} else {return false;}
-
-
+    public function onWaitlist(){
+        if (in_array(Auth::user()->group->id , $this->waitlist->map(function($group) { return $group->id; })->toArray())){
+            return true;
+        } return false;
     }
-    public function listManager(int $group){
-        $managersHelper= Seatgroupmanager::where('group_id','=',$group)->get();
 
-        $seatgroup = Seatgroup::find($group);
-
-
-
-        if(true){
-            return (string) null;
-        } else return null;
-    }
     public function isMember(){
 
         try{
@@ -96,6 +84,13 @@ class Seatgroup extends Model
             if($this->type === "open"){
                 if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())){
                     if(in_array(Auth::user()->group->id , $this->group->pluck('id')->toArray())){
+                        return true;
+                    }
+                }
+            }
+            if($this->type === "managed"){
+                if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())){
+                    if(in_array(Auth::user()->group->id , $this->member->map(function($group) { return $group->id; })->toArray())){
                         return true;
                     }
                 }

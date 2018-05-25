@@ -27,7 +27,8 @@ class SeatGroupsController extends Controller
      */
     public function index()
     {
-            return view('seatgroups::index')->with('seatgroups',SeatGroup::all());
+            return view('seatgroups::index')
+                ->with('seatgroups',SeatGroup::all());
     }
 
     /**
@@ -99,14 +100,14 @@ class SeatGroupsController extends Controller
         // ToDo: show selected roles on Edit blade
         $seatgroup = Seatgroup::find($id);
         $roles=Role::all();
-        $selectedRoles = $seatgroup->groups;
+
         $corporations = $seatgroup->corporation;
 
 
-        return view('seatgroups::edit', compact('seatgroup','id','all_corporations','all_character_groups'))
+        return view('seatgroups::edit', compact('seatgroup','id','all_corporations'))
             ->with('roles',$roles)
             ->with('corporations',$corporations)
-            ->with('selectedroles',$selectedRoles);
+            ->with('all_groups',Group::all());
 
 
     }
