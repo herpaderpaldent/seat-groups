@@ -48,7 +48,7 @@ class Seatgroup extends Model
 
     public function isAllowedToSeeSeatGroup(){
 
-        if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())) {
+        if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()) || Auth::user()->hasRole('Superuser')) {
             return true;
         }
         return false;
@@ -58,19 +58,10 @@ class Seatgroup extends Model
     public function isManager(int $user, int $groupint){
 
 
-        //$seatgroup = Seatgroup::find($group);
-
-
         // TODO: clear this up create checker for manager
         return true;
 
 
-
-
-
-        //if(Seatgroupmanager::where('group_id','=',$groupint)->where('user_id', '=', $user['id'])->count() >0){
-        //    return true;
-        //} else {return false;}
 
 
     }

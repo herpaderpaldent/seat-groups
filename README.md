@@ -14,11 +14,11 @@ please do report any findings to seat-slack and report it as an issue*
 
 
 ### auto group
-Members of set corporation are getting assigned the corresponding Role
+Members of set corporation are getting assigned the corresponding roles
 
 ### opt-in group
 Members of set corporation can opt-in into a seat group and get then assigned
-the corresponding Role
+the corresponding roles
 
 ## Screenshots
 
