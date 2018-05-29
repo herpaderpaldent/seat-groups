@@ -10,16 +10,9 @@ namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupalliance;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupcorporation;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupuser;
-use http\Exception;
 use Illuminate\Console\Command;
-use Seat\Eveapi\Models\Character\CharacterInfo;
-use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Models\Group;
-use Seat\Web\Models\User;
 
 class SeatGroupsUsersUpdate extends Command
 {
