@@ -84,7 +84,6 @@ class SeatGroupsUsersUpdate extends Command
                         }
                     }
                 }
-
                 $users_group->roles()->sync(array_unique($roles));
             }
         }
