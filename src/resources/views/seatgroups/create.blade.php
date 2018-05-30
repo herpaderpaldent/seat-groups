@@ -38,7 +38,9 @@
                             'managed'=>[
                                 'open'=>'open',
                                 'managed' => 'managed'
-                        ]],null,['class'=>'form-control'])}}
+                            ],
+                            'hidden' => 'hidden'
+                        ],null,['class'=>'form-control'])}}
                     </div>
                 </div>
 
