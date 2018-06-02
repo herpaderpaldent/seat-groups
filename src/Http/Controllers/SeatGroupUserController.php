@@ -145,6 +145,7 @@ class SeatGroupUserController extends Controller
                 $groups = $request->get('groups');
                 foreach ($groups as $group){
                     $seatgroup->group()->attach($group);
+                    return redirect()->back()->with('success', 'Updated');
                 }
             }
         }
