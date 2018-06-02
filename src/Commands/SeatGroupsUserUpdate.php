@@ -32,32 +32,26 @@ class SeatGroupsUsersUpdate extends Command
     public function handle()
     {
 
-        $Seat_Groups = Seatgroup::all();
-        $Users_Groups = Group::all();
+        Group::all()->filter(function ($users_group) {
 
-        foreach ($Users_Groups as $users_group) {
-
-            if ($users_group->main_character_id === "0") {
-                continue;
-            }
+            return $users_group->main_character_id != "0";
+        })->each(function ($users_group) {
 
             $this->info('Updating User: ' . $users_group->main_character->name);
-            $roles = [];
+            $roles = collect();
+            Seatgroup::all()->each(function ($seat_group) use ($roles, $users_group) {
 
-            foreach ($Seat_Groups as $seat_group) {
-                //possible ToDo: check if superuser is always role 1
                 //Catch Superusers
-                foreach ($users_group->roles as $role){
-                    if ($role->title === "Superuser"){
-                        array_push($roles, 1);
+                foreach ($users_group->roles as $role) {
+                    if ($role->title === "Superuser") {
+                        $roles->push($role->id);
                     }
                 }
-
                 // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
                 if ($seat_group->type == 'auto') {
                     if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
                         foreach ($seat_group->role as $role) {
-                            array_push($roles, $role->id);
+                            $roles->push($role->id);
                         }
                     }
                 }
@@ -68,24 +62,36 @@ class SeatGroupsUsersUpdate extends Command
                         // check if user is Opt-in into a group
                         if (in_array($users_group->id, $seat_group->group->pluck('id')->toArray())) {
                             foreach ($seat_group->role as $role) {
-                                array_push($roles, $role->id);
+                                $roles->push($role->id);
                             }
                         }
                     }
                 }
                 // Managed Group Check
-                if($seat_group->type == 'managed') {
+                if ($seat_group->type == 'managed') {
                     if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
                         // check if user is member of the managed group
-                        if (in_array($users_group->id, $seat_group->member->map(function ($user){ return $user->id; } )->toArray())) {
+                        if (in_array($users_group->id, $seat_group->member->map(function ($user) {return $user->id;})->toArray())) {
                             foreach ($seat_group->role as $role) {
-                                array_push($roles, $role->id);
+                                $roles->push($role->id);
                             }
                         }
                     }
                 }
-                $users_group->roles()->sync(array_unique($roles));
-            }
-        }
+                // Hidden Group Check
+                if ($seat_group->type == 'hidden') {
+                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
+                        // check if user is member of the hidden group
+                        if (in_array($users_group->id, $seat_group->member->map(function ($user) {return $user->id;})->toArray())) {
+                            foreach ($seat_group->role as $role) {
+                                $roles->push($role->id);
+                            }
+                        }
+                    }
+                }
+                $users_group->roles()->sync($roles->unique());
+            });
+        });
+
     }
 }
