@@ -64,6 +64,11 @@ Route::group([
                 'as' => 'seatgroupuser.destroy',
                 'uses' => 'SeatGroupUserController@destroy'
             ]);
+            Route::delete('/{seat_group_id}/user/{group_id}', [
+                'as' => 'seatgroupuser.removeGroupFromSeatGroup',
+                'middleware' => 'bouncer:seatgroups.create',
+                'uses' => 'SeatGroupUserController@removeGroupFromSeatGroup'
+            ]);
             Route::post('/{group_id}/manager', [
                 'as' => 'seatgroupuser.addmanager',
                 'uses' => 'SeatGroupUserController@addManager'

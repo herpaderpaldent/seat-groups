@@ -60,7 +60,7 @@ class Seatgroup extends Model
 
     public function isAllowedToSeeSeatGroup(){
 
-        if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()) || Auth::user()->hasRole('Superuser')) {
+        if(in_array(Auth::user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()) || Auth::user()->hasRole('seatgroups.edit')) {
             return true;
         }
         return false;

@@ -21,6 +21,7 @@ return [
 
     'seat_groups_managedgroup' => 'Managed SeAT Groups',
     'seat_groups_managedgroup_description' => 'Here you can apply for certain groups. The managers of this group will approve or deny your request.',
+    'seat_groups_manager' => 'Manager',
     'seat_join_opengroup'=>'Opt in',
     'seat_leave_opengroup'=>'Opt out',
     'seat_leave_waitlist' => 'Leave',
@@ -29,6 +30,10 @@ return [
     'seat_deny_managedgroup' => 'Reject',
     'seat_accept_managedgroup' => 'Accept',
     'seat_removefrom_managedgroup' => 'Remove',
+
+    'seat_groups_hiddengroup' => 'Hidden SeAT Group',
+    'seat_groups_user' => 'User',
+    'seat_groups_adduser' => 'Add User',
 
     'seat_groups_create' => 'Create',
     'seat_groups_create_new' => 'Create a new SeAT Group',

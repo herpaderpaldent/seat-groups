@@ -105,7 +105,6 @@
       @endif
 
       @if($seatgroup->type === 'managed')
-
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title pull-left">{{$seatgroup->name}}</h3>
@@ -218,6 +217,24 @@
               @endif
             </div>
 
+        </div>
+      @endif
+      @if($seatgroup->type === 'hidden')
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title pull-left">{{$seatgroup->name}}</h3>
+
+            <button class="btn btn-link pull-right">
+              @if(Auth::user()->hasRole('seatgroups.edit'))
+                <a href="{{route('seatgroups.edit', $seatgroup->id)}}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+              @endif
+            </button>
+            <div class="clearfix"></div>
+          </div>
+          <div class="panel-body">
+            {{$seatgroup->description}} <br>
+            Members: {{$seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', ')}}
+          </div>
         </div>
       @endif
     @endforeach

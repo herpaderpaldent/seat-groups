@@ -109,7 +109,7 @@ class SeatGroupUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Request $request,$id)
     {
         //
         $seatgroup=Seatgroup::find($id);
@@ -136,7 +136,25 @@ class SeatGroupUserController extends Controller
                 return redirect()->back()->with('info', 'you sucessfully applied to ' . $seatgroup->name);
                 } return redirect()->back()->with('error', 'You are not allowed to apply for this group');
         }
+        //Handle hidden group
+        if($seatgroup->type == 'hidden'){
+            if(Auth::user()->hasRole('seatgroups.edit')){
+                $this->validate(request(),[
+                    'groups'=>'required'
+                ]);
+                $groups = $request->get('groups');
+                foreach ($groups as $group){
+                    $seatgroup->group()->attach($group);
+                }
+            }
+        }
+
         return redirect()->back()->with('warning', 'ups something went wrong');
+    }
+
+    public function removeGroupFromSeatGroup($seat_group_id, $group_id){
+        Seatgroup::find($seat_group_id)->group()->detach($group_id);
+        return redirect()->back()->with('success', ' removed');
     }
 
     /**

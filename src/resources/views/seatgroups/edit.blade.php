@@ -57,7 +57,9 @@
                             'managed'=>[
                                 'open'=>'open',
                                 'managed' => 'managed'
-                        ]], $seatgroup->type,['class'=>'form-control'])}}
+                            ],
+                            'hidden' => 'hidden'
+                        ], $seatgroup->type,['class'=>'form-control'])}}
 
                     </div>
                 </div>
@@ -103,7 +105,7 @@
 @section('center')
 
     <h3>Available for whom</h3>
-    <p>here blade for each type of group</p>
+    <p>Select the corporation to which the SeAT Group is bound.</p>
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -166,12 +168,11 @@
 
 @section('right')
 
-    <h3>Managed Groups</h3>
-
     @if($seatgroup->type == 'managed')
+        <h3>{{trans('seatgroups::seat.seat_groups_managedgroup')}}</h3>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Manager</h3>
+                <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_manager')}}</h3>
             </div>
             <div class="panel-body">
                 <form method="post" action="{{route('seatgroupuser.addmanager', $id)}}">
@@ -215,6 +216,70 @@
                             <td>
                                 {!! Form::open(['method' => 'DELETE',
                             'route' => ['seatgroupuser.removemanager',$seatgroup->id,$group->id],
+                            'style'=>'display:inline'
+                            ]) !!}
+                                {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+    @if($seatgroup->type == 'hidden')
+        <h3>{{trans('seatgroups::seat.seat_groups_hiddengroup')}}</h3>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_user')}}</h3>
+            </div>
+            <div class="panel-body">
+                <form method="post" action="{{route('seatgroupuser.update', $id)}}">
+                    {{csrf_field()}}
+                    <input name="_method3" type="hidden" value="PATCH">
+                    <div class="form-group">
+                        <label for="groups">{{ trans_choice('web::seat.available_groups',2) }}</label>
+                        <select name="groups[]" id="available_users" style="width: 100%" multiple>
+
+                            @foreach($all_groups as $group)
+                                @if(!in_array($group->id,$seatgroup->member->pluck('id')->toArray())))
+                                <option value="{{ $group->id }}">
+                                    {{ $group->users->map(function($user) { return $user->name; })->implode(', ') }}
+                                </option>
+                                @endif
+                            @endforeach
+
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-success btn-block">Add User</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <table class="table table-hover table-condensed">
+                    <tbody>
+
+                    <tr>
+                        <th colspan="2" class="text-center">Current Users</th>
+                    </tr>
+
+                    @foreach($seatgroup->member as $group)
+
+                        <tr>
+                            <td>
+                                {{ $group->users->map(function($user) { return $user->name; })->implode(', ') }}
+                            </td>
+                            <td>
+                                {!! Form::open(['method' => 'DELETE',
+                            'route' => ['seatgroupuser.removeGroupFromSeatGroup',$seatgroup->id,$group->id],
                             'style'=>'display:inline'
                             ]) !!}
                                 {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
