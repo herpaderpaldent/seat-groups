@@ -12,7 +12,7 @@
             <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_create_new')}}</h3>
         </div>
         <div class="panel-body">
-            <form method="post" action="{{url('seatgroups')}}">
+            <form method="post" action="{{route('seatgroups.store')}}">
                 {{csrf_field()}}
                 <div class="row">
                     <div class="col-md-12"></div>
@@ -43,8 +43,6 @@
                         ],null,['class'=>'form-control'])}}
                     </div>
                 </div>
-
-
 
                 <div class="row">
                     <div class="col-md-12"></div>

@@ -41,6 +41,7 @@ Route::group([
                 'uses' => 'SeatGroupsController@update'
             ]);
             Route::post('/', [
+                'as' => 'seatgroups.store',
                 'uses' => 'SeatGroupsController@store'
             ]);
             Route::delete('/{group_id}', [

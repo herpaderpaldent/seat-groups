@@ -2,20 +2,15 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
+
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroupmanager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Seat\Eveapi\Models\Character\CharacterInfo;
-use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Services\Repositories\Character\Character;
-use Seat\Services\Repositories\Configuration\UserRespository;
 use Seat\Services\Repositories\Corporation\Corporation;
-use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
-use Seat\Web\Models\User;
 
 class SeatGroupsController extends Controller
 {
@@ -63,9 +58,8 @@ class SeatGroupsController extends Controller
         $group=Seatgroup::create($seatgroup);
 
         $role_ids = $request->get('roles');
-        foreach ($role_ids as $role_id){
-            $group->role()->attach($role_id);
-        }
+
+        $group->role()->sync($role_ids);
 
 
         //ToDo: if logic implementation for failed validation + forward to view
