@@ -49,7 +49,6 @@ class GroupsServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/database/migrations/' => database_path('migrations'),
-            __DIR__ . '/resources/assets/css/' => public_path('web/css'),
         ]);
     }
     private function addRoutes()

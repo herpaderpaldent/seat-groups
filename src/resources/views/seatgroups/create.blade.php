@@ -1,6 +1,5 @@
 @extends('web::layouts.grids.4-4-4')
 
-
 @section('title', trans('seatgroups::seat.seat_groups'))
 @section('page_header', trans('seatgroups::seat.seat_groups'))
 @section('page_description', trans('seatgroups::seat.seat_groups_create'))
@@ -70,6 +69,7 @@
                 </div>
             </form>
         </div>
+    </div>
 
 @endsection
 
@@ -81,14 +81,14 @@
 
 @endsection
 
-        @push('javascript')
+@push('javascript')
 
-            @include('web::includes.javascript.id-to-name')
+    @include('web::includes.javascript.id-to-name')
 
-            <script>
-              $("#available_roles").select2({
-                placeholder: "{{ trans('web::seat.select_item_add') }}"
-              });
-            </script>
+    <script type="text/javascript">
+      $("#available_roles").select2({
+        placeholder: "{{ trans('web::seat.select_item_add') }}"
+      });
+    </script>
 
-    @endpush
+@endpush
