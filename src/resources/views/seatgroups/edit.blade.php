@@ -1,16 +1,13 @@
 @extends('web::layouts.grids.4-4-4')
 
-
 @section('title', trans('seatgroups::seat.seat_groups'))
 @section('page_header', trans('seatgroups::seat.seat_groups'))
 @section('page_description', trans('seatgroups::seat.seat_groups_edit'))
 
-
-
 @section('left')
 
     <div class="panel-body">
-        @if(Auth::user()->hasRole('Superuser'))
+        @if(auth()->user()->hasSuperUser())
             {!! Form::open([
             'method' => 'DELETE',
             'route' => ['seatgroups.destroy', $seatgroup->id],
@@ -19,8 +16,6 @@
             {!! Form::close() !!}
         @endif
     </div>
-
-
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -144,15 +139,15 @@
                 <tr>
                     <th colspan="2" class="text-center">Current Corporations</th>
                 </tr>
-                @foreach($corporations as $corperation)
+                @foreach($corporations as $corporation)
 
                     <tr>
-                        <td>{{$corperation ->name}}</td>
+                        <td>{{$corporation->name}}</td>
                         <td>
                             {!! Form::open(['method' => 'DELETE',
-                            'route' => ['seatgroupcorporation.destroy',$seatgroup->id,$corperation->corporation_id],
-                            'style'=>'display:inline'
-                            ]) !!}
+                                            'route' => ['seatgroupcorporation.destroy', $seatgroup->id, $corporation->corporation_id],
+                                            'style'=>'display:inline'
+                                           ]) !!}
                             {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
                             {!! Form::close() !!}
                         </td>
@@ -294,7 +289,6 @@
             </div>
         </div>
     @endif
-
 
 @endsection
 

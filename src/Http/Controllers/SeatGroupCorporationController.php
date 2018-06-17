@@ -71,15 +71,16 @@ class SeatGroupCorporationController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $seatgroup=Seatgroup::find($id);
+        $seat_group = Seatgroup::find($id);
 
         $this->validate(request(),[
             'corporations'=>'required'
         ]);
 
-        $corporationarray = $request->get('corporations');
-        foreach ($corporationarray as $corporation){
-            $seatgroup->corporation()->attach($corporation);
+        $corporation_array = $request->get('corporations');
+
+        foreach ($corporation_array as $corporation) {
+            $seat_group->corporation()->attach($corporation);
         }
 
         return redirect()->back()->with('success', 'Updated');
@@ -91,11 +92,11 @@ class SeatGroupCorporationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($group_id,$corporation_id)
+    public function destroy($group_id, $corporation_id)
     {
-        $seatgroup=Seatgroup::find($group_id);
-        $name=$seatgroup->corporation()->find($corporation_id)->get();
-        $seatgroup->corporation()->detach($corporation_id);
+        $seat_group = Seatgroup::find($group_id);
+        $name       = $seat_group->corporation()->find($corporation_id)->get();
+        $seat_group->corporation()->detach($corporation_id);
 
         return redirect()->back()->with('success', $name->pluck('name'). ' removed');
 

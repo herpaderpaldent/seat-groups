@@ -22,8 +22,9 @@ class SeatGroupsController extends Controller
      */
     public function index()
     {
-            return view('seatgroups::index')
-                ->with('seatgroups',SeatGroup::all());
+        $seatgroups = SeatGroup::all();
+
+        return view('seatgroups::index', compact('seatgroups'));
     }
 
     /**
@@ -34,10 +35,9 @@ class SeatGroupsController extends Controller
     public function create()
     {
         //
-        $Roles=Role::all();
+        $roles = Role::all();
 
-        return view('seatgroups::create')
-            ->with('roles',$Roles);
+        return view('seatgroups::create', compact('roles'));
     }
 
     /**
@@ -48,14 +48,14 @@ class SeatGroupsController extends Controller
      */
     public function store(Request $request)
     {
-        $seatgroup = $this->validate(request(), [
-            'name'=>'required|min:5',
-            'description'=>'required|min:10',
-            'type' => 'required',
-            'role_id' => 'numeric'
+        $seat_group = $this->validate(request(), [
+            'name'        => 'required|min:5',
+            'description' => 'required|min:10',
+            'type'        => 'required',
+            'role_id'     => 'numeric'
         ]);
 
-        $group=Seatgroup::create($seatgroup);
+        $group = Seatgroup::create($seat_group);
 
         $role_ids = $request->get('roles');
 
@@ -86,24 +86,15 @@ class SeatGroupsController extends Controller
      */
     public function edit($id)
     {
-
-
         $all_corporations = $this->getAllCorporations();
-        $all_character_groups = Group::all();
 
         // ToDo: show selected roles on Edit blade
-        $seatgroup = Seatgroup::find($id);
-        $roles=Role::all();
-
+        $roles        = Role::all();
+        $seatgroup    = Seatgroup::find($id);
+        $all_groups   = Group::all();
         $corporations = $seatgroup->corporation;
 
-
-        return view('seatgroups::edit', compact('seatgroup','id','all_corporations'))
-            ->with('roles',$roles)
-            ->with('corporations',$corporations)
-            ->with('all_groups',Group::all());
-
-
+        return view('seatgroups::edit', compact('seatgroup','id', 'all_corporations', 'roles', 'corporations', 'all_groups'));
     }
 
     /**
@@ -115,20 +106,23 @@ class SeatGroupsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $seatgroup = Seatgroup::find($id);
-
         $this->validate(request(), [
-            'name'=>'required|min:5',
-            'description'=>'required|min:10',
-            'type' => 'required',
-            'role_id' => 'numeric'
+            'name'        => 'required|min:5',
+            'description' => 'required|min:10',
+            'type'        => 'required',
+            'role_id'     => 'numeric'
         ]);
-        $seatgroup->name = $request->get('name');
-        $seatgroup->description = $request->get('description');
-        $seatgroup->type = $request->get('type');
-        $seatgroup->save();
+
+        $seat_group = Seatgroup::find($id);
+
+        $seat_group->fill([
+            'name'        => $request->get('name'),
+            'description' => $request->get('description'),
+            'type'        => $request->get('type'),
+        ])->save();
+
         $role_ids = $request->get('roles');
-        $seatgroup->role()->sync($role_ids);
+        $seat_group->role()->sync($role_ids);
 
         return redirect()->route('seatgroups.index')
             ->with('success', 'SeAT-Group has been updated');
@@ -142,11 +136,15 @@ class SeatGroupsController extends Controller
      */
     public function destroy($group_id)
     {
-        if(Auth::user()->hasRole('Superuser')){
+        if (auth()->user()->hasSuperUser()) {
             $seatgroup = Seatgroup::find($group_id);
             $seatgroup->delete();
-        return redirect()->route('seatgroups.index')
-            ->with('success', 'SeAT-Group has been deleted');
-        } else return redirect()->back()->with('error', 'illegal delete request. You must be superuser');
+
+            return redirect()->route('seatgroups.index')
+                ->with('success', 'SeAT-Group has been deleted');
+        }
+
+        return redirect()->back()
+            ->with('error', 'illegal delete request. You must be superuser');
     }
 }
