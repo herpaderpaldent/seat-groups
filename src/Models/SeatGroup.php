@@ -67,6 +67,9 @@ class Seatgroup extends Model
 
     public function isAllowedToSeeSeatGroup()
     {
+        if ($this->all_corporations)
+            return true;
+
         if (auth()->user()->hasSuperUser())
             return true;
 

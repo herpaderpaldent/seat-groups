@@ -101,7 +101,7 @@
 
     <h3>Available for whom</h3>
     <p>Select the corporation to which the SeAT Group is bound.</p>
-    @if($seatgroup->corporation->isEmpty())
+    @if($seatgroup->corporation->isEmpty() && !$seatgroup->all_corporations)
         <div class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h4><i class="icon fa fa-info"></i> SeAT-Group is not working</h4>

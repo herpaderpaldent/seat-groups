@@ -129,7 +129,7 @@ class SeatGroupsController extends Controller
         $role_ids = $request->get('roles');
         $seat_group->role()->sync($role_ids);
 
-        return redirect()->route('seatgroups.index')
+        return redirect()->back()
             ->with('success', 'SeAT-Group has been updated');
     }
 
