@@ -130,8 +130,9 @@
                 </div>
                 <div class="panel-body">
                     {{$seatgroup->description}} <br>
+                    @if($seatgroup->isMember())
                     Members: {{$seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', ')}}
-
+                    @endif
                     @if($seatgroup->onWaitlist())
                         {!! Form::open(['method' => 'DELETE',
                                         'route' => ['seatgroupuser.update', $seatgroup->id],
@@ -226,22 +227,25 @@
         @endforeach
 
         @foreach ($seatgroups->where('type', 'hidden') as $seatgroup)
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <div class="btn-group pull-right">
-                        @if(auth()->user()->hasRole('seatgroups.edit'))
-                            <a href="{{ route('seatgroups.edit', $seatgroup->id)}}" class="btn btn-warning pull-right">
-                                <i class="fa fa-edit"></i> {{ trans('web::seat.edit') }}
-                            </a>
-                        @endif
+                @if($seatgroup->isMember() || auth()->user()->hasRole('seatgroups.edit') || $seatgroup->isManager()  )
+                    <div class="panel panel-warning">
+                        <div class="panel-heading clearfix">
+                            <div class="btn-group pull-right">
+                                @if(auth()->user()->hasRole('seatgroups.edit'))
+                                    <a href="{{ route('seatgroups.edit', $seatgroup->id)}}" class="btn btn-warning pull-right">
+                                        <i class="fa fa-edit"></i> {{ trans('web::seat.edit') }}
+                                    </a>
+                                @endif
+                            </div>
+                            <h3 class="panel-title">{{$seatgroup->name}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{$seatgroup->description}} <br>
+                            Members: {{$seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', ')}}
+                        </div>
                     </div>
-                    <h3 class="panel-title">{{$seatgroup->name}}</h3>
-                </div>
-                <div class="panel-body">
-                    {{$seatgroup->description}} <br>
-                    Members: {{$seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', ')}}
-                </div>
-            </div>
+                @endif
+
         @endforeach
 
     </div>

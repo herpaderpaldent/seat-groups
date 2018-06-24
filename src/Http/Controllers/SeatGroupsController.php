@@ -3,6 +3,11 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
 
+
+use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\AddCorpAffiliation;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveCorpAffiliation;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\AddAffiliation;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\RemoveAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -146,5 +151,31 @@ class SeatGroupsController extends Controller
 
         return redirect()->back()
             ->with('error', 'illegal delete request. You must be superuser');
+    }
+
+    public function addAffilliation(AddAffiliation $request, AddCorpAffiliation $action){
+
+        if($action->execute($request->all()))
+        {
+            return redirect()->back()->with('success', 'Updated');
+        }
+
+        return redirect()->back()->with('warning', 'Ups something went wrong');
+
+    }
+
+    /**
+     * Remove corp affiliations from SeAT Group
+     *
+     * @param \Herpaderpaldent\Seat\SeatGroups\Http\Validation\RemoveAffiliation          $request
+     * @param \Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveCorpAffiliation $action
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeAffiliation(RemoveAffiliation $request, RemoveCorpAffiliation $action){
+
+        $name = $action->execute($request->all());
+
+        return redirect()->back()->with('success', $name . ' removed');
     }
 }

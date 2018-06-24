@@ -114,13 +114,15 @@
             <h3 class="panel-title">Corporations</h3>
         </div>
         <div class="panel-body">
-            <form method="post" action="{{route('seatgroupcorporation.update', $id)}}">
+            <form method="post" action="{{route('seatgroups.add.corp.affiliation', $id)}}">
                 {{csrf_field()}}
                 <input name="_method3" type="hidden" value="PATCH">
+                <input type="hidden" name="seatgroup_id" value="{{ $seatgroup->id }}">
                 <div class="form-group">
                     <label for="corporations">{{ trans('web::seat.available_corporations') }}</label>
                     <select name="corporations[]" id="available_corporations" style="width: 100%" multiple>
 
+                        <option value="1337">All Corporation</option>
 
                         @foreach($all_corporations as $corporation)
                             @if(!in_array($corporation->corporation_id,$seatgroup->corporation->pluck('corporation_id')->toArray()))
@@ -144,19 +146,40 @@
                 <tbody>
 
                 <tr>
-                    <th colspan="2" class="text-center">Current Corporations</th>
+                    <th colspan="4" class="text-center">Current Corporations</th>
                 </tr>
+                @if($seatgroup->all_corporations)
+                    <tr>
+                        <td> All Corporations <span data-toggle="tooltip" title="" class="badge bg-orange-active" data-original-title="Dangerous: purged members are not removed from SeAT-Group"><i class="fa fa-warning"></i></span></td>
+                        <td>
+                            <form role="form" action="{{ route('seatgroups.remove.corp.affiliation', ['seatgroup_id' => $seatgroup->id, 'corporation_id' => $corporation->corporation_id]) }}" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="seatgroup_id" value="{{ $seatgroup->id }}">
+                                <input type="hidden" name="corporation_id" value="1337">
+                                <button type="submit" class="btn btn-danger btn-xs pull-right">
+                                    {{ trans('web::seat.remove') }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endif
                 @foreach($corporations as $corporation)
 
                     <tr>
-                        <td>{{$corporation->name}}</td>
                         <td>
-                            {!! Form::open(['method' => 'DELETE',
-                                            'route' => ['seatgroupcorporation.destroy', $seatgroup->id, $corporation->corporation_id],
-                                            'style'=>'display:inline'
-                                           ]) !!}
-                            {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
-                            {!! Form::close() !!}
+                            {!! img('auto', $corporation->corporation_id, 64, ['class' => 'img-circle eve-icon small-icon']) !!}
+                            {{ $corporation->name }}
+
+                        </td>
+                        <td>
+                            <form role="form" action="{{ route('seatgroups.remove.corp.affiliation', ['seatgroup_id' => $seatgroup->id, 'corporation_id' => $corporation->corporation_id]) }}" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="seatgroup_id" value="{{ $seatgroup->id }}">
+                                <input type="hidden" name="corporation_id" value="{{ $corporation->corporation_id }}">
+                                <button type="submit" class="btn btn-danger btn-xs pull-right">
+                                    {{ trans('web::seat.remove') }}
+                                </button>
+                            </form>
                         </td>
                     </tr>
 
@@ -169,6 +192,7 @@
 @endsection
 
 @section('right')
+
 
     @if($seatgroup->type == 'managed')
         <h3>{{trans('seatgroups::seat.seat_groups_managedgroup')}}</h3>

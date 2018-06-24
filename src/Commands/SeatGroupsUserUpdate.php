@@ -49,7 +49,7 @@ class SeatGroupsUsersUpdate extends Command
                 }
                 // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
                 if ($seat_group->type == 'auto') {
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
+                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
                         foreach ($seat_group->role as $role) {
                             $roles->push($role->id);
                         }
@@ -58,7 +58,7 @@ class SeatGroupsUsersUpdate extends Command
                 // Opt-In Group Check
                 if ($seat_group->type == 'open') {
                     // check if user's corp is allowed in the seatgroup
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
+                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
                         // check if user is Opt-in into a group
                         if (in_array($users_group->id, $seat_group->group->pluck('id')->toArray())) {
                             foreach ($seat_group->role as $role) {
@@ -69,7 +69,7 @@ class SeatGroupsUsersUpdate extends Command
                 }
                 // Managed Group Check
                 if ($seat_group->type == 'managed') {
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
+                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
                         // check if user is member of the managed group
                         if (in_array($users_group->id, $seat_group->member->map(function ($user) {return $user->id;})->toArray())) {
                             foreach ($seat_group->role as $role) {
@@ -80,7 +80,7 @@ class SeatGroupsUsersUpdate extends Command
                 }
                 // Hidden Group Check
                 if ($seat_group->type == 'hidden') {
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray())) {
+                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
                         // check if user is member of the hidden group
                         if (in_array($users_group->id, $seat_group->member->map(function ($user) {return $user->id;})->toArray())) {
                             foreach ($seat_group->role as $role) {

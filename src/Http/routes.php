@@ -50,12 +50,14 @@ Route::group([
                 'uses' => 'SeatGroupsController@destroy'
             ]);
             Route::post('/{group_id}/corporation', [
-                'as' => 'seatgroupcorporation.update',
-                'uses' => 'SeatGroupCorporationController@update'
+                'as' => 'seatgroups.add.corp.affiliation',
+                'middleware' => 'bouncer:seatgroups.create',
+                'uses' => 'SeatGroupsController@addAffilliation'
             ]);
-            Route::delete('/{group_id}/corporation/{corporation_id}', [
-                'as' => 'seatgroupcorporation.destroy',
-                'uses' => 'SeatGroupCorporationController@destroy'
+            Route::post('/{seat_group_id}/corporation/{corporation_id}/remove', [
+                'as' => 'seatgroups.remove.corp.affiliation',
+                'middleware' => 'bouncer:seatgroups.create',
+                'uses' => 'SeatGroupsController@removeAffiliation'
             ]);
             Route::post('/{group_id}/user', [
                 'as' => 'seatgroupuser.update',
