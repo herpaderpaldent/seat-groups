@@ -40,4 +40,8 @@ Members may apply for these groups. Managers may accept or deny the application
 This seat group is for hidden groups f.e. CEO. This group is only shown on the overview for users with `seatgroup.create` and `superuser` Permission.
 ![Hidden](https://i.imgur.com/mh3I714.png)
 
+### Donations
+
+If you like SeAT Groups, i highly appreciate ISK Donations to Herpaderp Aldent.
+
 
