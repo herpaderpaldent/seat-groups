@@ -90,15 +90,14 @@ class Seatgroup extends Model
                         return true;
                     break;
                 case 'open':
-                    if (in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())) {
+                    if (in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()) || $this->all_corporations) {
                         if(in_array(auth()->user()->group->id , $this->group->pluck('id')->toArray())) {
                             return true;
                         }
                     }
-
                     break;
                 case 'managed':
-                    if (in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())) {
+                    if (in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())|| $this->all_corporations) {
                         if (in_array(auth()->user()->group->id , $this->member->map(function($group) { return $group->id; })->toArray())) {
                             return true;
                         }
