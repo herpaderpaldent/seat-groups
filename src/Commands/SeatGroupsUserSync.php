@@ -10,16 +10,11 @@ namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Groups\SyncGroup;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Console\Command;
-use Seat\Web\Acl\AccessManager;
-use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
 class SeatGroupsUserSync extends Command
 {
-
-    use AccessManager;
 
     protected $signature = 'seat-groups:user:sync {character_id}';
 
@@ -35,8 +30,6 @@ class SeatGroupsUserSync extends Command
     {
 
         $this->info($action->execute(User::find($this->argument('character_id'))->group));
-
-        //$this->info($group);
 
     }
 }
