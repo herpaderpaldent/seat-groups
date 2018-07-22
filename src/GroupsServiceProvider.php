@@ -2,6 +2,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups;
 
+use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUserSync;
 use Illuminate\Support\ServiceProvider;
 use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUsersUpdate;
 
@@ -42,6 +43,7 @@ class GroupsServiceProvider extends ServiceProvider
     {
         $this->commands([
             SeatGroupsUsersUpdate::class,
+            SeatGroupsUserSync::class,
         ]);
     }
 

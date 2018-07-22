@@ -2,6 +2,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
+use Herpaderpaldent\Seat\SeatGroups\Actions\Groups\SyncGroup;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -178,10 +179,12 @@ class SeatGroupUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int                                                      $id
+     * @param \Herpaderpaldent\Seat\SeatGroups\Actions\Groups\SyncGroup $action
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, SyncGroup $action)
     {
         $seatgroup = Seatgroup::find($id);
 
@@ -197,9 +200,9 @@ class SeatGroupUserController extends Controller
             if ($seatgroup->onWaitlist()) {
                 return redirect()->back()->with('success', ' removed');
             }
-            // Remove Role from UserGroup
-            // TODO: Dispatch sync job
         }
+
+        $action->execute(auth()->user()->group);
 
         return redirect()->back()->with('success', ' removed');
     }

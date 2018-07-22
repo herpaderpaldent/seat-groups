@@ -22,6 +22,7 @@ class CreateSeatGroup
         $seat_group->type = $data['type'];
         $seat_group->save();
 
+        if(isset($data['roles']))
         $seat_group->role()->sync($data['roles']);
 
         return $seat_group;
