@@ -27,7 +27,6 @@
                         <textarea type="text" class="form-control" rows="5" name="description" placeholder="SeAT-Group Description"></textarea>
                     </div>
                 </div>
-                <!-- TODO: use data-icon-->
                 <div class="row">
                     <div class="col-md-12"></div>
                     <div class="form-group col-md-12">
