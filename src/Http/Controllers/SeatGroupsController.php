@@ -6,7 +6,11 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\AddCorpAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveCorpAffiliation;
+use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\CreateSeatGroup;
+use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\DeleteSeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\AddAffiliation;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\CreateSeatGroupRequest;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\DeleteSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\RemoveAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
@@ -48,28 +52,18 @@ class SeatGroupsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Herpaderpaldent\Seat\SeatGroups\Http\Validation\CreateSeatGroupRequest $request
+     * @param \Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\CreateSeatGroup     $action
+     *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateSeatGroupRequest $request, CreateSeatGroup $action)
     {
-        $seat_group = $this->validate(request(), [
-            'name'        => 'required|min:5',
-            'description' => 'required|min:10',
-            'type'        => 'required',
-            'role_id'     => 'numeric'
-        ]);
+        $seat_group = $action->execute($request->all());
 
-        $group = Seatgroup::create($seat_group);
+        return redirect()->route('seatgroups.edit', $seat_group->id)
+                ->with('success', 'SeAT-Group has been added');
 
-        $role_ids = $request->get('roles');
-
-        $group->role()->sync($role_ids);
-
-
-        //ToDo: if logic implementation for failed validation + forward to view
-        return redirect()->route('seatgroups.edit', $group->id)
-            ->with('success', 'SeAT-Group has been added');
     }
 
     /**
@@ -92,8 +86,6 @@ class SeatGroupsController extends Controller
     public function edit($id)
     {
         $all_corporations = $this->getAllCorporations();
-
-        // ToDo: show selected roles on Edit blade
         $roles        = Role::all();
         $seatgroup    = Seatgroup::find($id);
         $all_groups   = Group::all();
@@ -139,12 +131,10 @@ class SeatGroupsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($group_id)
+    public function destroy(DeleteSeatGroupRequest $request, DeleteSeatGroup $action)
     {
-        if (auth()->user()->hasSuperUser()) {
-            $seatgroup = Seatgroup::find($group_id);
-            $seatgroup->delete();
-
+        if($action->execute($request->all()))
+        {
             return redirect()->route('seatgroups.index')
                 ->with('success', 'SeAT-Group has been deleted');
         }

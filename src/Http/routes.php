@@ -44,7 +44,7 @@ Route::group([
                 'as' => 'seatgroups.store',
                 'uses' => 'SeatGroupsController@store'
             ]);
-            Route::delete('/{group_id}', [
+            Route::post('/{group_id}/delete', [
                 'as' => 'seatgroups.destroy',
                 'middleware' => 'bouncer:superuser',
                 'uses' => 'SeatGroupsController@destroy'
