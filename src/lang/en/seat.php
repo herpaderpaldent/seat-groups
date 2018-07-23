@@ -47,6 +47,8 @@ return [
     'seat_groups_editing' => 'Editing',
     'seat_groups_update' => 'Update SeAT Group',
 
+    'seat_groups_about' => 'About'
+
 
 
 

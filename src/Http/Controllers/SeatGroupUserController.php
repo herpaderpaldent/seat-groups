@@ -202,7 +202,7 @@ class SeatGroupUserController extends Controller
             }
         }
 
-        $action->execute(auth()->user()->group);
+        $action->execute(auth()->user()->group); //ToDo: Refactor this and start using Events
 
         return redirect()->back()->with('success', ' removed');
     }

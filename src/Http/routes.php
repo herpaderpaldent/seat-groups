@@ -20,6 +20,10 @@ Route::group([
                 'uses' => 'SeatGroupsController@index',
                 'middleware' => 'bouncer:seatgroups.view'
                 ]);
+            Route::get('/about', [
+                'as'   => 'seatgroups.about',
+                'uses' => 'SeatGroupsController@about'
+            ]);
             }
         );
         // Admin Route
@@ -30,7 +34,6 @@ Route::group([
                 'as'   => 'seatgroups.edit',
                 'uses' => 'SeatGroupsController@edit'
                 ]);
-
             Route::get('/create', [
                 'as' => 'seatgroups.create',
                 'uses' => 'SeatGroupsController@create'

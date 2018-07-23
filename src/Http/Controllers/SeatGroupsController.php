@@ -3,11 +3,11 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
 
-
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\AddCorpAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveCorpAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\CreateSeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\DeleteSeatGroup;
+use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetChangelog;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\AddAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\CreateSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\DeleteSeatGroupRequest;
@@ -24,6 +24,7 @@ use Seat\Web\Models\Group;
 class SeatGroupsController extends Controller
 {
     use Character, Corporation;
+
     /**
      * Display a listing of the resource.
      *
@@ -31,6 +32,7 @@ class SeatGroupsController extends Controller
      */
     public function index()
     {
+
         $seatgroups = SeatGroup::all();
 
         return view('seatgroups::index', compact('seatgroups'));
@@ -43,6 +45,7 @@ class SeatGroupsController extends Controller
      */
     public function create()
     {
+
         //
         $roles = Role::all();
 
@@ -59,17 +62,19 @@ class SeatGroupsController extends Controller
      */
     public function store(CreateSeatGroupRequest $request, CreateSeatGroup $action)
     {
+
         $seat_group = $action->execute($request->all());
 
         return redirect()->route('seatgroups.edit', $seat_group->id)
-                ->with('success', 'SeAT-Group has been added');
+            ->with('success', 'SeAT-Group has been added');
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -80,34 +85,38 @@ class SeatGroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
+
         $all_corporations = $this->getAllCorporations();
-        $roles        = Role::all();
-        $seatgroup    = Seatgroup::find($id);
-        $all_groups   = Group::all();
+        $roles = Role::all();
+        $seatgroup = Seatgroup::find($id);
+        $all_groups = Group::all();
         $corporations = $seatgroup->corporation;
 
-        return view('seatgroups::edit', compact('seatgroup','id', 'all_corporations', 'roles', 'corporations', 'all_groups'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
+
         $this->validate(request(), [
             'name'        => 'required|min:5',
             'description' => 'required|min:10',
             'type'        => 'required',
-            'role_id'     => 'numeric'
+            'role_id'     => 'numeric',
         ]);
 
         $seat_group = Seatgroup::find($id);
@@ -128,13 +137,14 @@ class SeatGroupsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(DeleteSeatGroupRequest $request, DeleteSeatGroup $action)
     {
-        if($action->execute($request->all()))
-        {
+
+        if ($action->execute($request->all())) {
             return redirect()->route('seatgroups.index')
                 ->with('success', 'SeAT-Group has been deleted');
         }
@@ -143,10 +153,10 @@ class SeatGroupsController extends Controller
             ->with('error', 'illegal delete request. You must be superuser');
     }
 
-    public function addAffilliation(AddAffiliation $request, AddCorpAffiliation $action){
+    public function addAffilliation(AddAffiliation $request, AddCorpAffiliation $action)
+    {
 
-        if($action->execute($request->all()))
-        {
+        if ($action->execute($request->all())) {
             return redirect()->back()->with('success', 'Updated');
         }
 
@@ -162,10 +172,17 @@ class SeatGroupsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeAffiliation(RemoveAffiliation $request, RemoveCorpAffiliation $action){
+    public function removeAffiliation(RemoveAffiliation $request, RemoveCorpAffiliation $action)
+    {
 
         $name = $action->execute($request->all());
 
         return redirect()->back()->with('success', $name . ' removed');
+    }
+
+    public function about(GetChangelog $action)
+    {
+        $changelog = $action->execute();
+        return view('seatgroups::about', compact('changelog'));
     }
 }
