@@ -6,5 +6,5 @@
  * Time: 10:24
  */
 return [
-    'version'   => '0.9.8'
+    'version'   => '1.0.0'
 ];
