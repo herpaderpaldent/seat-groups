@@ -35,7 +35,8 @@ class SeatGroupsUsersUpdate extends Command
         Group::all()->filter(function ($users_group) {
 
             return $users_group->main_character_id != "0";
-        })->each(function ($users_group) {
+        })->each(function ($users_group)
+        {
 
             $this->info('Updating User: ' . $users_group->main_character->name);
             $roles = collect();

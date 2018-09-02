@@ -1,32 +1,60 @@
 <?php
 /**
  * Created by PhpStorm.
- *  * User: Herpaderp Aldent
- * Date: 22.07.2018
- * Time: 11:56
+ * User: felix
+ * Date: 01.09.2018
+ * Time: 16:16
  */
 
-namespace Herpaderpaldent\Seat\SeatGroups\Actions\Groups;
+namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
+
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Seat\Web\Models\Group;
 
-class SyncGroup
+class GroupSync extends SeatGroupsJobBase
 {
-    public function execute (Group $group)
+    /**
+     * @var array
+     */
+    protected $tags = ['sync'];
+
+    private $group;
+
+    /**
+     * @var int
+     */
+    public $tries = 100;
+
+    /**
+     * ConversationOrchestrator constructor.
+     *
+     * @param \Seat\Web\Models\Group $group
+     */
+    public function __construct(Group $group)
     {
-        //$this->info('Updating User: ' . $group->main_character->name);
+        logger()->debug('Initialising SeAT Group sync for ' . $group->main_character->name);
+
+        $this->group = $group;
+
+        array_push($this->tags, 'main_character_id:' . $group->main_character_id);
+
+    }
+    public function handle()
+    {
         $roles = collect();
-        if($group->main_character_id != "0")
+        $group = $this->group;
+
+        //Catch Superuser
+        foreach ($group->roles as $role) {
+            if ($role->title === "Superuser") {
+                $roles->push($role->id);
+            }
+        }
+
         Seatgroup::all()->each(function ($seat_group) use ($roles, $group)
         {
 
-            //Catch Superuser
-            foreach ($group->roles as $role) {
-                if ($role->title === "Superuser") {
-                    $roles->push($role->id);
-                }
-            }
             if (in_array($group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations)
             {
                 switch ($seat_group->type)
@@ -62,11 +90,10 @@ class SyncGroup
                         break;
                 }
             }
+
         });
 
         $group->roles()->sync($roles->unique());
-
-        return $group;
     }
 
 }

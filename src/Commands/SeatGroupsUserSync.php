@@ -9,27 +9,22 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
-use Herpaderpaldent\Seat\SeatGroups\Actions\Groups\SyncGroup;
+use Herpaderpaldent\Seat\SeatGroups\Jobs\GroupDispatcher;
 use Illuminate\Console\Command;
-use Seat\Web\Models\User;
 
 class SeatGroupsUserSync extends Command
 {
 
-    protected $signature = 'seat-groups:user:sync {character_id}';
+    protected $signature = 'seat-groups:user:sync';
 
-    protected $description = 'This command adds and removes roles to specific users depending on their SeAT-Group Association';
+    protected $description = 'This command adds and removes roles from groups depending on their SeAT-Group Association';
 
-    public function __construct()
+
+
+    public function handle()
     {
-
-        parent::__construct();
-    }
-
-    public function handle(SyncGroup $action)
-    {
-
-        $this->info($action->execute(User::find($this->argument('character_id'))->group));
+        GroupDispatcher::dispatch();
+        $this->info('A synchronization job has been queued in order to update SeAT Group roles.');
 
     }
 }
