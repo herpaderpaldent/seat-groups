@@ -41,6 +41,24 @@
     </div>
   </div>
 
+  <div class="box box-default">
+    <div class="box-header with-border">
+      <i class="fa fa-archive"></i>
+
+      <h3 class="box-title">Last Event log</h3>
+
+      <span class="log-clear-button"></span>
+
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+      @if(auth()->user()->hasRole('seatgroups.edit'))
+        @include('seatgroups::logs.list')
+      @endif
+    </div>
+    <!-- /.box-body -->
+  </div>
+
 @stop
 @section('right')
   <div class="panel panel-default">
@@ -66,6 +84,23 @@
   </div>
 @stop
 
-
-
-
+@push('javascript')
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.log-clear-button').each(function () {
+        $.ajax({
+          type   : 'GET',
+          url    : "{{route('logs.get.delete.button')}}",
+          success: function (result) {
+            $(".log-clear-button").html(result)
+          },
+          error  : function (xhr, textStatus, errorThrown) {
+            console.log(xhr);
+            console.log(textStatus);
+            console.log(errorThrown);
+          }
+        });
+      });
+    })
+  </script>
+@endpush

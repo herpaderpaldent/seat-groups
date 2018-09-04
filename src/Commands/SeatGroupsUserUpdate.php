@@ -9,89 +9,44 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Commands;
 
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Jobs\GroupDispatcher;
+use Herpaderpaldent\Seat\SeatGroups\Jobs\GroupSync;
 use Illuminate\Console\Command;
-use Seat\Web\Acl\AccessManager;
 use Seat\Web\Models\Group;
+use Seat\Web\Models\User;
 
 class SeatGroupsUsersUpdate extends Command
 {
 
-    use AccessManager;
+    protected $signature = 'seat-groups:users:update {--character_ids= : The id list of characters in SeAT (using , as separator)}';
 
-    protected $signature = 'seat-groups:users:update';
+    protected $description = 'Fire a job which attempts to add and remove roles to all user groups depending on their SeAT-Group Association';
 
-    protected $description = 'This command adds and removes roles to all users depending on their SeAT-Group Association';
-
-    public function __construct()
-    {
-
-        parent::__construct();
-    }
 
     public function handle()
     {
 
-        Group::all()->filter(function ($users_group) {
+        if(!is_null($this->option('character_ids'))) {
+            // transform the argument list in an array
+            $ids = explode(',', $this->option('character_ids'));
+            $group_ids = collect();
 
-            return $users_group->main_character_id != "0";
-        })->each(function ($users_group) {
-
-            $this->info('Updating User: ' . $users_group->main_character->name);
-            $roles = collect();
-            Seatgroup::all()->each(function ($seat_group) use ($roles, $users_group) {
-
-                //Catch Superusers
-                foreach ($users_group->roles as $role) {
-                    if ($role->title === "Superuser") {
-                        $roles->push($role->id);
-                    }
-                }
-                // AutoGroup: ppl in the alliance or corporation of a autogroup, are getting synced.
-                if ($seat_group->type == 'auto') {
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
-                        foreach ($seat_group->role as $role) {
-                            $roles->push($role->id);
-                        }
-                    }
-                }
-                // Opt-In Group Check
-                if ($seat_group->type == 'open') {
-                    // check if user's corp is allowed in the seatgroup
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
-                        // check if user is Opt-in into a group
-                        if (in_array($users_group->id, $seat_group->group->pluck('id')->toArray())) {
-                            foreach ($seat_group->role as $role) {
-                                $roles->push($role->id);
-                            }
-                        }
-                    }
-                }
-                // Managed Group Check
-                if ($seat_group->type == 'managed') {
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
-                        // check if user is member of the managed group
-                        if (in_array($users_group->id, $seat_group->member->map(function ($user) {return $user->id;})->toArray())) {
-                            foreach ($seat_group->role as $role) {
-                                $roles->push($role->id);
-                            }
-                        }
-                    }
-                }
-                // Hidden Group Check
-                if ($seat_group->type == 'hidden') {
-                    if (in_array($users_group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
-                        // check if user is member of the hidden group
-                        if (in_array($users_group->id, $seat_group->member->map(function ($user) {return $user->id;})->toArray())) {
-                            foreach ($seat_group->role as $role) {
-                                $roles->push($role->id);
-                            }
-                        }
-                    }
-                }
-                $users_group->roles()->sync($roles->unique());
+            User::whereIn('id', $ids)->each(function ($user) use ($group_ids) {
+                $group_ids->push($user->group->id);
             });
-        });
+
+            Group::whereIn('id',$group_ids->unique())->each(function ($group) {
+                dispatch(new GroupSync($group));
+                $this->info('A synchronization job has been queued in order to update selected SeAT Group roles.');
+            });
+
+        } else {
+            GroupDispatcher::dispatch();
+            $this->info('A synchronization job has been queued in order to update all SeAT Group roles.');
+        }
+
+
+
 
     }
 }

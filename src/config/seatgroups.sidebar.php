@@ -28,7 +28,7 @@ return [
             [
                 'name'  => 'About',
                 'icon'  => 'fa-info-circle',
-                'permission' => 'seatgroups.create',
+                'permission' => 'seatgroups.view',
                 'route' => 'seatgroups.about',
             ]
         ]
