@@ -22,8 +22,31 @@ Route::group([
                 ]);
             Route::get('/about', [
                 'as'   => 'seatgroups.about',
+                'middleware' => 'bouncer:seatgroups.view',
                 'uses' => 'SeatGroupsController@about'
             ]);
+
+            Route::group([
+                'namespace' => 'Logs',
+                'prefix' => 'logs'
+            ], function () {
+                Route::get('/logs', [
+                    'as' => 'logs.get',
+                    'middleware' => 'bouncer:seatgroups.edit',
+                    'uses' => 'SeatGroupLogsController@getSeatGroupLogs'
+                ]);
+                Route::get('/logs/deletebutton', [
+                    'as' => 'logs.get.delete.button',
+                    'middleware' => 'bouncer:seatgroups.edit',
+                    'uses' => 'SeatGroupLogsController@getSeatGroupDeleteButton'
+                ]);
+                Route::get('/logs/truncate', [
+                    'as' => 'logs.truncate',
+                    'middleware' => 'bouncer:seatgroups.edit',
+                    'uses' => 'SeatGroupLogsController@truncateSeatGroupLogs'
+                ]);
+            });
+
             }
         );
         // Admin Route

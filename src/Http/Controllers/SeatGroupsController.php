@@ -14,7 +14,6 @@ use Herpaderpaldent\Seat\SeatGroups\Http\Validation\DeleteSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\RemoveAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Seat\Services\Repositories\Character\Character;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Http\Controllers\Controller;

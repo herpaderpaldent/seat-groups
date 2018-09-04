@@ -3,8 +3,10 @@
 namespace Herpaderpaldent\Seat\SeatGroups;
 
 use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUserSync;
+use Herpaderpaldent\Seat\SeatGroups\Observers\RefreshTokenObserver;
 use Illuminate\Support\ServiceProvider;
 use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUsersUpdate;
+use Seat\Eveapi\Models\RefreshToken;
 
 class GroupsServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,8 @@ class GroupsServiceProvider extends ServiceProvider
         $this->addViews();
         $this->addPublications();
         $this->addTranslations();
+
+        RefreshToken::observe(RefreshTokenObserver::class);
     }
 
     /**
@@ -42,8 +46,7 @@ class GroupsServiceProvider extends ServiceProvider
     private function addCommands()
     {
         $this->commands([
-            SeatGroupsUsersUpdate::class,
-            SeatGroupsUserSync::class,
+            SeatGroupsUsersUpdate::class
         ]);
     }
 
@@ -62,7 +65,7 @@ class GroupsServiceProvider extends ServiceProvider
 
     private function addViews()
     {
-        $this->loadViewsFrom(__DIR__ . '/resources/views/seatgroups', 'seatgroups');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'seatgroups');
     }
     private function addTranslations()
     {
