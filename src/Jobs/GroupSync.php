@@ -11,7 +11,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
 
 use Herpaderpaldent\Seat\SeatGroups\Exceptions\MissingRefreshTokenException;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupLog;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
 use Illuminate\Support\Facades\Redis;
 use Seat\Web\Models\Group;
 
@@ -136,7 +136,7 @@ class GroupSync extends SeatGroupsJobBase
                 // take away all roles
                 $this->group->roles()->sync([]);
 
-                SeatGroupLog::create([
+                SeatgroupLog::create([
                     'event' => 'warning',
                     'message' => sprintf('The RefreshToken of %s is missing, therefore user group of %s (%s) loses all permissions.',
                         $user->name, $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
@@ -152,7 +152,7 @@ class GroupSync extends SeatGroupsJobBase
     public function onFail($exception)
     {
 
-        SeatGroupLog::create([
+        SeatgroupLog::create([
             'event' => 'error',
             'message' => sprintf('An error occurred while syncing user group of %s (%s)',
                 $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
@@ -162,7 +162,7 @@ class GroupSync extends SeatGroupsJobBase
 
     public function onFinish()
     {
-        SeatGroupLog::create([
+        SeatgroupLog::create([
             'event' => 'success',
             'message' => sprintf('The user group of %s (%s) has successfully been synced',
                 $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))

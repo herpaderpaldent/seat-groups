@@ -1,3 +1,6 @@
+# Version 1.1.1
+Fix changed class name.
+
 # Version 1.1.0
 This release consist of many improvements:
 * Introducing queueable SeAT-Groups update jobs. 
