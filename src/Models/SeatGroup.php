@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
+use Seat\Eveapi\Models\Corporation\CorporationTitle;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Models\User;
 
@@ -38,6 +39,12 @@ class Seatgroup extends Model
     {
         return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo',
             'corporation_info_seatgroup','seatgroup_id', 'corporation_id');
+    }
+
+    public function corporationTitles()
+    {
+
+        return $this->hasMany('Herpaderpaldent\Seat\SeatGroups\Models\CorporationTitleSeatgroups', 'seatgroup_id');
     }
 
     public function manager()

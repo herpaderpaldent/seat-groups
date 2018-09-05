@@ -23,7 +23,6 @@ class SeatGroupLogsController extends Controller
 
     public function getSeatGroupLogs()
     {
-        //$logs = SeatgroupLog::orderBy('created_at','desc');
         $logs = SeatgroupLog::all();
 
         return Datatables::of($logs)
