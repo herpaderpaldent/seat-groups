@@ -1,17 +1,19 @@
 <?php
 /**
  * Created by PhpStorm.
- *  * User: Herpaderp Aldent
- * Date: 24.06.2018
- * Time: 11:42
+ * User: felix
+ * Date: 06.09.2018
+ * Time: 09:08
  */
 
-namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation;
+namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation;
+
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RemoveAffiliation extends FormRequest
+class RemoveAllCorporationsRequest extends FormRequest
 {
+
     /**
      * Authorize the request by default.
      *
@@ -32,8 +34,8 @@ class RemoveAffiliation extends FormRequest
     {
 
         return [
-            'seatgroup_id' => 'required',
-            'corporation_id'   => 'required',
+            'seatgroup_id'=>'required'
         ];
     }
+
 }

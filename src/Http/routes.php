@@ -20,6 +20,23 @@ Route::group([
         'as'   => 'seatgroups.about',
         'uses' => 'SeatGroupsController@about',
     ]);
+    Route::post('/{group_id}/user', [
+        'as'   => 'seatgroups.user.join',
+        'uses' => 'SeatGroupUserController@update',
+    ]);
+    Route::get('/{group_id}/user', [
+        'as'   => 'seatgroups.user.leave',
+        'uses' => 'SeatGroupUserController@destroy',
+    ]);
+    Route::get('/{group_id}/member', [
+        'as'   => 'seatgroups.get.members.table',
+        'uses' => 'SeatGroupUserController@getMembersTable',
+    ]);
+    Route::post('/{group_id}/member/accept', [
+        'as'   => 'seatgroups.accept.member',
+        'uses' => 'SeatGroupUserController@acceptApplication',
+    ]);
+
 
     // Routes for creating.
     Route::group([
@@ -46,7 +63,7 @@ Route::group([
         ]);
         Route::post('/affiliation/corporation_title', [
             'as'    => 'affiliation.add.corporation.title.affiliation',
-            'uses'  => 'SeatGroupCorporationTitleController@setCorporationTitleAffiliation'
+            'uses'  => 'SeatGroupCorporationTitleController@addCorporationTitleAffiliation'
         ]);
         Route::post('/resolve/corporation', [
             'as'    => 'affiliation.get.corporation.list',
@@ -56,6 +73,23 @@ Route::group([
             'as'    => 'affiliation.get.current.affiliations',
             'uses'  => 'SeatGroupAffiliationController@getCurrentAffiliations'
         ]);
+        Route::post('/affiliations/remove/all_corporations', [
+            'as'    => 'affiliation.remove.all.corporation',
+            'uses'  => 'SeatGroupCorporationController@removeAllCorporations'
+        ]);
+        Route::post('/affiliations/remove/corporation', [
+            'as'    => 'affiliation.remove.corporation',
+            'uses'  => 'SeatGroupCorporationController@removeCorporation'
+        ]);
+        Route::post('/affiliations/remove/corporation_title', [
+            'as'    => 'affiliation.remove.corporation.title',
+            'uses'  => 'SeatGroupCorporationTitleController@removeCorporationTitleAffiliation'
+        ]);
+        Route::post('/affiliation/add/corporation', [
+            'as'         => 'affiliation.add.corp.affiliation',
+            'uses'       => 'SeatGroupCorporationController@addCorporationAffiliation'
+        ]);
+
 
     });
 
@@ -63,7 +97,7 @@ Route::group([
     Route::group([
         'namespace'  => 'Logs',
         'prefix'     => 'logs',
-        'middleware' => 'bouncer:seatgroups.edit',
+        'middleware' => 'bouncer:seatgroups.create',
     ], function () {
 
         Route::get('/logs', [
@@ -105,24 +139,12 @@ Route::group([
             'middleware' => 'bouncer:superuser',
             'uses'       => 'SeatGroupsController@destroy',
         ]);
-        Route::post('/{group_id}/corporation', [
-            'as'         => 'seatgroups.add.corp.affiliation',
-            'middleware' => 'bouncer:seatgroups.create',
-            'uses'       => 'SeatGroupsController@addAffilliation',
-        ]);
         Route::post('/{seat_group_id}/corporation/{corporation_id}/remove', [
             'as'         => 'seatgroups.remove.corp.affiliation',
             'middleware' => 'bouncer:seatgroups.create',
             'uses'       => 'SeatGroupsController@removeAffiliation',
         ]);
-        Route::post('/{group_id}/user', [
-            'as'   => 'seatgroupuser.update',
-            'uses' => 'SeatGroupUserController@update',
-        ]);
-        Route::delete('/{group_id}/user', [
-            'as'   => 'seatgroupuser.destroy',
-            'uses' => 'SeatGroupUserController@destroy',
-        ]);
+
         Route::delete('/{seat_group_id}/user/{group_id}', [
             'as'         => 'seatgroupuser.removeGroupFromSeatGroup',
             'middleware' => 'bouncer:seatgroups.create',

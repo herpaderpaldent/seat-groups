@@ -3,15 +3,12 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
 
-use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\AddCorpAffiliation;
-use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveCorpAffiliation;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\GetCorporationListAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\CreateSeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\DeleteSeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetChangelog;
-use Herpaderpaldent\Seat\SeatGroups\Http\Validation\AddAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\CreateSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\DeleteSeatGroupRequest;
-use Herpaderpaldent\Seat\SeatGroups\Http\Validation\RemoveAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Seat\Services\Repositories\Character\Character;
@@ -45,7 +42,6 @@ class SeatGroupsController extends Controller
     public function create()
     {
 
-        //
         $roles = Role::all();
 
         return view('seatgroups::create', compact('roles'));
@@ -84,20 +80,28 @@ class SeatGroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int                                                                           $id
+     *
+     * @param \Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\GetCorporationListAction $action
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, GetCorporationListAction $action)
     {
 
-        $all_corporations = $this->getAllCorporations();
+        $all_corporations = $action->execute([
+            'seatgroup_id' =>$id,
+            'origin' => 'SeatGroupsController'
+        ]);
+        $all_corporations_for_title = $action->execute([
+            'seatgroup_id' =>$id,
+            'origin' => 'corporation-tile-form'
+        ]);
         $roles = Role::all();
         $seatgroup = Seatgroup::find($id);
         $all_groups = Group::all();
-        $corporations = $seatgroup->corporation;
 
-        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups','all_corporations_for_title'));
     }
 
     /**
@@ -152,32 +156,6 @@ class SeatGroupsController extends Controller
             ->with('error', 'illegal delete request. You must be superuser');
     }
 
-    public function addAffilliation(AddAffiliation $request, AddCorpAffiliation $action)
-    {
-
-        if ($action->execute($request->all())) {
-            return redirect()->back()->with('success', 'Updated');
-        }
-
-        return redirect()->back()->with('warning', 'Ups something went wrong');
-
-    }
-
-    /**
-     * Remove corp affiliations from SeAT Group
-     *
-     * @param \Herpaderpaldent\Seat\SeatGroups\Http\Validation\RemoveAffiliation          $request
-     * @param \Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveCorpAffiliation $action
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function removeAffiliation(RemoveAffiliation $request, RemoveCorpAffiliation $action)
-    {
-
-        $name = $action->execute($request->all());
-
-        return redirect()->back()->with('success', $name . ' removed');
-    }
 
     public function about(GetChangelog $action)
     {

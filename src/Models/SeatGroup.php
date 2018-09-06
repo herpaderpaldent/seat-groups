@@ -9,6 +9,7 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 
+use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationAction;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Corporation\CorporationTitle;
 use Seat\Services\Repositories\Corporation\Corporation;
+use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
 class Seatgroup extends Model
@@ -65,22 +67,22 @@ class Seatgroup extends Model
             ->wherePivot('on_waitlist',1);
     }
 
-    public function isManager()
+    public function isManager(Group $group)
     {
-        return in_array(auth()->user()->group->id , $this->manager->map(function($group) {
-                return $group->id;
-            })->toArray()) || auth()->user()->hasSuperUser();
+        if (in_array($group->id , $this->manager->pluck('id')->toArray()) || auth()->user()->hasSuperUser())
+            return true;
+
+        return false;
     }
 
     public function isAllowedToSeeSeatGroup()
     {
-        if ($this->all_corporations)
+
+        if (auth()->user()->hasSuperUser() || auth()->user()->hasRole('seatgroups.edit'))
             return true;
 
-        if (auth()->user()->hasSuperUser())
-            return true;
+        return $this->isQualified(auth()->user()->group);
 
-        return in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()) || auth()->user()->hasRole('seatgroups.edit');
     }
 
     public function onWaitlist()
@@ -88,34 +90,68 @@ class Seatgroup extends Model
         return in_array(auth()->user()->group->id , $this->waitlist->map(function($group) { return $group->id; })->toArray());
     }
 
-    public function isMember()
+    public function isMember(Group $group)
     {
+
         try {
             switch ($this->type) {
-                case 'auto':
-                    if (in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()))
-                        return true;
-                    break;
+
                 case 'open':
-                    if (in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray()) || $this->all_corporations) {
-                        if(in_array(auth()->user()->group->id , $this->group->pluck('id')->toArray())) {
-                            return true;
-                        }
-                    }
-                    break;
-                case 'managed':
-                    if (in_array(auth()->user()->group->main_character->corporation_id , $this->corporation->pluck('corporation_id')->toArray())|| $this->all_corporations) {
-                        if (in_array(auth()->user()->group->id , $this->member->map(function($group) { return $group->id; })->toArray())) {
-                            return true;
-                        }
-                    }
+                    if (in_array($group->id, $this->group->pluck('id')->toArray()))
+                        return true;
 
                     break;
+                case 'managed':
+                    if (in_array($group->id, $this->member->pluck('id')->toArray()))
+                        return true;
+
+                    break;
+                case 'hidden': //TODO resolve this
+
             }
 
             return false;
         } catch (\Exception $e) {
             return $e;
         }
+    }
+
+    public function isQualified(Group $group)
+    {
+        $action = new GetCurrentAffiliationAction;
+        if($this->all_coporation)
+            return true;
+
+        $affiliations = collect($action->execute(['seatgroup_id' => $this->id]));
+        $main_character = $group->main_character;
+
+        $affiliations = $affiliations->filter(function ($affiliation) use ($main_character) {
+
+            if(isset($affiliation['corporation_title'])){
+                //Handle Corp_title
+                // First check if corporation is equal to main_character corporation.
+                if($affiliation['corporation_id'] === $main_character->corporation_id){
+                    //Then check if tite_id is within main_characters titles
+                   if(in_array($affiliation['corporation_title']['title_id'],$main_character->titles->pluck('title_id')->toArray())){
+
+                       return true;
+                   }
+                }
+            }
+
+            //Check if main_character is an affiliated corporation
+            if($affiliation['corporation_id'] === $main_character->corporation_id && !isset($affiliation['corporation_title'])){
+
+                return true;
+            }
+
+        });
+
+
+        if($affiliations->isNotEmpty())
+            return true;
+
+        return false;
+
     }
 }

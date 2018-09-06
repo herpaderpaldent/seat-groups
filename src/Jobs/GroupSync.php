@@ -64,7 +64,7 @@ class GroupSync extends SeatGroupsJobBase
 
                 Seatgroup::all()->each(function ($seat_group) use ($roles, $group) {
 
-                    if (in_array($group->main_character->corporation_id, $seat_group->corporation->pluck('corporation_id')->toArray()) || $seat_group->all_corporations) {
+                    if ($seat_group->isQualified($group)) {
                         switch ($seat_group->type) {
                             case 'auto':
                                 foreach ($seat_group->role as $role) {

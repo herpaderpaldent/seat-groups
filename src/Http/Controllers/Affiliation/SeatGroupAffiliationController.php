@@ -19,16 +19,16 @@ class SeatGroupAffiliationController extends Controller
     public function getCurrentAffiliations(GetCurrentAffiliationsRequest $request, GetCurrentAffiliationAction $action)
     {
 
-        $affiliations = $action->execute($request->all());
+        $affiliations = collect($action->execute($request->all()));
 
 
         return Datatables::of($affiliations)
-            /*->editColumn('created_at', function($row){
-                return view('seatgroups::logs.partials.date', compact('row'));
+            ->addColumn('affiliation', function ($row) {
+                return view('seatgroups::affiliation.partials.table-partials.affiliation', compact('row'))->render();
             })
-            ->editColumn('event', function ($row) {
-                return view('seatgroups::logs.partials.event', compact('row'));
-            })*/
+            ->addColumn('remove', function ($row){
+                return view('seatgroups::affiliation.partials.table-partials.remove-button', compact('row'))->render();
+            })
             ->make(true);
 
     }

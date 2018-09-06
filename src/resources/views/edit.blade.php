@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            @if($seatgroup->corporation->isEmpty() && !$seatgroup->all_corporations)
+            @if($seatgroup->corporation->isEmpty() && !$seatgroup->all_corporations && $seatgroup->corporationTitles->isEmpty())
                 <div class="alert alert-info alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h4><i class="icon fa fa-info"></i> SeAT-Group is not working</h4>
@@ -121,7 +121,6 @@
         <!--Affiliation -->
         <div class="col-md-4">
             @include('seatgroups::affiliation.affiliation')
-
         </div>
 
         <!--Moderator (Managed) and User (Hidden) -->
@@ -197,7 +196,7 @@
                         <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_user')}}</h3>
                     </div>
                     <div class="panel-body">
-                        <form method="post" action="{{route('seatgroupuser.update', $id)}}">
+                        <form method="post" action="{{route('seatgroups.user.join', $id)}}">
                             {{csrf_field()}}
                             <input name="_method3" type="hidden" value="PATCH">
                             <div class="form-group">
@@ -226,7 +225,7 @@
                             <tbody>
 
                             <tr>
-                                <th colspan="2" class="text-center">Current Users</th>
+                                <th colspan="2" class="text-center">Current Members</th>
                             </tr>
 
                             @foreach($seatgroup->member as $group)
@@ -269,8 +268,7 @@
       $("#available_permissions," +
           "#available_users," +
           "#available_characters," +
-          "#available_roles," +
-          "#available_corporations").select2({
+          "#available_roles").select2({
         placeholder: "{{ trans('web::seat.select_item_add') }}"
       });
     </script>

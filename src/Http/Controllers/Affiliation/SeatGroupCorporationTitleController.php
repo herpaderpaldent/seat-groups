@@ -12,7 +12,9 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Affiliation;
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\Titles\AddCorporationTitleAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\Titles\GetCorporationTitleAction;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\Titles\RemoveCorporationTitleAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\AddCorporationTitleAffiliationRequest;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\RemoveCorporationTitleAffiliationRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\ResolveCorporationTitleRequest;
 
 class SeatGroupCorporationTitleController
@@ -26,10 +28,19 @@ class SeatGroupCorporationTitleController
 
     }
 
-    public function setCorporationTitleAffiliation (AddCorporationTitleAffiliationRequest $request, AddCorporationTitleAffiliation $action)
+    public function addCorporationTitleAffiliation (AddCorporationTitleAffiliationRequest $request, AddCorporationTitleAffiliation $action)
     {
         if ($action->execute($request->all()))
             return redirect()->back()->with('success', 'Corporation title affiliation added.');
+
+        return redirect()->back()->with('warning', 'Ups something went wrong');
+
+
+    }
+    public function removeCorporationTitleAffiliation (RemoveCorporationTitleAffiliationRequest $request, RemoveCorporationTitleAffiliationAction  $action)
+    {
+        if ($action->execute($request->all()))
+            return redirect()->back()->with('success', 'Corporation title affiliation removed.');
 
         return redirect()->back()->with('warning', 'Ups something went wrong');
 

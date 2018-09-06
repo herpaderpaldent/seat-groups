@@ -10,7 +10,6 @@
 return [
     'seatgroups' => [
         'view',
-        'create',
-        'edit'
+        'create'
     ]
 ];

@@ -1,3 +1,10 @@
+# Version 1.2.0
+This is a major update to SeAT-Groups as it introduces many asked features and refactors lots of front end mistakes i made. 
+* Introducing `Corporation Title Filter`
+* Refactor edit-page
+* Refactor index-page
+
+
 # Version 1.1.1
 Fix changed class name.
 
@@ -12,7 +19,7 @@ This release consist of many improvements:
 
 This means every time the scheduled update `seat-groups:users:update` runs, every user group gets updated as an individual job, which is tracked and observable in Horizon dashboard. If the update job fails, the error can been seen in the workers dashboard. This further means, if one user group fails others are not blocked anymore.
 Thanks to some refactoring and a new observer, user groups with a missing RefreshToken are getting striped from their roles until every character in SeAT has a valid RefreshToken again.
-Thanks to Logs every Sync is getting logged and is viewable on the about-view, for anyone with the `seatgroups.edit` permission.
+Thanks to Logs every Sync is getting logged and is viewable on the about-view, for anyone with the `seatgroups.create` permission.
 Finally with `seat-groups:users:update --character_ids=123456789` you are able to dispatch an update job for the given character's SeAT group.
 
 Thanks at this point to @warlof and his two packages https://github.com/warlof/slackbot and https://github.com/warlof/seat-discord-connector without him and his packages (which btw. integrate very well with SeAT-Groups) i wouldn't have been able to write all the job-logic.

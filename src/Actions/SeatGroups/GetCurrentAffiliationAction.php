@@ -21,20 +21,28 @@ class GetCurrentAffiliationAction
 
         $affiliations = collect();
 
-        $seatgroup->corporation->each(function ($corporation) use ($affiliations) {
+        if($seatgroup->all_corporations)
             $affiliations->push([
+                'seatgroup_id' => $seatgroup->id,
+                'all_corporations' => 'all_corporations'
+            ]);
+
+        $seatgroup->corporation->each(function ($corporation) use ($affiliations, $seatgroup) {
+            $affiliations->push([
+                'seatgroup_id' => $seatgroup->id,
                 'corporation_id' => $corporation->corporation_id,
                 'name' => $corporation->name
             ]);
 
         });
 
-        $seatgroup->corporationTitles->each(function ($corporation_title) use ($affiliations) {
+        $seatgroup->corporationTitles->each(function ($corporation_title) use ($affiliations, $seatgroup) {
             $corporation = CorporationInfo::find($corporation_title->corporation_id);
             $title_name = CorporationTitle::where('corporation_id', $corporation_title->corporation_id)
                 ->where('title_id',$corporation_title->title_id)->first()->name;
 
             $affiliations->push([
+                'seatgroup_id' => $seatgroup->id,
                 'corporation_id' => $corporation->corporation_id,
                 'name' => $corporation->name,
                 'corporation_title' => [
@@ -43,8 +51,6 @@ class GetCurrentAffiliationAction
                 ]
             ]);
         });
-
-        //dd($affiliations);
 
         return $affiliations;
     }

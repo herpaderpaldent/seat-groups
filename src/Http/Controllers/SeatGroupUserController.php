@@ -7,6 +7,7 @@ use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
+use Yajra\Datatables\Datatables;
 
 class SeatGroupUserController extends Controller
 {
@@ -27,15 +28,29 @@ class SeatGroupUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function acceptApplication($seat_group_id, $group_id)
+    public function acceptApplication(Request $request,$seat_group_id) //TODO: refactor this to Application Manager
     {
-        $seatgroup = Seatgroup::find($seat_group_id);
+        switch($request->input('action')){
+            case('accept'):
+                $seatgroup = Seatgroup::find($seat_group_id);
 
-        $seatgroup->group()->updateExistingPivot($group_id, [
-            'on_waitlist' => 0,
-        ]);
+                $seatgroup->group()->updateExistingPivot($request->input('group_id'), [
+                    'on_waitlist' => 0,
+                ]);
 
-        return redirect()->back()->with('success', 'User accepted');
+                return redirect()->back()->with('success', 'User accepted');
+                break;
+            case('deny'):
+                $seatgroup = Seatgroup::find($seat_group_id);
+
+                $seatgroup->group()->detach($request->input('group_id'));
+
+                return redirect()->back()->with('success', 'User removed');
+
+        }
+
+
+
     }
 
     /**
@@ -114,7 +129,7 @@ class SeatGroupUserController extends Controller
      */
     public function update(Request $request,$id)
     {
-        //
+
         $seatgroup = Seatgroup::find($id);
 
         //Handle open group
@@ -151,7 +166,7 @@ class SeatGroupUserController extends Controller
 
         //Handle hidden group
         if ($seatgroup->type == 'hidden') {
-            if(auth()->user()->hasRole('seatgroups.edit')) {
+            if(auth()->user()->hasRole('seatgroups.create')) {
                 $this->validate(request(),[
                     'groups'=>'required'
                 ]);
@@ -193,12 +208,27 @@ class SeatGroupUserController extends Controller
         if ($seatgroup->type == 'managed') {
             $seatgroup->group()->detach(auth()->user()->group->id);
             if ($seatgroup->onWaitlist()) {
-                return redirect()->back()->with('success', ' removed');
+                return redirect()->back()->with('success', 'Application removed');
             }
         }
 
         dispatch(new GroupSync(auth()->user()->group));
 
-        return redirect()->back()->with('success', ' removed');
+        return redirect()->back()->with('success', 'You are no longer member of  removed');
+    }
+
+    public function getMembersTable($id)
+    {
+        $seatgroup_members = Seatgroup::find($id)->group;
+
+
+        return Datatables::of($seatgroup_members)
+            ->addColumn('name', function ($row) {
+                return view('seatgroups::partials.partials.modal-name', compact('row'))->render();
+            })
+            ->addColumn('actions', function ($row) {
+                return view('seatgroups::partials.partials.modal-actions', compact('row'))->render();
+            })
+            ->make(true);
     }
 }
