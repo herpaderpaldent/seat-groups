@@ -72,30 +72,10 @@ class GroupSync extends SeatGroupsJobBase
                                 }
                                 break;
                             case 'open':
-                                // check if user is Opt-in into a group
-                                if (in_array($group->id, $seat_group->group->pluck('id')->toArray())) {
-                                    foreach ($seat_group->role as $role) {
-                                        $roles->push($role->id);
-                                    }
-                                }
-                                break;
                             case 'managed':
-                                // check if user is member of the managed group
-                                if (in_array($group->id, $seat_group->member->map(function ($user) {
-
-                                    return $user->id;
-                                })->toArray())) {
-                                    foreach ($seat_group->role as $role) {
-                                        $roles->push($role->id);
-                                    }
-                                }
-                                break;
                             case 'hidden':
-                                // check if user is member of the hidden group
-                                if (in_array($group->id, $seat_group->member->map(function ($user) {
-
-                                    return $user->id;
-                                })->toArray())) {
+                                // check if user is in the group
+                                if ($seat_group->isMember($group)) {
                                     foreach ($seat_group->role as $role) {
                                         $roles->push($role->id);
                                     }
@@ -109,6 +89,8 @@ class GroupSync extends SeatGroupsJobBase
                 $group->roles()->sync($roles->unique());
 
                 $this->onFinish();
+
+                logger()->debug('Group has beend synced for '. $this->group->main_character->name);
 
             } catch (\Throwable $exception) {
 

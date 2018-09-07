@@ -88,7 +88,7 @@ class SeatGroupsController extends Controller
      */
     public function edit($id, GetCorporationListAction $action)
     {
-
+        // TODO refactor this to $seatgroup->corporation->pluck blabla
         $all_corporations = $action->execute([
             'seatgroup_id' =>$id,
             'origin' => 'SeatGroupsController'

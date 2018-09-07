@@ -11,36 +11,32 @@ namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationAction;
 use Illuminate\Database\Eloquent\Model;
-
-use Illuminate\Support\Facades\Auth;
-use Seat\Eveapi\Models\Character\CharacterInfo;
-use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Seat\Eveapi\Models\Corporation\CorporationTitle;
-use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Models\Group;
-use Seat\Web\Models\User;
+
 
 class Seatgroup extends Model
 {
-    use Corporation;
 
-    protected $fillable = ['name','description','type','role_id' ];
+    protected $fillable = ['name', 'description', 'type', 'role_id'];
 
     public function role()
     {
+
         return $this->belongsToMany('Seat\Web\Models\Acl\Role');
     }
 
     public function group()
     {
+
         return $this->belongsToMany('Seat\Web\Models\Group')
-            ->withPivot('is_manager','on_waitlist');
+            ->withPivot('is_manager', 'on_waitlist');
     }
 
     public function corporation()
     {
+
         return $this->belongsToMany('Seat\Eveapi\Models\Corporation\CorporationInfo',
-            'corporation_info_seatgroup','seatgroup_id', 'corporation_id');
+            'corporation_info_seatgroup', 'seatgroup_id', 'corporation_id');
     }
 
     public function corporationTitles()
@@ -51,30 +47,40 @@ class Seatgroup extends Model
 
     public function manager()
     {
+
         return $this->belongsToMany('Seat\Web\Models\Group')
-            ->wherePivot('is_manager',1);
+            ->wherePivot('is_manager', 1);
     }
 
     public function member()
     {
+
         return $this->belongsToMany('Seat\Web\Models\Group')
-            ->wherePivot('on_waitlist',0);
+            ->wherePivot('on_waitlist', 0);
     }
 
     public function waitlist()
     {
+
         return $this->belongsToMany('Seat\Web\Models\Group')
-            ->wherePivot('on_waitlist',1);
+            ->wherePivot('on_waitlist', 1);
     }
 
     public function isManager(Group $group)
     {
-        if (in_array($group->id , $this->manager->pluck('id')->toArray()) || auth()->user()->hasSuperUser())
+
+        if (in_array($group->id, $this->manager->pluck('id')->toArray()))
             return true;
 
         return false;
     }
 
+    /**
+     * This method shall only be used from frontend and will return a boolean if the user
+     * is allowed to see the seatgroup.
+     *
+     * @return bool
+     */
     public function isAllowedToSeeSeatGroup()
     {
 
@@ -87,27 +93,30 @@ class Seatgroup extends Model
 
     public function onWaitlist()
     {
-        return in_array(auth()->user()->group->id , $this->waitlist->map(function($group) { return $group->id; })->toArray());
+
+        return in_array(auth()->user()->group->id, $this->waitlist->map(function ($group) {
+
+            return $group->id;
+        })->toArray());
     }
 
     public function isMember(Group $group)
     {
 
         try {
+
             switch ($this->type) {
 
-                case 'open':
-                    if (in_array($group->id, $this->group->pluck('id')->toArray()))
+                case 'auto':
+                    if ($this->isQualified($group))
                         return true;
-
                     break;
+                case 'open':
                 case 'managed':
+                case 'hidden':
                     if (in_array($group->id, $this->member->pluck('id')->toArray()))
                         return true;
-
                     break;
-                case 'hidden': //TODO resolve this
-
             }
 
             return false;
@@ -118,8 +127,9 @@ class Seatgroup extends Model
 
     public function isQualified(Group $group)
     {
+
         $action = new GetCurrentAffiliationAction;
-        if($this->all_coporation)
+        if ($this->all_coporation)
             return true;
 
         $affiliations = collect($action->execute(['seatgroup_id' => $this->id]));
@@ -127,20 +137,20 @@ class Seatgroup extends Model
 
         $affiliations = $affiliations->filter(function ($affiliation) use ($main_character) {
 
-            if(isset($affiliation['corporation_title'])){
+            if (isset($affiliation['corporation_title'])) {
                 //Handle Corp_title
                 // First check if corporation is equal to main_character corporation.
-                if($affiliation['corporation_id'] === $main_character->corporation_id){
+                if ($affiliation['corporation_id'] === $main_character->corporation_id) {
                     //Then check if tite_id is within main_characters titles
-                   if(in_array($affiliation['corporation_title']['title_id'],$main_character->titles->pluck('title_id')->toArray())){
+                    if (in_array($affiliation['corporation_title']['title_id'], $main_character->titles->pluck('title_id')->toArray())) {
 
-                       return true;
-                   }
+                        return true;
+                    }
                 }
             }
 
             //Check if main_character is an affiliated corporation
-            if($affiliation['corporation_id'] === $main_character->corporation_id && !isset($affiliation['corporation_title'])){
+            if ($affiliation['corporation_id'] === $main_character->corporation_id && ! isset($affiliation['corporation_title'])) {
 
                 return true;
             }
@@ -148,7 +158,7 @@ class Seatgroup extends Model
         });
 
 
-        if($affiliations->isNotEmpty())
+        if ($affiliations->isNotEmpty())
             return true;
 
         return false;

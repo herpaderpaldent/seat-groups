@@ -16,7 +16,7 @@
   </div>
 
   <div class="form-group">
-    <label for="corporation-title">{{ trans('web::seat.available_titles') }}</label>
+    <label for="corporation-title">{{ trans_choice('web::seat.corporation_titles', 2)}}</label>
     <select name="seatgroup-title-id" id="seatgroup-title-id" style="width: 100%">
       <option></option>
     </select>

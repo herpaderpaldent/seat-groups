@@ -224,10 +224,10 @@ class SeatGroupUserController extends Controller
 
         return Datatables::of($seatgroup_members)
             ->addColumn('name', function ($row) {
-                return view('seatgroups::partials.partials.modal-name', compact('row'))->render();
+                return view('seatgroups::partials.modal-partials.modal-name', compact('row'))->render();
             })
             ->addColumn('actions', function ($row) {
-                return view('seatgroups::partials.partials.modal-actions', compact('row'))->render();
+                return view('seatgroups::partials.modal-partials.modal-actions', compact('row'))->render();
             })
             ->make(true);
     }

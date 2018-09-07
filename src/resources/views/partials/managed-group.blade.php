@@ -22,7 +22,7 @@
       <div class="panel-footer">
         Managers: {{$seatgroup->manager->map(function($user) { return $user->main_character->name; })->implode(', ')}}
 
-        @includeWhen($seatgroup->isManager(auth()->user()->group),'seatgroups::partials.manager-modal')
+        @includeWhen($seatgroup->isManager(auth()->user()->group) || auth()->user()->hasSuperUser(),'seatgroups::partials.manager-modal')
 
       </div>
 

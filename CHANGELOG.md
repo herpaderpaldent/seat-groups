@@ -1,8 +1,24 @@
 # Version 1.2.0
-This is a major update to SeAT-Groups as it introduces many asked features and refactors lots of front end mistakes i made. 
+This is a major update to SeAT-Groups as it introduces many asked features and refactoring lots of front end mistakes i made. This is just an initial working release. I will continue to improve SeAT Groups and refactor even classes i have introuced with this release and i see room for improvement.
+
 * Introducing `Corporation Title Filter`
-* Refactor edit-page
-* Refactor index-page
+* Refactor affiliation box on `edit`
+** Introducing of actions and custom validation for corporation-titles
+** Serverside processed affiliation-table
+** Logic refactoring to prevent assigning of corp-title affiliation whilst there is corp affiliated
+** Logic introduction to prevent assigning other corporation wit `All Corporations` option enabled
+
+* Refactor `index`-page
+** Removing of laravel-form-builder inside
+** Refactoring of many routes.
+** split view in many partials to optimize maintainability.
+** Reworked `managed` SeAT group modal: using `Datatables` asynchronously and bigger buttons.
+
+* Refactor of `SeatGroups`
+** Introducing of `isQualified()` method
+** `GroupSync` will take use of this method.
+** Refactoring of `isMember()` function
+** Reducing of switch-complexity in `GroupSync`
 
 
 # Version 1.1.1

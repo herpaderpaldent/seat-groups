@@ -23,8 +23,9 @@
       <p>{{ trans('seatgroups::seat.seat_groups_managedgroup_description')}}</p>
     </div>
 
-
     @include('seatgroups::partials.managed-group')
+    @include('seatgroups::partials.hidden-group')
+
 
   </div>
 @endsection
