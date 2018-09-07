@@ -41,6 +41,7 @@
     </div>
   </div>
 
+  @if(auth()->user()->hasRole('seatgroups.create'))
   <div class="box box-default">
     <div class="box-header with-border">
       <i class="fa fa-archive"></i>
@@ -52,12 +53,13 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-      @if(auth()->user()->hasRole('seatgroups.edit'))
+
         @include('seatgroups::logs.list')
-      @endif
+
     </div>
     <!-- /.box-body -->
   </div>
+  @endif
 
 @stop
 @section('right')

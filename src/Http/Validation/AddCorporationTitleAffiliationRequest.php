@@ -1,16 +1,17 @@
 <?php
 /**
  * Created by PhpStorm.
- *  * User: Herpaderp Aldent
- * Date: 24.06.2018
- * Time: 11:42
+ * User: felix
+ * Date: 05.09.2018
+ * Time: 15:20
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation;
 
+
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddAffiliation extends FormRequest
+class AddCorporationTitleAffiliationRequest extends FormRequest
 {
     /**
      * Authorize the request by default.
@@ -32,8 +33,10 @@ class AddAffiliation extends FormRequest
     {
 
         return [
-            'corporations'=>'required',
-            'seatgroup_id'=>'required'
+            'seatgroup-corporation-id'=>'required',
+            'seatgroup_id'=>'required',
+            'seatgroup-title-id' => 'required'
         ];
     }
+
 }

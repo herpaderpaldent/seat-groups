@@ -6,7 +6,7 @@ use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Seat\Services\Repositories\Corporation\Corporation;
 
 
-class AddCorpAffiliation
+class AddCorporationAffiliationAction
 {
     use Corporation;
     /**
@@ -16,17 +16,20 @@ class AddCorpAffiliation
      */
     public function execute(array $data)
     {
-        //dd($data);
+
         $seat_group_id = $data['seatgroup_id'];
-        $corporations = $data['corporations'];
+        $corporations = $data['corporation_ids'];
 
         $seat_group = Seatgroup::find($seat_group_id);
 
-        if(in_array("1337",$corporations)){
+        if(in_array("-1",$corporations)){
+            // First set SeAT Group to $all_corporation = true
             $seat_group->all_corporations = true;
             $seat_group->save();
+
+            // Secondly remove the -1 value from the array
             $corporations = array_filter($corporations,function($value){
-                return $value !== "1337";
+                return $value !== "-1";
             });
         }
 

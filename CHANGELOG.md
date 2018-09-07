@@ -1,3 +1,26 @@
+# Version 1.2.0
+This is a major update to SeAT-Groups as it introduces many asked features and refactoring lots of front end mistakes i made. This is just an initial working release. I will continue to improve SeAT Groups and refactor even classes i have introuced with this release and i see room for improvement.
+
+* Introducing `Corporation Title Filter`
+* Refactor affiliation box on `edit`
+** Introducing of actions and custom validation for corporation-titles
+** Serverside processed affiliation-table
+** Logic refactoring to prevent assigning of corp-title affiliation whilst there is corp affiliated
+** Logic introduction to prevent assigning other corporation wit `All Corporations` option enabled
+
+* Refactor `index`-page
+** Removing of laravel-form-builder inside
+** Refactoring of many routes.
+** split view in many partials to optimize maintainability.
+** Reworked `managed` SeAT group modal: using `Datatables` asynchronously and bigger buttons.
+
+* Refactor of `SeatGroups`
+** Introducing of `isQualified()` method
+** `GroupSync` will take use of this method.
+** Refactoring of `isMember()` function
+** Reducing of switch-complexity in `GroupSync`
+
+
 # Version 1.1.1
 Fix changed class name.
 
@@ -12,7 +35,7 @@ This release consist of many improvements:
 
 This means every time the scheduled update `seat-groups:users:update` runs, every user group gets updated as an individual job, which is tracked and observable in Horizon dashboard. If the update job fails, the error can been seen in the workers dashboard. This further means, if one user group fails others are not blocked anymore.
 Thanks to some refactoring and a new observer, user groups with a missing RefreshToken are getting striped from their roles until every character in SeAT has a valid RefreshToken again.
-Thanks to Logs every Sync is getting logged and is viewable on the about-view, for anyone with the `seatgroups.edit` permission.
+Thanks to Logs every Sync is getting logged and is viewable on the about-view, for anyone with the `seatgroups.create` permission.
 Finally with `seat-groups:users:update --character_ids=123456789` you are able to dispatch an update job for the given character's SeAT group.
 
 Thanks at this point to @warlof and his two packages https://github.com/warlof/slackbot and https://github.com/warlof/seat-discord-connector without him and his packages (which btw. integrate very well with SeAT-Groups) i wouldn't have been able to write all the job-logic.
