@@ -126,31 +126,7 @@
             <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_manager')}}</h3>
           </div>
           <div class="panel-body">
-            <form method="post" action="{{route('seatgroupuser.addmanager', $id)}}">
-              {{csrf_field()}}
-              <input name="_method3" type="hidden" value="PATCH">
-              <div class="form-group">
-                <label for="groups">{{ trans_choice('web::seat.available_groups',2) }}</label>
-                <select name="groups[]" id="available_users" style="width: 100%" multiple>
 
-                  @foreach($all_groups as $group)
-                    @if(!in_array($group->id,$seatgroup->manager->pluck('id')->toArray())))
-                    <option value="{{ $group->id }}">
-                      {{ $group->users->map(function($user) { return $user->name; })->implode(', ') }}
-                    </option>
-                    @endif
-                  @endforeach
-
-                </select>
-              </div>
-              <div class="row">
-                <div class="col-md-6"></div>
-                <div class="form-group col-md-12">
-                  <button type="submit" class="btn btn-success btn-block">Add Manager</button>
-                </div>
-              </div>
-            </form>
-            <hr>
             <table class="table table-hover table-condensed">
               <tbody>
 
@@ -180,6 +156,8 @@
             </table>
           </div>
         </div>
+
+        @include('seatgroups::manager.manager')
       @endif
 
       @if($seatgroup->type == 'hidden')

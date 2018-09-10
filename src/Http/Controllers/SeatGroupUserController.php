@@ -2,6 +2,8 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
+use Herpaderpaldent\Seat\SeatGroups\Actions\Managers\AddManagerAction;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager\AddManagerRequest;
 use Herpaderpaldent\Seat\SeatGroups\Jobs\GroupSync;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
@@ -89,35 +91,16 @@ class SeatGroupUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param \Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager\AddManagerRequest $request
+     * @param \Herpaderpaldent\Seat\SeatGroups\Actions\Managers\AddManagerAction         $action
+     *
      * @return \Illuminate\Http\Response
      */
-    public function addManager(Request $request, $id)
+    public function addManager(AddManagerRequest $request, AddManagerAction $action)
     {
-        //
-        $seatgroup = Seatgroup::find($id);
+        return $action->execute($request->all());
 
-        $this->validate(request(),[
-            'groups' => 'required'
-        ]);
 
-        $groups = $request->get('groups');
-        foreach ($groups as $group) {
-            if (in_array($group, $seatgroup->waitlist->map(function($group) { return $group->id; })->toArray())) {
-                redirect()->back()->with('warning', 'User must be first member before made manager');
-            }
-            elseif (in_array($group, $seatgroup->member->map(function($group) { return $group->id; })->toArray())) {
-                $seatgroup->group()->updateExistingPivot($group, [
-                    'is_manager' => 1,
-                ]);
-            } else {
-                $seatgroup->group()->attach($group, [
-                    'is_manager' => 1,
-                ]);
-            }
-        }
-
-        return redirect()->back()->with('success', 'Updated');
     }
 
     /**

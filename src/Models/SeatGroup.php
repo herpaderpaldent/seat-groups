@@ -164,4 +164,9 @@ class Seatgroup extends Model
         return false;
 
     }
+
+    public function children() //TODO: check if we can find a better name. This relates to parent-child relationship
+    {
+        return $this->belongsToMany(Seatgroup::class, 'seatgroup_seatgroups','parent_id','child_id');
+    }
 }

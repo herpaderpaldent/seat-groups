@@ -97,11 +97,13 @@ class SeatGroupsController extends Controller
             'seatgroup_id' =>$id,
             'origin' => 'corporation-tile-form'
         ]);
+        //TODO Filter children out
+        $all_seatgroups = Seatgroup::whereNotIn('id',[$id])->get();
         $roles = Role::all();
         $seatgroup = Seatgroup::find($id);
         $all_groups = Group::all();
 
-        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups','all_corporations_for_title'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups','all_corporations_for_title', 'all_seatgroups'));
     }
 
     /**
