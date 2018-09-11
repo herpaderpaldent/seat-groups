@@ -62,6 +62,7 @@ class GroupSync extends SeatGroupsJobBase
                     }
                 }
 
+                //TODO: Test member removalif not compliant
                 Seatgroup::all()->each(function ($seat_group) use ($roles, $group) {
 
                     if ($seat_group->isQualified($group)) {
@@ -118,6 +119,10 @@ class GroupSync extends SeatGroupsJobBase
             if (is_null($user->refresh_token)) {
                 // take away all roles
                 $this->group->roles()->sync([]);
+                //TODO: Test member removal if not compliant
+                Seatgroup::all()->each(function ($seatgroup) {
+                    $seatgroup->member->detach($this->group->id);
+                });
 
                 SeatgroupLog::create([
                     'event' => 'warning',

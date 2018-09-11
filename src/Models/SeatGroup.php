@@ -66,11 +66,24 @@ class Seatgroup extends Model
             ->wherePivot('on_waitlist', 1);
     }
 
+    /**
+     * @param \Seat\Web\Models\Group $group
+     *
+     * @return bool
+     */
     public function isManager(Group $group)
     {
 
         if (in_array($group->id, $this->manager->pluck('id')->toArray()))
             return true;
+
+        //TODO Test this isManager function.
+        if($this->children){
+            foreach ($this->children as $child) {
+                if(in_array($group->id, $child->member->pluck('id')->toArray()))
+                    return true;
+            }
+        }
 
         return false;
     }
@@ -84,7 +97,7 @@ class Seatgroup extends Model
     public function isAllowedToSeeSeatGroup()
     {
 
-        if (auth()->user()->hasSuperUser() || auth()->user()->hasRole('seatgroups.edit'))
+        if (auth()->user()->hasSuperUser() || auth()->user()->hasRole('seatgroups.edit') || $this->isManager(auth()->user()->group))
             return true;
 
         return $this->isQualified(auth()->user()->group);
