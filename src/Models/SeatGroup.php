@@ -135,8 +135,8 @@ class Seatgroup extends Model
             return false;
         } catch (\Exception $e) {
             return $e;
-        }
-    }*/
+        }*/
+    }
 
     public function isQualified(Group $group)
     {
