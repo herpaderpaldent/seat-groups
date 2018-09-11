@@ -100,10 +100,23 @@ class Seatgroup extends Model
         })->toArray());
     }
 
+    /**
+     * @param \Seat\Web\Models\Group $group
+     *
+     * @return bool
+     */
     public function isMember(Group $group)
     {
 
-        try {
+        //TODO: Check this logic
+
+        if (in_array($group->id, $this->member->pluck('id')->toArray()))
+            return true;
+
+        return false;
+
+
+        /*try {
 
             switch ($this->type) {
 
@@ -123,7 +136,7 @@ class Seatgroup extends Model
         } catch (\Exception $e) {
             return $e;
         }
-    }
+    }*/
 
     public function isQualified(Group $group)
     {

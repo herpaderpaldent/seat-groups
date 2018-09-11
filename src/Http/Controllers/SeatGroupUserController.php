@@ -3,7 +3,9 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Managers\AddManagerAction;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Managers\RemoveManagerAction;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager\AddManagerRequest;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager\RemoveManagerRequest;
 use Herpaderpaldent\Seat\SeatGroups\Jobs\GroupSync;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
@@ -73,18 +75,17 @@ class SeatGroupUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     *
+     * @param \Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager\RemoveManagerRequest $request
+     * @param \Herpaderpaldent\Seat\SeatGroups\Actions\Managers\RemoveManagerAction         $action
+     *
      * @return \Illuminate\Http\Response
      */
-    public function removeManager($seat_group_id, $group_id)
+    public function removeManager(RemoveManagerRequest $request, RemoveManagerAction $action)
     {
-        $seatgroup = Seatgroup::find($seat_group_id);
 
-        $seatgroup->group()->updateExistingPivot($group_id, [
-            'is_manager' => 0,
-        ]);
+        return $action->execute($request->all());
 
-        return redirect()->back()->with('success', 'Manager removed');
 
     }
 

@@ -37,14 +37,9 @@ class AddManagerAction
         }
 
         if(isset($data['seatgroups'])){
-            $parent_id = $data['seatgroup_id'];
-            $children_ids = $data['seatgroups'];
 
-            foreach ($children_ids as $children_id) {
-                Seatgroup::find($children_id)
-                    ->parent()->associate($parent_id)->save();
+            $seatgroup->children()->attach($data['seatgroups']);
 
-            }
         }
 
 

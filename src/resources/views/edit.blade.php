@@ -120,7 +120,7 @@
     <!--Moderator (Managed) and User (Hidden) -->
     <div class="col-md-4">
       @if($seatgroup->type == 'managed')
-        <h3>{{trans('seatgroups::seat.seat_groups_managedgroup')}}</h3>
+        {{--<h3>{{trans('seatgroups::seat.seat_groups_managedgroup')}}</h3>
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_manager')}}</h3>
@@ -155,7 +155,7 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div>--}}
 
         @include('seatgroups::manager.manager')
       @endif

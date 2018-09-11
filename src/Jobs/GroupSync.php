@@ -70,6 +70,7 @@ class GroupSync extends SeatGroupsJobBase
                                 foreach ($seat_group->role as $role) {
                                     $roles->push($role->id);
                                 }
+                                $seat_group->member->attach($group->id);
                                 break;
                             case 'open':
                             case 'managed':
@@ -82,7 +83,7 @@ class GroupSync extends SeatGroupsJobBase
                                 }
                                 break;
                         }
-                    }
+                    } else $seat_group->member->detach($group->id);
 
                 });
 

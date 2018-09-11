@@ -47,9 +47,13 @@ Route::group([
             'as'   => 'seatgroups.create',
             'uses' => 'SeatGroupsController@create',
         ]);
-        Route::post('/manager', [
+        Route::post('/manager/add', [
             'as'   => 'seatgroupuser.addmanager',
             'uses' => 'SeatGroupUserController@addManager',
+        ]);
+        Route::post('/manager/remove', [
+            'as'   => 'seatgroupuser.remove.manager',
+            'uses' => 'SeatGroupUserController@removeManager',
         ]);
 
     });
@@ -153,10 +157,6 @@ Route::group([
             'as'         => 'seatgroupuser.removeGroupFromSeatGroup',
             'middleware' => 'bouncer:seatgroups.create',
             'uses'       => 'SeatGroupUserController@removeGroupFromSeatGroup',
-        ]);
-        Route::delete('/{seat_group_id}/manager/{group_id}', [
-            'as'   => 'seatgroupuser.removemanager',
-            'uses' => 'SeatGroupUserController@removeManager',
         ]);
         Route::delete('/{seat_group_id}/member/{group_id}', [
             'as'   => 'seatgroupuser.removemember',
