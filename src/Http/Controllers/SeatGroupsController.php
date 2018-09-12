@@ -88,7 +88,6 @@ class SeatGroupsController extends Controller
      */
     public function edit($id, GetCorporationListAction $action)
     {
-        // TODO refactor this to $seatgroup->corporation->pluck blabla
         $all_corporations = $action->execute([
             'seatgroup_id' =>$id,
             'origin' => 'SeatGroupsController'
@@ -99,9 +98,10 @@ class SeatGroupsController extends Controller
         ]);
         $roles = Role::all();
         $seatgroup = Seatgroup::find($id);
+        $available_seatgroups = Seatgroup::whereNotIn('id',$seatgroup->children->pluck('id')->push($id)->toArray())->get();
         $all_groups = Group::all();
 
-        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups','all_corporations_for_title'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups','all_corporations_for_title', 'available_seatgroups'));
     }
 
     /**

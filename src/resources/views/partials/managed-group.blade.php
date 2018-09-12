@@ -11,7 +11,7 @@
         <h3 class="panel-title">{{$seatgroup->name}}</h3>
       </div>
       <div class="panel-body">
-        @include('seatgroups::partials.join-button')
+        @includeWhen($seatgroup->isQualified(auth()->user()->group),'seatgroups::partials.join-button')
         {{$seatgroup->description}} <br>
         @if($seatgroup->isMember(auth()->user()->group))
           Members: {{$seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', ')}}

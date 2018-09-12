@@ -66,11 +66,23 @@ class Seatgroup extends Model
             ->wherePivot('on_waitlist', 1);
     }
 
+    /**
+     * @param \Seat\Web\Models\Group $group
+     *
+     * @return bool
+     */
     public function isManager(Group $group)
     {
 
         if (in_array($group->id, $this->manager->pluck('id')->toArray()))
             return true;
+
+        if($this->children){
+            foreach ($this->children as $child) {
+                if(in_array($group->id, $child->member->pluck('id')->toArray()))
+                    return true;
+            }
+        }
 
         return false;
     }
@@ -84,7 +96,7 @@ class Seatgroup extends Model
     public function isAllowedToSeeSeatGroup()
     {
 
-        if (auth()->user()->hasSuperUser() || auth()->user()->hasRole('seatgroups.edit'))
+        if (auth()->user()->hasSuperUser() || auth()->user()->hasRole('seatgroups.edit') || $this->isManager(auth()->user()->group))
             return true;
 
         return $this->isQualified(auth()->user()->group);
@@ -100,29 +112,18 @@ class Seatgroup extends Model
         })->toArray());
     }
 
+    /**
+     * @param \Seat\Web\Models\Group $group
+     *
+     * @return bool
+     */
     public function isMember(Group $group)
     {
 
-        try {
+        if (in_array($group->id, $this->member->pluck('id')->toArray()))
+            return true;
 
-            switch ($this->type) {
-
-                case 'auto':
-                    if ($this->isQualified($group))
-                        return true;
-                    break;
-                case 'open':
-                case 'managed':
-                case 'hidden':
-                    if (in_array($group->id, $this->member->pluck('id')->toArray()))
-                        return true;
-                    break;
-            }
-
-            return false;
-        } catch (\Exception $e) {
-            return $e;
-        }
+        return false;
     }
 
     public function isQualified(Group $group)
@@ -133,35 +134,38 @@ class Seatgroup extends Model
             return true;
 
         $affiliations = collect($action->execute(['seatgroup_id' => $this->id]));
-        $main_character = $group->main_character;
 
-        $affiliations = $affiliations->filter(function ($affiliation) use ($main_character) {
+        foreach ($group->users as $user){
 
-            if (isset($affiliation['corporation_title'])) {
-                //Handle Corp_title
-                // First check if corporation is equal to main_character corporation.
-                if ($affiliation['corporation_id'] === $main_character->corporation_id) {
-                    //Then check if tite_id is within main_characters titles
-                    if (in_array($affiliation['corporation_title']['title_id'], $main_character->titles->pluck('title_id')->toArray())) {
+            foreach($affiliations as $affiliation){
 
-                        return true;
+                if (isset($affiliation['corporation_title'])) {
+                    // Handle Corp_title
+                    // First check if corporation is equal to character corporation.
+                    if ($affiliation['corporation_id'] === $user->character->corporation_id) {
+                        //Then check if tite_id is within main_characters titles
+                        if (in_array($affiliation['corporation_title']['title_id'], $user->character->titles->pluck('title_id')->toArray())) {
+
+                            return true;
+                        }
                     }
                 }
+
+                //Check if main_character is an affiliated corporation
+                if (isset($affiliation['corporation_id']) && $affiliation['corporation_id'] === $user->character->corporation_id && ! isset($affiliation['corporation_title'])) {
+
+                    return true;
+                }
+
             }
-
-            //Check if main_character is an affiliated corporation
-            if ($affiliation['corporation_id'] === $main_character->corporation_id && ! isset($affiliation['corporation_title'])) {
-
-                return true;
-            }
-
-        });
-
-
-        if ($affiliations->isNotEmpty())
-            return true;
+        }
 
         return false;
 
+    }
+
+    public function children()
+    {
+        return $this->belongsToMany(Seatgroup::class, 'seatgroup_seatgroups','parent_id','child_id');
     }
 }

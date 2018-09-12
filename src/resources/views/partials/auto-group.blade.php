@@ -12,6 +12,7 @@
 
 
     @foreach($seatgroups->where('type', 'auto') as $seatgroup)
+
       @if(!$seatgroup->isAllowedToSeeSeatGroup())
         @continue
       @endif

@@ -30,6 +30,7 @@ return [
     'seat_deny_managedgroup' => 'Reject',
     'seat_accept_managedgroup' => 'Accept',
     'seat_removefrom_managedgroup' => 'Remove',
+    'available_seatgroups' => 'Available SeAT Groups as Manager',
 
     'seat_groups_hiddengroup' => 'Hidden SeAT Group',
     'seat_groups_user' => 'User',
