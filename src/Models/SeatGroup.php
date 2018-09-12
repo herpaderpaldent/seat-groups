@@ -130,7 +130,8 @@ class Seatgroup extends Model
     {
 
         $action = new GetCurrentAffiliationAction;
-        if ($this->all_coporation)
+
+        if ($this->all_corporations)
             return true;
 
         $affiliations = collect($action->execute(['seatgroup_id' => $this->id]));
