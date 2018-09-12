@@ -120,42 +120,7 @@
     <!--Moderator (Managed) and User (Hidden) -->
     <div class="col-md-4">
       @if($seatgroup->type == 'managed')
-        {{--<h3>{{trans('seatgroups::seat.seat_groups_managedgroup')}}</h3>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{trans('seatgroups::seat.seat_groups_manager')}}</h3>
-          </div>
-          <div class="panel-body">
 
-            <table class="table table-hover table-condensed">
-              <tbody>
-
-              <tr>
-                <th colspan="2" class="text-center">Current Manager</th>
-              </tr>
-
-              @foreach($seatgroup->manager as $group)
-
-                <tr>
-                  <td>
-                    {{ $group->users->map(function($user) { return $user->name; })->implode(', ') }}
-                  </td>
-                  <td>
-                    {!! Form::open(['method' => 'DELETE',
-                'route' => ['seatgroupuser.removemanager',$seatgroup->id,$group->id],
-                'style'=>'display:inline'
-                ]) !!}
-                    {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
-                    {!! Form::close() !!}
-                  </td>
-                </tr>
-
-              @endforeach
-
-              </tbody>
-            </table>
-          </div>
-        </div>--}}
 
         @include('seatgroups::manager.manager')
       @endif

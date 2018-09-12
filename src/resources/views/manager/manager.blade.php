@@ -27,15 +27,9 @@
         <label for="groups">{{ trans_choice('web::seat.available_seatgroups',2) }}</label>
         <select name="seatgroups[]" id="available_seatgroups" style="width: 100%" multiple>
 
-          @foreach($all_seatgroups as $group)
-            @if(!in_array($group->id,$seatgroup->children->pluck('id')->toArray())))
-            <option value="{{ $group->id }}">
-              {{ $group->name }}
-            </option>
-            @endif
+          @foreach($available_seatgroups as $group)
+            <option value="{{ $group->id }}"> {{ $group->name }} </option>
           @endforeach
-
-
 
         </select>
       </div>
@@ -48,7 +42,6 @@
       </div>
     </form>
 
-    Table of current Managers below
     <table class="table table-hover table-condensed">
       <tbody>
 
@@ -56,26 +49,25 @@
         <th colspan="2" class="text-center">Current Manager</th>
       </tr>
 
-@include('seatgroups::manager.partials.remove-usergroup')
-@include('seatgroups::manager.partials.remove-seatgroup')
+      @include('seatgroups::manager.partials.remove-usergroup')
+      @include('seatgroups::manager.partials.remove-seatgroup')
 
+      </tbody>
+    </table>
 
-</tbody>
-</table>
-
-</div>
-<!-- /.box-body -->
+  </div>
+  <!-- /.box-body -->
 </div>
 
 @push('javascript')
 
-@include('web::includes.javascript.id-to-name')
+  @include('web::includes.javascript.id-to-name')
 
-<script>
-$("#available_users," +
-  "#available_seatgroups").select2({
-placeholder: "{{ trans('web::seat.select_item_add') }}"
-});
-</script>
+  <script>
+    $("#available_users," +
+        "#available_seatgroups").select2({
+      placeholder: "{{ trans('web::seat.select_item_add') }}"
+    });
+  </script>
 
 @endpush

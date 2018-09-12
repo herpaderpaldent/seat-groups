@@ -20,8 +20,7 @@
           {data: 'created_at'},
           {data: 'event', name: 'event'},
           {data: 'message'}
-        ],
-        order: [[0,'desc']]
+        ]
       });
     });
   </script>

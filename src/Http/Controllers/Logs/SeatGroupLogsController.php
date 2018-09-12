@@ -23,7 +23,7 @@ class SeatGroupLogsController extends Controller
 
     public function getSeatGroupLogs()
     {
-        $logs = SeatgroupLog::all();
+        $logs = SeatgroupLog::query();
 
         return Datatables::of($logs)
             ->editColumn('created_at', function($row){

@@ -62,7 +62,6 @@ class GroupSync extends SeatGroupsJobBase
                     }
                 }
 
-                //TODO: Test member removalif not compliant
                 Seatgroup::all()->each(function ($seat_group) use ($roles, $group) {
 
                     if ($seat_group->isQualified($group)) {
@@ -71,7 +70,10 @@ class GroupSync extends SeatGroupsJobBase
                                 foreach ($seat_group->role as $role) {
                                     $roles->push($role->id);
                                 }
-                                $seat_group->member->attach($group->id);
+                                if(!in_array($group->id,$seat_group->member->pluck('id')->toArray())){
+                                    // add user_group to seat_group as member if no member yet.
+                                    $seat_group->member()->attach($group->id);
+                                }
                                 break;
                             case 'open':
                             case 'managed':
@@ -84,8 +86,9 @@ class GroupSync extends SeatGroupsJobBase
                                 }
                                 break;
                         }
-                    } else $seat_group->member->detach($group->id);
-
+                    } else if(in_array($group->id,$seat_group->member->pluck('id')->toArray())) {
+                        $seat_group->member()->detach($group->id);
+                    }
                 });
 
                 $group->roles()->sync($roles->unique());
@@ -119,7 +122,6 @@ class GroupSync extends SeatGroupsJobBase
             if (is_null($user->refresh_token)) {
                 // take away all roles
                 $this->group->roles()->sync([]);
-                //TODO: Test member removal if not compliant
                 Seatgroup::all()->each(function ($seatgroup) {
                     $seatgroup->member->detach($this->group->id);
                 });
@@ -140,19 +142,22 @@ class GroupSync extends SeatGroupsJobBase
     public function onFail($exception)
     {
 
+        report($exception);
+
         SeatgroupLog::create([
             'event' => 'error',
-            'message' => sprintf('An error occurred while syncing user group of %s (%s)',
+            'message' => sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
                 $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
 
         ]);
+
     }
 
     public function onFinish()
     {
         SeatgroupLog::create([
             'event' => 'success',
-            'message' => sprintf('The user group of %s (%s) has successfully been synced',
+            'message' => sprintf('The user group of %s (%s) has successfully been synced.',
                 $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
 
         ]);
