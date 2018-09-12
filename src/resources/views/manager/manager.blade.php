@@ -24,7 +24,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="groups">{{ trans_choice('web::seat.available_seatgroups',2) }}</label>
+        <label for="groups">{{ trans('seatgroups::seat.available_seatgroups') }}</label>
         <select name="seatgroups[]" id="available_seatgroups" style="width: 100%" multiple>
 
           @foreach($available_seatgroups as $group)
