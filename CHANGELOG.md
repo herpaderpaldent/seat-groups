@@ -1,12 +1,15 @@
 # Version 1.3.0
-* Now respecting all users in a user_group in `isQualified()` method. 
-* You are able to setup a whole SeAT Group as manager of another SeAT Group.
+This update is brought to you because and thanks to mmolitor87 & Vojax. Both had very valuable input on how to make SeAT-Groups even better. Thank you for being patient with me, and keep your feedback flowing.
+
+* Now respecting all users in a user_group in `isQualified()` method
+* You are able to setup a whole SeAT Group as manager of another SeAT Group
 * Refactored edit-view for managed groups
 * Refactored index-view for managed groups
 * refactored `isManager()` method
-* being more strict on membership. 
+* being more strict on membership 
 * Changing Log from STRING to TEXT to accommodate longer messages.
-* Attempting to modify LogController to resolve an issue with too large DBs.
+* Attempting to modify LogController to resolve an issue with too large DBs
+* `onFail` now correctly reports to log what went wrong
 
 ATTENTION: Managers need now to be extra careful when pruging members and make sure they purge all characters from a user_group, whereas before everything was bound to the main_character.
 If a user lacks of at least 1 character in his user_group which qualifies in respective to your configurated affiliation he will get removed from the SeAT group. This means the user will lose every role bound to this SeAT Group and needs to apply/opt-in again.
