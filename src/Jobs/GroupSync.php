@@ -123,7 +123,7 @@ class GroupSync extends SeatGroupsJobBase
                 // take away all roles
                 $this->group->roles()->sync([]);
                 Seatgroup::all()->each(function ($seatgroup) {
-                    $seatgroup->member->detach($this->group->id);
+                    $seatgroup->member()->detach($this->group->id);
                 });
 
                 SeatgroupLog::create([
