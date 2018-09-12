@@ -14,7 +14,6 @@
     @foreach($seatgroups->where('type', 'auto') as $seatgroup)
 
       @if(!$seatgroup->isAllowedToSeeSeatGroup())
-        false {{auth()->user()->group->id}}
         @continue
       @endif
 
