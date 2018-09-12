@@ -1,3 +1,10 @@
+# Version 1.3.1
+Smaller bugfixes
+* removed typo in `isQualified()` method which was blocking all_corporations affiliation.
+* removed some typos in changelog
+* fixed detaching-error in `beforeStart()` method
+* added SeAT Group as Manager in panel-footer.
+
 # Version 1.3.0
 This update is brought to you because and thanks to mmolitor87 & Vojax. Both had very valuable input on how to make SeAT-Groups even better. Thank you for being patient with me, and keep your feedback flowing.
 
