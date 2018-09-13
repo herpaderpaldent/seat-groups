@@ -77,7 +77,7 @@ Route::group([
             'as'    => 'affiliation.get.corporation.list',
             'uses'  => 'SeatGroupCorporationController@getCorporationList'
         ]);
-        Route::post('/affiliations', [
+        Route::post('/affiliations/current', [
             'as'    => 'affiliation.get.current.affiliations',
             'uses'  => 'SeatGroupAffiliationController@getCurrentAffiliations'
         ]);
@@ -94,8 +94,8 @@ Route::group([
             'uses'  => 'SeatGroupCorporationTitleController@removeCorporationTitleAffiliation'
         ]);
         Route::post('/affiliation/add/corporation', [
-            'as'         => 'affiliation.add.corp.affiliation',
-            'uses'       => 'SeatGroupCorporationController@addCorporationAffiliation'
+            'as'    => 'affiliation.add.corp.affiliation',
+            'uses'  => 'SeatGroupCorporationController@addCorporationAffiliation'
         ]);
 
 
