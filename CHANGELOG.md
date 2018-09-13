@@ -1,7 +1,7 @@
 # Version 1.3.2
 Some bug fixes:
 * adapting the /affiliation url because adblockers are acting up.
-* bump 
+* bump version.
 
 # Version 1.3.1
 Smaller bugfixes
