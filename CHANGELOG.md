@@ -1,3 +1,8 @@
+# Version 1.3.2
+Some bug fixes:
+* adapting the /affiliation url because adblockers are acting up.
+* bump version.
+
 # Version 1.3.1
 Smaller bugfixes
 * removed typo in `isQualified()` method which was blocking all_corporations affiliation.
