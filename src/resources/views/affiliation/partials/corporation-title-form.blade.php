@@ -37,7 +37,7 @@
       $('#seatgroup-title-id').empty();
 
       $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: '{{ route('affiliation.resolve.corporation.title') }}',
         data: {
           corporation_id: $('#seatgroup-corporation-id').val(),

@@ -61,15 +61,15 @@ Route::group([
     // Routes for New Affiliation
     Route::group([
         'namespace' => 'Affiliation',
-        'prefix' => 'affiliation',
+        'prefix' => 'aff',
         'middleware' => ['bouncer:seatgroups.create'],
     ], function () {
 
-        Route::post('/resolve/corporation_title', [
+        Route::get('/corporation_titles/', [
             'as'    => 'affiliation.resolve.corporation.title',
             'uses'  => 'SeatGroupCorporationTitleController@getCorporationTitles'
         ]);
-        Route::post('/affiliation/corporation_title', [
+        Route::post('/corporation_title', [
             'as'    => 'affiliation.add.corporation.title.affiliation',
             'uses'  => 'SeatGroupCorporationTitleController@addCorporationTitleAffiliation'
         ]);
@@ -77,23 +77,23 @@ Route::group([
             'as'    => 'affiliation.get.corporation.list',
             'uses'  => 'SeatGroupCorporationController@getCorporationList'
         ]);
-        Route::post('/affiliations/current', [
+        Route::post('/current', [
             'as'    => 'affiliation.get.current.affiliations',
             'uses'  => 'SeatGroupAffiliationController@getCurrentAffiliations'
         ]);
-        Route::post('/affiliations/remove/all_corporations', [
+        Route::post('/remove/all_corporations', [
             'as'    => 'affiliation.remove.all.corporation',
             'uses'  => 'SeatGroupCorporationController@removeAllCorporations'
         ]);
-        Route::post('/affiliations/remove/corporation', [
+        Route::post('/remove/corporation', [
             'as'    => 'affiliation.remove.corporation',
             'uses'  => 'SeatGroupCorporationController@removeCorporation'
         ]);
-        Route::post('/affiliations/remove/corporation_title', [
+        Route::post('/remove/corporation_title', [
             'as'    => 'affiliation.remove.corporation.title',
             'uses'  => 'SeatGroupCorporationTitleController@removeCorporationTitleAffiliation'
         ]);
-        Route::post('/affiliation/add/corporation', [
+        Route::post('/add/corporation', [
             'as'    => 'affiliation.add.corp.affiliation',
             'uses'  => 'SeatGroupCorporationController@addCorporationAffiliation'
         ]);
