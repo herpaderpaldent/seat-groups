@@ -1,3 +1,12 @@
+# Version 1.3.3
+Some smaller improvements and bugfixes
+* Improving `php artisan seat-groups:users:update --character_ids=ID` based on community feedback. Thank you @warlof for reporting this.
+* Fixing a rare bug when an managed-group is transformed to an auto group, causing the Sync to fail. Thank you @scopeh for reporting this.
+* changing `affiliation` to `/aff` to escape addblocker's filter.
+* changing from POST to a GET for current corporation & corporation_titles affiliation
+* changing from POST to a GET for corporation titles
+* removing unnecessary routes.
+
 # Version 1.3.2
 Some bug fixes:
 * adapting the /affiliation url because adblockers are acting up.
