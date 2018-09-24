@@ -70,7 +70,7 @@ class GroupSync extends SeatGroupsJobBase
                                 foreach ($seat_group->role as $role) {
                                     $roles->push($role->id);
                                 }
-                                if(!in_array($group->id,$seat_group->member->pluck('id')->toArray())){
+                                if(!in_array($group->id,$seat_group->group->pluck('id')->toArray())){
                                     // add user_group to seat_group as member if no member yet.
                                     $seat_group->member()->attach($group->id);
                                 }
@@ -86,7 +86,7 @@ class GroupSync extends SeatGroupsJobBase
                                 }
                                 break;
                         }
-                    } else if(in_array($group->id,$seat_group->member->pluck('id')->toArray())) {
+                    } else if(in_array($group->id,$seat_group->group->pluck('id')->toArray())) {
                         $seat_group->member()->detach($group->id);
                     }
                 });
