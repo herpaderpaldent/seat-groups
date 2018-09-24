@@ -73,11 +73,7 @@ Route::group([
             'as'    => 'affiliation.add.corporation.title.affiliation',
             'uses'  => 'SeatGroupCorporationTitleController@addCorporationTitleAffiliation'
         ]);
-        Route::post('/resolve/corporation', [
-            'as'    => 'affiliation.get.corporation.list',
-            'uses'  => 'SeatGroupCorporationController@getCorporationList'
-        ]);
-        Route::post('/current', [
+        Route::get('/current', [
             'as'    => 'affiliation.get.current.affiliations',
             'uses'  => 'SeatGroupAffiliationController@getCurrentAffiliations'
         ]);

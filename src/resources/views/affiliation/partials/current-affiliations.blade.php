@@ -16,7 +16,7 @@
         serverSide: true,
         ajax: {
           url: '{{ route('affiliation.get.current.affiliations') }}',
-          type: "POST",
+          type: "GET",
           data: {
             seatgroup_id: '{{$seatgroup->id}}'
           }

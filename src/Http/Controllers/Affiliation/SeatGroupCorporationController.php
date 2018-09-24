@@ -10,25 +10,14 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Affiliation;
 
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\AddCorporationAffiliationAction;
-use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\GetCorporationListAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveAllCorporationAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveCorpAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\AddCorporationAffiliationRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\RemoveAllCorporationsRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\RemoveCorporationAffiliationRequest;
-use Herpaderpaldent\Seat\SeatGroups\Http\Validation\GetCorporationListRequest;
 
 class SeatGroupCorporationController
 {
-    public function getCorporationList(GetCorporationListRequest $request, GetCorporationListAction $action)
-    {
-
-        $response = $action->execute($request->all());
-
-        return response()->json($response);
-
-    }
-
     public function removeAllCorporations(RemoveAllCorporationsRequest $request, RemoveAllCorporationAffiliationAction $action)
     {
 
