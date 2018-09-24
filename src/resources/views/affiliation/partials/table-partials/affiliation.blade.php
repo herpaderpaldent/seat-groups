@@ -2,7 +2,7 @@
   All Corporations <span data-toggle="tooltip" title="" class="badge bg-orange-active" data-original-title="Dangerous: purged members are not removed from SeAT-Group"><i class="fa fa-warning"></i></span>
 
 @else
-  {!! img('auto', $row['corporation_id'], 64, ['class' => 'img-circle eve-icon small-icon'],false) !!}
+  {!! img('corporation', $row['corporation_id'], 64, ['class' => 'img-circle eve-icon small-icon'],false) !!}
   {{ $row['name'] }}
 
   @if(isset($row['corporation_title']))
