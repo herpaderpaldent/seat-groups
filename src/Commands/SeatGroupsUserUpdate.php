@@ -35,9 +35,14 @@ class SeatGroupsUsersUpdate extends Command
                 $group_ids->push($user->group->id);
             });
 
-            Group::whereIn('id',$group_ids->unique())->each(function ($group) {
-                dispatch(new GroupSync($group));
-                $this->info('A synchronization job has been queued in order to update selected SeAT Group roles.');
+            Group::whereIn('id',$group_ids->unique())->get()
+                ->filter(function ($users_group) {
+                    return $users_group->main_character_id != "0";
+                })
+                ->each(function ($group) {
+                    dispatch(new GroupSync($group));
+                    $this->info(sprintf('A synchronization job has been queued in order to update %s (%s) roles.', $group->main_character->name,
+                        $group->users->map(function($user) { return $user->name; })->implode(', ')));
             });
 
         } else {
