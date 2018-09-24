@@ -50,8 +50,5 @@ class SeatGroupsUsersUpdate extends Command
             $this->info('A synchronization job has been queued in order to update all SeAT Group roles.');
         }
 
-
-
-
     }
 }
