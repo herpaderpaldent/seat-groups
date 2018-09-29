@@ -1,3 +1,9 @@
+# Version 1.3.4
+Improvements on `GroupSync` and some UI improvements
+* Merged pull request of @warlof aiming to improve `GroupSync` job with inconsistent user_groups. Namely when a main_character is missing (which should not happen anyway). Also some logging and tagging of the job was improved.
+* Open-Group showed two join-buttons. Which is now fixed. Thank you @Anduriel for reporting this
+* Action buttons in managed group modal collapsed in each other for large user_groups (many users). Bootstrap classes have been added to account for such cases. Thank you @Anduriel and @warlof for reporting this.
+
 # Version 1.3.3
 Some smaller improvements and bugfixes
 * Improving `php artisan seat-groups:users:update --character_ids=ID` based on community feedback. Thank you @warlof for reporting this.
