@@ -37,8 +37,8 @@
           type: "GET"
         },
         columns: [
-          {data: 'name'},
-          {data: 'actions'},
+          {className: 'col-sm-9', data: 'name'},
+          {className: 'col-sm-3', data: 'actions'},
         ],
       });
     });
