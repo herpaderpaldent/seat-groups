@@ -57,7 +57,8 @@ class GroupSync extends SeatGroupsJobBase
         if (! is_null($this->main_character)) {
             logger()->debug('Initialising SeAT Group sync for ' . $this->main_character->name);
 
-            array_push($this->tags, 'main_character_id:' . $this->main_character->id);
+            array_push($this->tags, sprintf('users: %s',
+                $this->group->users->map(function($user) { return $user->name; })->implode(', ')));
         }
 
     }
