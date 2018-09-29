@@ -24,7 +24,7 @@ return [
     'seat_groups_manager' => 'Manager',
     'seat_join_opengroup'=>'Opt in',
     'seat_leave_opengroup'=>'Opt out',
-    'seat_leave_waitlist' => 'Leave',
+    'seat_leave_waitlist' => 'Leave waitlist',
     'seat_join_waitlist' => 'Apply',
     'seat_leave_managedgroup' => 'Leave',
     'seat_deny_managedgroup' => 'Reject',
