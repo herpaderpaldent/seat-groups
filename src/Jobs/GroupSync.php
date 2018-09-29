@@ -22,7 +22,15 @@ class GroupSync extends SeatGroupsJobBase
      */
     protected $tags = ['sync'];
 
+    /**
+     * @var \Seat\Web\Models\Group
+     */
     private $group;
+
+    /**
+     * @var \Seat\Eveapi\Models\Character\CharacterInfo
+     */
+    private $main_character;
 
     /**
      * @var int
@@ -36,18 +44,31 @@ class GroupSync extends SeatGroupsJobBase
      */
     public function __construct(Group $group)
     {
-
-        logger()->debug('Initialising SeAT Group sync for ' . $group->main_character->name);
-
         $this->group = $group;
+        $this->main_character = $group->main_character;
+        if (is_null($group->main_character)) {
+            logger()->warning('Group has no main character set. Attempt to make assignation based on first attached character.', [
+                'group_id' => $group->id,
+            ]);
+            $this->main_character = $group->users->first()->character;
+        }
 
-        array_push($this->tags, 'main_character_id:' . $group->main_character_id);
+        // avoid the construct to throw an exception if no character has been set
+        if (! is_null($this->main_character)) {
+            logger()->debug('Initialising SeAT Group sync for ' . $this->main_character->name);
+
+            array_push($this->tags, 'main_character_id:' . $this->main_character->id);
+        }
 
     }
 
     public function handle()
     {
-        Redis::funnel('seat-groups:jobs.group_sync_'.$this->group->main_character_id)->limit(1)->then(function ()
+        // in case no main character has been set, throw an exception and abort the process
+        if (is_null($this->main_character))
+            throw new MissingMainCharacterException($this->group);
+
+        Redis::funnel('seat-groups:jobs.group_sync_'.$this->group->id)->limit(1)->then(function ()
         {
             $this->beforeStart();
 
@@ -70,7 +91,7 @@ class GroupSync extends SeatGroupsJobBase
                                 foreach ($seat_group->role as $role) {
                                     $roles->push($role->id);
                                 }
-                                if(!in_array($group->id,$seat_group->group->pluck('id')->toArray())){
+                                if(!in_array($group->id, $seat_group->group->pluck('id')->toArray())){
                                     // add user_group to seat_group as member if no member yet.
                                     $seat_group->member()->attach($group->id);
                                 }
@@ -95,7 +116,7 @@ class GroupSync extends SeatGroupsJobBase
 
                 $this->onFinish();
 
-                logger()->debug('Group has beend synced for '. $this->group->main_character->name);
+                logger()->debug('Group has beend synced for '. $this->main_character->name);
 
             } catch (\Throwable $exception) {
 
@@ -105,7 +126,7 @@ class GroupSync extends SeatGroupsJobBase
 
         }, function ()
         {
-            logger()->warning('A GroupSync job is already running for ' . $this->group->main_character->name . ' Removing the job from the queue.');
+            logger()->warning('A GroupSync job is already running for ' . $this->main_character->name . ' Removing the job from the queue.');
 
             $this->delete();
         });
@@ -129,7 +150,7 @@ class GroupSync extends SeatGroupsJobBase
                 SeatgroupLog::create([
                     'event' => 'warning',
                     'message' => sprintf('The RefreshToken of %s is missing, therefore user group of %s (%s) loses all permissions.',
-                        $user->name, $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
+                        $user->name, $this->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
 
                 ]);
 
@@ -147,7 +168,7 @@ class GroupSync extends SeatGroupsJobBase
         SeatgroupLog::create([
             'event' => 'error',
             'message' => sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
-                $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
+                $this->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
 
         ]);
 
@@ -158,7 +179,7 @@ class GroupSync extends SeatGroupsJobBase
         SeatgroupLog::create([
             'event' => 'success',
             'message' => sprintf('The user group of %s (%s) has successfully been synced.',
-                $this->group->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
+                $this->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
 
         ]);
     }
