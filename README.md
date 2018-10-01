@@ -19,28 +19,45 @@ please do report any findings to seat-slack and report it as an issue*
 
 ## Screenshots
 
-![GroupSetup](https://i.imgur.com/7qElUyB.png)
+![GroupSetup](https://i.imgur.com/jHAiAeW.png)
 
-![Overview](https://i.imgur.com/Yo6Ugyk.png)
+![Overview](https://i.imgur.com/1qh5RzD.png)
+
+---
 
 ## SeAT Groups
 
 ### auto group
 Members of set corporation are getting assigned the corresponding roles
+![AutoGrouo](https://i.imgur.com/JE6DsWu.png)
 
 ### opt-in group
 Members of set corporation can opt-in into a seat group and get then assigned
 the corresponding roles
+![OpenGroup](https://i.imgur.com/uRiTxN1.png)
 
 ### managed groups
 Members may apply for these groups. Managers may accept or deny the application
-![Managed](https://i.imgur.com/mYB30rZ.png)
+![Managed](https://i.imgur.com/GcXv50A.png)
 
 ### hidden groups
 This seat group is for hidden groups f.e. CEO. This group is only shown on the overview for users with `seatgroup.create` and `superuser` Permission.
-![Hidden](https://i.imgur.com/mh3I714.png)
+![Hidden](https://i.imgur.com/f7Ry5SA.png)
+---
 
-### Donations
+## FAQ:
+
+### Some Member does not get the roles he is supposed to
+Make sure that all of your usergroups have a main_character set
+
+### I just updated SeAT Groups but the fix is not working
+Restart supervisor or `seat-worker` container to load the new code to workers.
+
+### I have set an affiliation but it isn't shown
+Make sure you are running the latest version. Later versions interfered with AdBlockers. Disable your adblocker temporally as work around and update.
+
+
+# Donations
 
 If you like SeAT Groups, i highly appreciate ISK Donations to Herpaderp Aldent.
 

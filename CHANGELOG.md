@@ -1,3 +1,9 @@
+# Version 1.3.5
+UI Improvements through introduction of nav-tabs and controller
+* Improved SeatGroupController only returns seatgroups for which the user is allowed to see.
+* Introduced Nav-tabs after community feedback of cluttered open- and manged groups (thanks @Anduriel) and some design ideas from @warlof.
+* Update of README.md on github. Introduction of FAQ
+
 # Version 1.3.4
 Improvements on `GroupSync` and some UI improvements
 * Merged pull request of @warlof aiming to improve `GroupSync` job with inconsistent user_groups. Namely when a main_character is missing (which should not happen anyway). Also some logging and tagging of the job was improved.
