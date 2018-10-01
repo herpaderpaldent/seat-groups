@@ -88,7 +88,7 @@ class Seatgroup extends Model
     }
 
     /**
-     * This method shall only be used from frontend and will return a boolean if the user
+     * This method shall only be used from frontend or controller and will return a boolean if the user
      * is allowed to see the seatgroup.
      *
      * @return bool

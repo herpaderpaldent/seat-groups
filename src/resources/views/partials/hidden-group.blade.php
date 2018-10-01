@@ -1,17 +1,13 @@
-<div class="col-md-12">
-@foreach ($seatgroups->where('type', 'hidden') as $seatgroup)
-  @if($seatgroup->isMember(auth()->user()->group) || auth()->user()->hasRole('seatgroups.create')  )
-    <div class="panel panel-warning">
-      <div class="panel-heading clearfix">
+<div class="col-md-4">
+    <div class="box box-danger">
+      <div class="box-header with-border">
         @includeWhen(auth()->user()->hasRole('seatgroups.create'),'seatgroups::partials.edit-button')
-        <h3 class="panel-title"><span data-toggle="tooltip" title="" class="badge bg-blue-active" data-original-title="Only Members can see this SeAT Group"><i class="fa fa-info-circle"></i></span> {{$seatgroup->name}} </h3>
+        <h3 class="box-title"> {{$seatgroup->name}} </h3>
       </div>
-      <div class="panel-body">
+      <div class="box-body">
         {{$seatgroup->description}} <br>
-        Members: {{$seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', ')}}
+        Members: {{str_limit($seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', '),42)}}
       </div>
     </div>
-  @endif
 
-@endforeach
 </div>

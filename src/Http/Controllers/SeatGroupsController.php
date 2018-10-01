@@ -29,7 +29,9 @@ class SeatGroupsController extends Controller
     public function index()
     {
 
-        $seatgroups = SeatGroup::all();
+        $seatgroups = SeatGroup::all()->filter(function ($seatgroup){
+            return $seatgroup->isAllowedToSeeSeatGroup();
+        });
 
         return view('seatgroups::index', compact('seatgroups'));
     }
