@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: fehu
  * Date: 10.09.18
- * Time: 15:18
+ * Time: 15:18.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager;
-
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -38,5 +37,4 @@ class AddManagerRequest extends FormRequest
             'seatgroups' => 'required_if:groups,""',
         ];
     }
-
 }

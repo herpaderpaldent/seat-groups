@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ReorganizeOrderOfColumnAllCorporations extends Migration
@@ -13,7 +11,7 @@ class ReorganizeOrderOfColumnAllCorporations extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE seatgroups MODIFY COLUMN all_corporations BOOLEAN default 0 not null AFTER type");
+        DB::statement('ALTER TABLE seatgroups MODIFY COLUMN all_corporations BOOLEAN default 0 not null AFTER type');
     }
 
     /**

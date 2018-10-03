@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 01.09.2018
- * Time: 13:33
+ * Time: 13:33.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
-
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -51,10 +50,9 @@ abstract class SeatGroupsJobBase implements ShouldQueue
     }
 
     /**
-     * Execute the job
+     * Execute the job.
      *
      * @return void
      */
-    public abstract function handle();
-
+    abstract public function handle();
 }

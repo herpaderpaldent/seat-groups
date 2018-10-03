@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  *  * User: Herpaderp Aldent
  * Date: 22.07.2018
- * Time: 10:21
+ * Time: 10:21.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation;
-
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -35,7 +34,7 @@ class CreateSeatGroupRequest extends FormRequest
             'name'        => 'required|min:5',
             'description' => 'required|min:10',
             'type'        => 'required',
-            'roles.*'     => 'numeric'
+            'roles.*'     => 'numeric',
         ];
     }
 }

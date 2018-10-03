@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 04.09.2018
- * Time: 08:57
+ * Time: 08:57.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Exceptions;

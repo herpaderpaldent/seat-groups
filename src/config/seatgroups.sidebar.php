@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Mutterschiff
  * Date: 11.02.2018
- * Time: 18:19
+ * Time: 18:19.
  */
 
 return [
@@ -30,7 +30,7 @@ return [
                 'icon'  => 'fa-info-circle',
                 'permission' => 'seatgroups.view',
                 'route' => 'seatgroups.about',
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

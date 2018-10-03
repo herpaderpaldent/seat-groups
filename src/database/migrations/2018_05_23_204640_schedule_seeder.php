@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Seat\Services\Models\Schedule;
 
 class ScheduleSeeder extends Migration
@@ -15,8 +15,9 @@ class ScheduleSeeder extends Migration
             'allow_maintenance' => false,
             'ping_before'       => null,
             'ping_after'        => null,
-        ]
+        ],
     ];
+
     /**
      * Run the migrations.
      *
@@ -33,7 +34,7 @@ class ScheduleSeeder extends Migration
                     'expression' => $job['expression'],
                 ]);
             }
-            if (!$existing) {
+            if (! $existing) {
                 DB::table('schedules')->insert($job);
             }
         }
@@ -47,6 +48,6 @@ class ScheduleSeeder extends Migration
      */
     public function down()
     {
-        //
+
     }
 }

@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: Mutterschiff
  * Date: 11.02.2018
- * Time: 16:57
+ * Time: 16:57.
  */
-
 Route::group([
     'namespace'  => 'Herpaderpaldent\Seat\SeatGroups\Http\Controllers',
     'prefix'     => 'seatgroups',
@@ -37,7 +36,6 @@ Route::group([
         'uses' => 'SeatGroupUserController@acceptApplication',
     ]);
 
-
     // Routes for creating.
     Route::group([
         'middleware' => ['bouncer:seatgroups.create'],
@@ -67,33 +65,32 @@ Route::group([
 
         Route::get('/corporation_titles/', [
             'as'    => 'affiliation.resolve.corporation.title',
-            'uses'  => 'SeatGroupCorporationTitleController@getCorporationTitles'
+            'uses'  => 'SeatGroupCorporationTitleController@getCorporationTitles',
         ]);
         Route::post('/add/corporation_title', [
             'as'    => 'affiliation.add.corporation.title.affiliation',
-            'uses'  => 'SeatGroupCorporationTitleController@addCorporationTitleAffiliation'
+            'uses'  => 'SeatGroupCorporationTitleController@addCorporationTitleAffiliation',
         ]);
         Route::get('/current', [
             'as'    => 'affiliation.get.current.affiliations',
-            'uses'  => 'SeatGroupAffiliationController@getCurrentAffiliations'
+            'uses'  => 'SeatGroupAffiliationController@getCurrentAffiliations',
         ]);
         Route::post('/remove/all_corporations', [
             'as'    => 'affiliation.remove.all.corporation',
-            'uses'  => 'SeatGroupCorporationController@removeAllCorporations'
+            'uses'  => 'SeatGroupCorporationController@removeAllCorporations',
         ]);
         Route::post('/remove/corporation', [
             'as'    => 'affiliation.remove.corporation',
-            'uses'  => 'SeatGroupCorporationController@removeCorporation'
+            'uses'  => 'SeatGroupCorporationController@removeCorporation',
         ]);
         Route::post('/remove/corporation_title', [
             'as'    => 'affiliation.remove.corporation.title',
-            'uses'  => 'SeatGroupCorporationTitleController@removeCorporationTitleAffiliation'
+            'uses'  => 'SeatGroupCorporationTitleController@removeCorporationTitleAffiliation',
         ]);
         Route::post('/add/corporation', [
             'as'    => 'affiliation.add.corp.affiliation',
-            'uses'  => 'SeatGroupCorporationController@addCorporationAffiliation'
+            'uses'  => 'SeatGroupCorporationController@addCorporationAffiliation',
         ]);
-
 
     });
 
@@ -118,7 +115,6 @@ Route::group([
         ]);
     });
 
-
     // TODO Cleanup the legacy routes from prior 1.1.0
     Route::group([
         'middleware' => ['web', 'auth'],
@@ -128,7 +124,6 @@ Route::group([
             'as'   => 'seatgroups.edit',
             'uses' => 'SeatGroupsController@edit',
         ]);
-
 
         Route::post('/{group_id}', [
             'as'   => 'seatgroups.update',
@@ -166,5 +161,3 @@ Route::group([
     });
 
 });
-
-

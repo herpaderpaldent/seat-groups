@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 05.09.2018
- * Time: 18:48
+ * Time: 18:48.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Affiliation;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\GetCurrentAffiliationsRequest;
@@ -21,16 +20,14 @@ class SeatGroupAffiliationController extends Controller
 
         $affiliations = collect($action->execute($request->all()));
 
-
         return Datatables::of($affiliations)
             ->addColumn('affiliation', function ($row) {
                 return view('seatgroups::affiliation.partials.table-partials.affiliation', compact('row'))->render();
             })
-            ->addColumn('remove', function ($row){
+            ->addColumn('remove', function ($row) {
                 return view('seatgroups::affiliation.partials.table-partials.remove-button', compact('row'))->render();
             })
             ->make(true);
 
     }
-
 }

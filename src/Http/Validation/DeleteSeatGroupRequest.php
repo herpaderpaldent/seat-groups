@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  *  * User: Herpaderp Aldent
  * Date: 27.06.2018
- * Time: 22:13
+ * Time: 22:13.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation;
-
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -33,7 +32,7 @@ class DeleteSeatGroupRequest extends FormRequest
     {
 
         return [
-            'seatgroup_id'=>'required'
+            'seatgroup_id'=>'required',
         ];
     }
 }

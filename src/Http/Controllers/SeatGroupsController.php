@@ -2,7 +2,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
-
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\GetCorporationListAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\CreateSeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\DeleteSeatGroup;
@@ -29,7 +28,7 @@ class SeatGroupsController extends Controller
     public function index()
     {
 
-        $seatgroups = SeatGroup::all()->filter(function ($seatgroup){
+        $seatgroups = SeatGroup::all()->filter(function ($seatgroup) {
             return $seatgroup->isAllowedToSeeSeatGroup();
         });
 
@@ -76,7 +75,7 @@ class SeatGroupsController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -92,18 +91,18 @@ class SeatGroupsController extends Controller
     {
         $all_corporations = $action->execute([
             'seatgroup_id' =>$id,
-            'origin' => 'SeatGroupsController'
+            'origin' => 'SeatGroupsController',
         ]);
         $all_corporations_for_title = $action->execute([
             'seatgroup_id' =>$id,
-            'origin' => 'corporation-tile-form'
+            'origin' => 'corporation-tile-form',
         ]);
         $roles = Role::all();
         $seatgroup = Seatgroup::find($id);
-        $available_seatgroups = Seatgroup::whereNotIn('id',$seatgroup->children->pluck('id')->push($id)->toArray())->get();
+        $available_seatgroups = Seatgroup::whereNotIn('id', $seatgroup->children->pluck('id')->push($id)->toArray())->get();
         $all_groups = Group::all();
 
-        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups','all_corporations_for_title', 'available_seatgroups'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups', 'all_corporations_for_title', 'available_seatgroups'));
     }
 
     /**
@@ -158,10 +157,10 @@ class SeatGroupsController extends Controller
             ->with('error', 'illegal delete request. You must be superuser');
     }
 
-
     public function about(GetChangelog $action)
     {
         $changelog = $action->execute();
+
         return view('seatgroups::about', compact('changelog'));
     }
 }

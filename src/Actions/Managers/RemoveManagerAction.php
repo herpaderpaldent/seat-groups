@@ -3,22 +3,20 @@
  * Created by PhpStorm.
  * User: fehu
  * Date: 11.09.18
- * Time: 15:43
+ * Time: 15:43.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Managers;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 
 class RemoveManagerAction
 {
-    public function execute (array $data)
+    public function execute(array $data)
     {
         $seatgroup = Seatgroup::find($data['seatgroup_id']);
         $group_id = $data['group_id'];
         $children_id = $data['children_id'];
-
 
         if(isset($group_id)){
 
@@ -33,9 +31,8 @@ class RemoveManagerAction
             $seatgroup->children()->detach($data['children_id']);
 
         }
+
         return redirect()->back()->with('success', 'SeAT Group removed');
 
-
     }
-
 }
