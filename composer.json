@@ -1,18 +1,16 @@
 {
     "name": "herpaderpaldent/seat-groups",
     "description": "A module for SeAT that adds the ability of using goups to assign roles to user that are in a group",
-    "autoload": {
-        "psr-4": {
-            "Herpaderpaldent\\Seat\\SeatGroups\\": "src/"
-        }
-    },
     "type": "seat-plugin",
     "require": {
         "php": ">=7.1",
         "laravel/framework": "5.5.*",
         "eveseat/web": "3.0.*"
     },
-
+    "require-dev": {
+        "orchestra/testbench": "3.5.*",
+        "phpunit/phpunit": "~6.0"
+    },
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -20,12 +18,26 @@
             "email": "felix.a.huber@gmx.net"
         }
     ],
+    "minimum-stability": "alpha",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Herpaderpaldent\\Seat\\SeatGroups\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Herpaderpaldent\\Seat\\SeatGroups\\Tests": "tests"
+        }
+    },
+    "scripts":{
+        "test": "vendor/bin/phpunit"
+    },
     "extra": {
         "laravel": {
             "providers": [
                 "Herpaderpaldent\\Seat\\SeatGroups\\GroupsServiceProvider"
             ]
         }
-    },
-    "minimum-stability": "alpha"
+    }
 }
