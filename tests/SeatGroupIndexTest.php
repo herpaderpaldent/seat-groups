@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Herpaderpaldent\Seat\SeatGroups\Tests;
 
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Orchestra\Testbench\TestCase;
 
 class SeatGroupIndexTest extends TestCase
 {
