@@ -3,10 +3,8 @@
  * Created by PhpStorm.
  * User: Mutterschiff
  * Date: 12.02.2018
- * Time: 00:15
+ * Time: 00:15.
  */
-
-
 
 return [
 
@@ -48,10 +46,6 @@ return [
     'seat_groups_editing' => 'Editing',
     'seat_groups_update' => 'Update SeAT Group',
 
-    'seat_groups_about' => 'About'
-
-
-
-
+    'seat_groups_about' => 'About',
 
 ];

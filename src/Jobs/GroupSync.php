@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 01.09.2018
- * Time: 16:16
+ * Time: 16:16.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Exceptions\MissingRefreshTokenException;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
@@ -58,7 +57,7 @@ class GroupSync extends SeatGroupsJobBase
             logger()->debug('Initialising SeAT Group sync for ' . $this->main_character->name);
 
             array_push($this->tags, sprintf('users: %s',
-                $this->group->users->map(function($user) { return $user->name; })->implode(', ')));
+                $this->group->users->map(function ($user) { return $user->name; })->implode(', ')));
         }
 
     }
@@ -69,7 +68,7 @@ class GroupSync extends SeatGroupsJobBase
         if (is_null($this->main_character))
             throw new MissingMainCharacterException($this->group);
 
-        Redis::funnel('seat-groups:jobs.group_sync_'.$this->group->id)->limit(1)->then(function ()
+        Redis::funnel('seat-groups:jobs.group_sync_' . $this->group->id)->limit(1)->then(function ()
         {
             $this->beforeStart();
 
@@ -79,7 +78,7 @@ class GroupSync extends SeatGroupsJobBase
 
                 //Catch Superuser
                 foreach ($group->roles as $role) {
-                    if ($role->title === "Superuser") {
+                    if ($role->title === 'Superuser') {
                         $roles->push($role->id);
                     }
                 }
@@ -92,7 +91,7 @@ class GroupSync extends SeatGroupsJobBase
                                 foreach ($seat_group->role as $role) {
                                     $roles->push($role->id);
                                 }
-                                if(!in_array($group->id, $seat_group->group->pluck('id')->toArray())){
+                                if(! in_array($group->id, $seat_group->group->pluck('id')->toArray())){
                                     // add user_group to seat_group as member if no member yet.
                                     $seat_group->member()->attach($group->id);
                                 }
@@ -108,7 +107,7 @@ class GroupSync extends SeatGroupsJobBase
                                 }
                                 break;
                         }
-                    } else if(in_array($group->id,$seat_group->group->pluck('id')->toArray())) {
+                    } elseif(in_array($group->id, $seat_group->group->pluck('id')->toArray())) {
                         $seat_group->member()->detach($group->id);
                     }
                 });
@@ -117,7 +116,7 @@ class GroupSync extends SeatGroupsJobBase
 
                 $this->onFinish();
 
-                logger()->debug('Group has beend synced for '. $this->main_character->name);
+                logger()->debug('Group has beend synced for ' . $this->main_character->name);
 
             } catch (\Throwable $exception) {
 
@@ -131,7 +130,6 @@ class GroupSync extends SeatGroupsJobBase
 
             $this->delete();
         });
-
 
     }
 
@@ -151,7 +149,7 @@ class GroupSync extends SeatGroupsJobBase
                 SeatgroupLog::create([
                     'event' => 'warning',
                     'message' => sprintf('The RefreshToken of %s is missing, therefore user group of %s (%s) loses all permissions.',
-                        $user->name, $this->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
+                        $user->name, $this->main_character->name, $this->group->users->map(function ($user) { return $user->name; })->implode(', ')),
 
                 ]);
 
@@ -169,7 +167,7 @@ class GroupSync extends SeatGroupsJobBase
         SeatgroupLog::create([
             'event' => 'error',
             'message' => sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
-                $this->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
+                $this->main_character->name, $this->group->users->map(function ($user) { return $user->name; })->implode(', ')),
 
         ]);
 
@@ -180,9 +178,8 @@ class GroupSync extends SeatGroupsJobBase
         SeatgroupLog::create([
             'event' => 'success',
             'message' => sprintf('The user group of %s (%s) has successfully been synced.',
-                $this->main_character->name, $this->group->users->map(function($user) { return $user->name; })->implode(', '))
+                $this->main_character->name, $this->group->users->map(function ($user) { return $user->name; })->implode(', ')),
 
         ]);
     }
-
 }

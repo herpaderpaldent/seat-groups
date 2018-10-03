@@ -3,14 +3,13 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 01.09.2018
- * Time: 13:50
+ * Time: 13:50.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
 
-
-use Seat\Web\Models\Group;
 use Illuminate\Support\Facades\Redis;
+use Seat\Web\Models\Group;
 
 class GroupDispatcher extends SeatGroupsJobBase
 {
@@ -27,7 +26,7 @@ class GroupDispatcher extends SeatGroupsJobBase
 
             Group::all()->filter(function ($users_group) {
 
-                return $users_group->main_character_id != "0";
+                return $users_group->main_character_id != '0';
             })->each(function ($users_group)
             {
                $job = new GroupSync($users_group);
@@ -42,5 +41,4 @@ class GroupDispatcher extends SeatGroupsJobBase
             $this->delete();
         });
     }
-
 }

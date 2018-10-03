@@ -24,7 +24,7 @@ class SeatGroupUserController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -32,10 +32,10 @@ class SeatGroupUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function acceptApplication(Request $request,$seat_group_id) //TODO: refactor this to Application Manager
+    public function acceptApplication(Request $request, $seat_group_id) //TODO: refactor this to Application Manager
     {
         switch($request->input('action')){
-            case('accept'):
+            case 'accept':
                 $seatgroup = Seatgroup::find($seat_group_id);
 
                 $seatgroup->group()->updateExistingPivot($request->input('group_id'), [
@@ -44,7 +44,7 @@ class SeatGroupUserController extends Controller
 
                 return redirect()->back()->with('success', 'User accepted');
                 break;
-            case('deny'):
+            case 'deny':
                 $seatgroup = Seatgroup::find($seat_group_id);
 
                 $seatgroup->group()->detach($request->input('group_id'));
@@ -52,8 +52,6 @@ class SeatGroupUserController extends Controller
                 return redirect()->back()->with('success', 'User removed');
 
         }
-
-
 
     }
 
@@ -86,7 +84,6 @@ class SeatGroupUserController extends Controller
 
         return $action->execute($request->all());
 
-
     }
 
     /**
@@ -101,7 +98,6 @@ class SeatGroupUserController extends Controller
     {
         return $action->execute($request->all());
 
-
     }
 
     /**
@@ -111,7 +107,7 @@ class SeatGroupUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
 
         $seatgroup = Seatgroup::find($id);
@@ -151,12 +147,13 @@ class SeatGroupUserController extends Controller
         //Handle hidden group
         if ($seatgroup->type == 'hidden') {
             if(auth()->user()->hasRole('seatgroups.create')) {
-                $this->validate(request(),[
-                    'groups'=>'required'
+                $this->validate(request(), [
+                    'groups'=>'required',
                 ]);
                 $groups = $request->get('groups');
                 foreach ($groups as $group) {
                     $seatgroup->group()->attach($group);
+
                     return redirect()->back()->with('success', 'Updated');
                 }
             }
@@ -168,6 +165,7 @@ class SeatGroupUserController extends Controller
     public function removeGroupFromSeatGroup($seat_group_id, $group_id)
     {
         Seatgroup::find($seat_group_id)->group()->detach($group_id);
+
         return redirect()->back()->with('success', ' removed');
     }
 
@@ -204,7 +202,6 @@ class SeatGroupUserController extends Controller
     public function getMembersTable($id)
     {
         $seatgroup_members = Seatgroup::find($id)->group;
-
 
         return Datatables::of($seatgroup_members)
             ->addColumn('name', function ($row) {

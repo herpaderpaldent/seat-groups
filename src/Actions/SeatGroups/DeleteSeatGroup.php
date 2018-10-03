@@ -3,17 +3,16 @@
  * Created by PhpStorm.
  *  * User: Herpaderp Aldent
  * Date: 27.06.2018
- * Time: 22:07
+ * Time: 22:07.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 
 class DeleteSeatGroup
 {
-    public function execute (array $data)
+    public function execute(array $data)
     {
         $group_id = $data['seatgroup_id'];
 

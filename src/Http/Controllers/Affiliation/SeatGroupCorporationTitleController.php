@@ -3,12 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 05.09.2018
- * Time: 13:49
+ * Time: 13:49.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Affiliation;
-
-
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\Titles\AddCorporationTitleAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\Titles\GetCorporationTitleAction;
@@ -28,23 +26,21 @@ class SeatGroupCorporationTitleController
 
     }
 
-    public function addCorporationTitleAffiliation (AddCorporationTitleAffiliationRequest $request, AddCorporationTitleAffiliation $action)
+    public function addCorporationTitleAffiliation(AddCorporationTitleAffiliationRequest $request, AddCorporationTitleAffiliation $action)
     {
         if ($action->execute($request->all()))
             return redirect()->back()->with('success', 'Corporation title affiliation added.');
 
         return redirect()->back()->with('warning', 'Ups something went wrong');
 
-
     }
-    public function removeCorporationTitleAffiliation (RemoveCorporationTitleAffiliationRequest $request, RemoveCorporationTitleAffiliationAction  $action)
+
+    public function removeCorporationTitleAffiliation(RemoveCorporationTitleAffiliationRequest $request, RemoveCorporationTitleAffiliationAction  $action)
     {
         if ($action->execute($request->all()))
             return redirect()->back()->with('success', 'Corporation title affiliation removed.');
 
         return redirect()->back()->with('warning', 'Ups something went wrong');
 
-
     }
-
 }

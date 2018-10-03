@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *  * User: Herpaderp Aldent
  * Date: 24.06.2018
- * Time: 11:42
+ * Time: 11:42.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation;
@@ -33,7 +33,7 @@ class AddCorporationAffiliationRequest extends FormRequest
 
         return [
             //'corporation_ids.*'=>'required',
-            'seatgroup_id'=>'required'
+            'seatgroup_id'=>'required',
         ];
     }
 }

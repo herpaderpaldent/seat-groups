@@ -2,15 +2,13 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations;
 
-use Herpaderpaldent\Seat\SeatGroups\Http\Validation\RemoveCorporationAffiliationRequest;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Illuminate\Http\Request;
 use Seat\Services\Repositories\Corporation\Corporation;
-
 
 class RemoveCorpAffiliationAction
 {
     use Corporation;
+
     /**
      * @param array $data
      *
@@ -33,5 +31,4 @@ class RemoveCorpAffiliationAction
         }
 
     }
-
 }

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 05.09.2018
- * Time: 17:52
+ * Time: 17:52.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Affiliation;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\AddCorporationAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\RemoveAllCorporationAffiliationAction;
@@ -46,7 +45,4 @@ class SeatGroupCorporationController
         return redirect()->back()->with('warning', 'Ups something went wrong');
 
     }
-
-
-
 }
