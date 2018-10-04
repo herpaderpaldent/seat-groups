@@ -27,11 +27,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Herpaderpaldent\\Seat\\SeatGroups\\Tests\\": "tests/"
+            "Herpaderpaldent\\Seat\\SeatGroups\\Test\\": "tests/"
         }
     },
     "scripts":{
-        "test": "/vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {

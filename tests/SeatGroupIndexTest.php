@@ -1,6 +1,6 @@
 <?php
 
-namespace Herpaderpaldent\Seat\SeatGroups\Tests;
+namespace Herpaderpaldent\Seat\SeatGroups\Test;
 
 
 use Illuminate\Foundation\Testing\WithFaker;
