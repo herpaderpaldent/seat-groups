@@ -25,6 +25,8 @@ class SetupCorrectForeignKeysForCorporationTitleSeatgroupsTable extends Migratio
                 ON DELETE CASCADE;'
             );
 
+            $table->primary(['corporation_id','title_id','seatgroup_id'],'corporation_title_seatgroups_primary');
+
         });
     }
 
@@ -35,7 +37,10 @@ class SetupCorrectForeignKeysForCorporationTitleSeatgroupsTable extends Migratio
      */
     public function down()
     {
+
         Schema::table('corporation_title_seatgroups', function (Blueprint $table) {
+
+            $table->dropPrimary(['corporation_id','title_id','seatgroup_id']);
             DB::statement('ALTER TABLE corporation_title_seatgroups DROP FOREIGN KEY corporation_title_seatgroups_corporation_id_title_id_foreign;');
             $table->foreign('corporation_id')->references('corporation_id')->on('corporation_titles')->onDelete('cascade');
             $table->foreign('title_id')->references('title_id')->on('corporation_titles')->onDelete('cascade');
