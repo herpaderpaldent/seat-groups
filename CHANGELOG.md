@@ -1,3 +1,6 @@
+# Version 1.3.6
+This update includes preparations for package-testing and better test-coverage, an improvement to `corporation_titles` table which caused users to lose corp titles in seat in some rare cases.
+
 # Version 1.3.5
 UI Improvements through introduction of nav-tabs and controller
 * Improved SeatGroupController only returns seatgroups for which the user is allowed to see.
