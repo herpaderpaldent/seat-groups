@@ -9,6 +9,7 @@
     },
     "require-dev": {
         "orchestra/testbench": "3.5.*",
+        "orchestra/database" : "~3.5",
         "phpunit/phpunit": "~6.0"
     },
     "license": "GPL-2.0-only",
