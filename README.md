@@ -15,7 +15,6 @@ please do report any findings to seat-slack and report it as an issue*
 
 1. cd to `/var/www/seat`
 2. enter `composer require herpaderpaldent/seat-groups`
-3. Publish `php artisan vendor:publish --force --all`
 4. run migration `php artisan migrate`
 
 ## Screenshots
