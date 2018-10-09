@@ -2,7 +2,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups;
 
-use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUsersUpdate;
 use Herpaderpaldent\Seat\SeatGroups\Observers\RefreshTokenObserver;
 use Illuminate\Support\ServiceProvider;
 use Seat\Eveapi\Models\RefreshToken;
@@ -16,11 +15,12 @@ class GroupsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         $this->addCommands();
         $this->addRoutes();
         $this->addViews();
-        $this->addPublications();
         $this->addTranslations();
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
 
         RefreshToken::observe(RefreshTokenObserver::class);
     }
@@ -45,14 +45,7 @@ class GroupsServiceProvider extends ServiceProvider
     private function addCommands()
     {
         $this->commands([
-            SeatGroupsUsersUpdate::class,
-        ]);
-    }
-
-    private function addPublications()
-    {
-        $this->publishes([
-            __DIR__ . '/database/migrations/' => database_path('migrations'),
+            Commands\SeatGroupsUsersUpdate::class,
         ]);
     }
 
