@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 06.09.2018
- * Time: 09:13
+ * Time: 09:13.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 
@@ -28,5 +27,4 @@ class RemoveAllCorporationAffiliationAction
         }
 
     }
-
 }

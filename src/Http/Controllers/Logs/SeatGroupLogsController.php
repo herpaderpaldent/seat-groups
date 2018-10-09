@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 04.09.2018
- * Time: 11:30
+ * Time: 11:30.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Logs;
@@ -17,6 +17,7 @@ class SeatGroupLogsController extends Controller
     public function getSeatGroupDeleteButton()
     {
         $logCount = SeatgroupLog::count();
+
         return view('seatgroups::logs.partials.delete-button', compact('logCount'))->render();
 
     }
@@ -26,7 +27,7 @@ class SeatGroupLogsController extends Controller
         $logs = SeatgroupLog::query();
 
         return Datatables::of($logs)
-            ->editColumn('created_at', function($row){
+            ->editColumn('created_at', function ($row) {
                 return view('seatgroups::logs.partials.date', compact('row'));
             })
             ->editColumn('event', function ($row) {
@@ -43,6 +44,4 @@ class SeatGroupLogsController extends Controller
         return redirect()->back()
             ->with('success', 'The logs has been truncated');
     }
-
-
 }

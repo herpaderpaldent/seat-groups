@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 06.09.2018
- * Time: 09:56
+ * Time: 09:56.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\Titles;
@@ -23,13 +23,11 @@ class RemoveCorporationTitleAffiliationAction
                 ->where('title_id', $title_id)
                 ->where('seatgroup_id', $seatgroup_id)
                 ->delete();
+
             return true;
         } catch (\Exception $e){
             return false;
         }
 
-
-
     }
-
 }

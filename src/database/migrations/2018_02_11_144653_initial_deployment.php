@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class InitialDeployment extends Migration
 {
@@ -13,11 +13,11 @@ class InitialDeployment extends Migration
      */
     public function up()
     {
-        Schema::create("seatgroups",function ($table){
+        Schema::create('seatgroups', function ($table) {
            $table->increments('id')->index();
            $table->string('name');
            $table->text('description');
-           $table->enum('type',['auto','open','managed','hidden']);
+           $table->enum('type', ['auto', 'open', 'managed', 'hidden']);
            $table->timestamps();
         });
 
@@ -59,6 +59,6 @@ class InitialDeployment extends Migration
         Schema::drop('role_seatgroup');
         Schema::drop('corporation_info_seatgroup');
         Schema::drop('group_seatgroup');
-        Schema::drop("seatgroups");
+        Schema::drop('seatgroups');
     }
 }

@@ -2,10 +2,8 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups;
 
-use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUserSync;
 use Herpaderpaldent\Seat\SeatGroups\Observers\RefreshTokenObserver;
 use Illuminate\Support\ServiceProvider;
-use Herpaderpaldent\Seat\SeatGroups\Commands\SeatGroupsUsersUpdate;
 use Seat\Eveapi\Models\RefreshToken;
 
 class GroupsServiceProvider extends ServiceProvider
@@ -17,11 +15,12 @@ class GroupsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         $this->addCommands();
         $this->addRoutes();
         $this->addViews();
-        $this->addPublications();
         $this->addTranslations();
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
 
         RefreshToken::observe(RefreshTokenObserver::class);
     }
@@ -46,19 +45,13 @@ class GroupsServiceProvider extends ServiceProvider
     private function addCommands()
     {
         $this->commands([
-            SeatGroupsUsersUpdate::class
+            Commands\SeatGroupsUsersUpdate::class,
         ]);
     }
 
-    private function addPublications()
-    {
-        $this->publishes([
-            __DIR__ . '/database/migrations/' => database_path('migrations'),
-        ]);
-    }
     private function addRoutes()
     {
-        if (!$this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             include __DIR__ . '/Http/routes.php';
         }
     }
@@ -67,6 +60,7 @@ class GroupsServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'seatgroups');
     }
+
     private function addTranslations()
     {
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'seatgroups');

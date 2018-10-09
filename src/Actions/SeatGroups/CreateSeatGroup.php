@@ -3,17 +3,16 @@
  * Created by PhpStorm.
  *  * User: Herpaderp Aldent
  * Date: 22.07.2018
- * Time: 10:27
+ * Time: 10:27.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 
 class CreateSeatGroup
 {
-    public function execute (array $data) : Seatgroup
+    public function execute(array $data) : Seatgroup
     {
         //dd($data);
         $seat_group = new Seatgroup;
@@ -27,5 +26,4 @@ class CreateSeatGroup
 
         return $seat_group;
     }
-
 }

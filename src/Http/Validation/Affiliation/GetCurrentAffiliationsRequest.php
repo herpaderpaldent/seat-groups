@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 05.09.2018
- * Time: 18:49
+ * Time: 18:49.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation;
@@ -32,8 +32,7 @@ class GetCurrentAffiliationsRequest extends FormRequest
     {
 
         return [
-            'seatgroup_id'=>'required'
+            'seatgroup_id'=>'required',
         ];
     }
-
 }

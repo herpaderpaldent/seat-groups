@@ -3,16 +3,14 @@
  * Created by PhpStorm.
  *  * User: Herpaderp Aldent
  * Date: 13.02.2018
- * Time: 21:43
+ * Time: 21:43.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
-
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationAction;
 use Illuminate\Database\Eloquent\Model;
 use Seat\Web\Models\Group;
-
 
 class Seatgroup extends Model
 {
@@ -167,6 +165,6 @@ class Seatgroup extends Model
 
     public function children()
     {
-        return $this->belongsToMany(Seatgroup::class, 'seatgroup_seatgroups','parent_id','child_id');
+        return $this->belongsToMany(Seatgroup::class, 'seatgroup_seatgroups', 'parent_id', 'child_id');
     }
 }

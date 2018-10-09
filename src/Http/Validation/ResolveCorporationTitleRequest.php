@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 05.09.2018
- * Time: 14:19
+ * Time: 14:19.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation;
-
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -34,8 +33,7 @@ class ResolveCorporationTitleRequest extends FormRequest
 
         return [
             'corporation_id'=>'required',
-            'seatgroup_id' => 'required'
+            'seatgroup_id' => 'required',
         ];
     }
-
 }
