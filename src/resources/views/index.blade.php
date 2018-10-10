@@ -67,3 +67,13 @@
     <!-- /.tab-content -->
   </div>
 @endsection
+
+@push('javascript')
+  <script type="application/javascript">
+    $(function() {
+      @if(!empty(session('activeTab')))
+      $('.nav-tabs a[href="#' + '{{session('activeTab')}}' + '"]').tab('show');
+      @endif
+    })
+  </script>
+@endpush

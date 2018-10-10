@@ -29,6 +29,10 @@
 @push('javascript')
   <script type="application/javascript">
     $(function(){
+      @if(session('ModalSeATGroup') == $seatgroup->id)
+      $('#ModalSeATGroup{{session('ModalSeATGroup')}}').modal('show');
+      @endif
+
       $('table#current_member_table_{{$seatgroup->id}}').DataTable({
         processing: true,
         serverSide: true,
