@@ -8,6 +8,6 @@ $factory->define(Seatgroup::class, function (Faker $faker) {
         'name'            => $faker->name,
         'description'     => $faker->text,
         'type'            => $faker->randomElement(['auto', 'open', 'managed', 'hidden']),
-        'all_corporation' => $faker->boolean,
+        'all_corporations' => $faker->boolean,
     ];
 });

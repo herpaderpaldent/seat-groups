@@ -2,6 +2,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
 
+use Herpaderpaldent\Seat\SeatGroups\Actions\Alliances\GetAllianceListAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\GetCorporationListAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\CreateSeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\DeleteSeatGroup;
@@ -45,7 +46,7 @@ class SeatGroupsController extends Controller
 
         $roles = Role::all();
 
-        return view('seatgroups::create', compact('roles'));
+        return response()->json($roles);
     }
 
     /**
@@ -87,8 +88,11 @@ class SeatGroupsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, GetCorporationListAction $action)
+    public function edit($id, GetCorporationListAction $action, GetAllianceListAction $get_alliance_list_action)
     {
+        $all_available_alliances = $get_alliance_list_action->execute([
+            'seatgroup_id' =>$id,
+        ]);
         $all_corporations = $action->execute([
             'seatgroup_id' =>$id,
             'origin' => 'SeatGroupsController',
@@ -102,7 +106,7 @@ class SeatGroupsController extends Controller
         $available_seatgroups = Seatgroup::whereNotIn('id', $seatgroup->children->pluck('id')->push($id)->toArray())->get();
         $all_groups = Group::all();
 
-        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups', 'all_corporations_for_title', 'available_seatgroups'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups', 'all_corporations_for_title', 'available_seatgroups', 'all_available_alliances'));
     }
 
     /**

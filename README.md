@@ -3,6 +3,7 @@ With this [SeAT](https://github.com/eveseat/seat) Package you can create `auto`,
 which correlate to SeAT-Roles.
 
 [![Latest Stable Version](https://poser.pugx.org/herpaderpaldent/seat-groups/v/stable)](https://packagist.org/packages/herpaderpaldent/seat-groups)
+[![StyleCI](https://github.styleci.io/repos/120507448/shield?branch=master)](https://github.styleci.io/repos/120507448)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ec32c88b40e1407ede38/maintainability)](https://codeclimate.com/github/herpaderpaldent/seat-groups/maintainability)
 [![License](https://poser.pugx.org/herpaderpaldent/seat-groups/license)](https://packagist.org/packages/herpaderpaldent/seat-groups)
 [![Total Downloads](https://poser.pugx.org/herpaderpaldent/seat-groups/downloads)](https://packagist.org/packages/herpaderpaldent/seat-groups)
@@ -14,7 +15,6 @@ please do report any findings to seat-slack and report it as an issue*
 
 1. cd to `/var/www/seat`
 2. enter `composer require herpaderpaldent/seat-groups`
-3. Publish `php artisan vendor:publish --force --all`
 4. run migration `php artisan migrate`
 
 ## Screenshots

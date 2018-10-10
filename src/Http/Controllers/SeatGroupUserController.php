@@ -42,14 +42,25 @@ class SeatGroupUserController extends Controller
                     'on_waitlist' => 0,
                 ]);
 
-                return redirect()->back()->with('success', 'User accepted');
+                return redirect()->back()
+                    ->with([
+                        'success' => 'User accepted',
+                        'activeTab' => 'managed_group',
+                        'ModalSeATGroup' => $seat_group_id,
+                    ]);
                 break;
             case 'deny':
                 $seatgroup = Seatgroup::find($seat_group_id);
 
                 $seatgroup->group()->detach($request->input('group_id'));
 
-                return redirect()->back()->with('success', 'User removed');
+                return redirect()
+                    ->back()
+                    ->with([
+                        'success' => 'User removed',
+                        'activeTab' => 'managed_group',
+                        'ModalSeATGroup' => $seat_group_id,
+                    ]);
 
         }
 
@@ -123,10 +134,16 @@ class SeatGroupUserController extends Controller
                     $this->giveGroupRole(auth()->user()->group->id, $role->id);
                 }
 
-                return redirect()->back()->with('success', 'Updated');
+                return redirect()->back()->with([
+                    'success' => 'Updated',
+                    'activeTab' => 'open_group',
+                ]);
             }
 
-            return redirect()->back()->with('error', 'You are not allowed to opt-in into this group');
+            return redirect()->back()->with([
+                'error' => 'You are not allowed to opt-in into this group',
+                'activeTab' => 'open_group',
+            ]);
         }
 
         //Handle managed group
@@ -138,10 +155,16 @@ class SeatGroupUserController extends Controller
                     'on_waitlist' => 1,
                 ]);
 
-                return redirect()->back()->with('info', 'you sucessfully applied to ' . $seatgroup->name);
+                return redirect()->back()->with([
+                    'info' => 'you successfully applied to ' . $seatgroup->name,
+                    'activeTab' => 'managed_group',
+                ]);
             }
 
-            return redirect()->back()->with('error', 'You are not allowed to apply for this group');
+            return redirect()->back()->with([
+                'error' => 'You are not allowed to apply for this group',
+                'activeTab' => 'managed_group',
+            ]);
         }
 
         //Handle hidden group
@@ -196,7 +219,7 @@ class SeatGroupUserController extends Controller
 
         dispatch(new GroupSync(auth()->user()->group));
 
-        return redirect()->back()->with('success', 'You are no longer member of  removed');
+        return redirect()->back()->with('success', 'You are no longer member of ' . $seatgroup->name);
     }
 
     public function getMembersTable($id)

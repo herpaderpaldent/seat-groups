@@ -8,12 +8,12 @@
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
       <li><a href="#auto_group" data-toggle="tab">{{ trans('seatgroups::seat.seat_groups_autogroup')}}</a></li>
-      <li class="active"><a href="#open_group"
-                            data-toggle="tab">{{ trans('seatgroups::seat.seat_groups_opengroup')}}</a></li>
+      <li class="active"><a href="#open_group" data-toggle="tab">{{ trans('seatgroups::seat.seat_groups_opengroup')}}</a></li>
       <li><a href="#managed_group" data-toggle="tab">{{ trans('seatgroups::seat.seat_groups_managedgroup')}}</a></li>
       @if($seatgroups->where('type', 'hidden')->count()>0)
         <li><a href="#hidden_group" data-toggle="tab">{{ trans('seatgroups::seat.seat_groups_hiddengroup')}}  <i class="fa fa-info" data-toggle="tooltip" data-title="Only Members of a hidden SeAT Group can see this tab"></i></a></li>
       @endif
+      @includeWhen(auth()->user()->hasRole('seatgroups.create'),'seatgroups::partials.create-modal')
     </ul>
     <div class="tab-content">
       <div class="tab-pane " id="auto_group">
@@ -67,3 +67,13 @@
     <!-- /.tab-content -->
   </div>
 @endsection
+
+@push('javascript')
+  <script type="application/javascript">
+    $(function() {
+      @if(!empty(session('activeTab')))
+      $('.nav-tabs a[href="#' + '{{session('activeTab')}}' + '"]').tab('show');
+      @endif
+    })
+  </script>
+@endpush
