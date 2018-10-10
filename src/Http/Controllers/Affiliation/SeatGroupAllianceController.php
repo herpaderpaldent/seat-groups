@@ -12,10 +12,9 @@ use Herpaderpaldent\Seat\SeatGroups\Actions\Alliances\AddAllianceAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Alliances\RemoveAllianceAffiliation;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\AllianceAffiliationRequest;
 
-
 class SeatGroupAllianceController
 {
-    public function removeAllianceAffiliation(AllianceAffiliationRequest $request,  RemoveAllianceAffiliation $action)
+    public function removeAllianceAffiliation(AllianceAffiliationRequest $request, RemoveAllianceAffiliation $action)
     {
         if($action->execute($request->all()))
             return redirect()->back()->with('success', 'Alliance removed');

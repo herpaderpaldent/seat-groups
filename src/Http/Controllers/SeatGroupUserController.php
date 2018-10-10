@@ -46,7 +46,7 @@ class SeatGroupUserController extends Controller
                     ->with([
                         'success' => 'User accepted',
                         'activeTab' => 'managed_group',
-                        'ModalSeATGroup' => $seat_group_id
+                        'ModalSeATGroup' => $seat_group_id,
                     ]);
                 break;
             case 'deny':
@@ -59,7 +59,7 @@ class SeatGroupUserController extends Controller
                     ->with([
                         'success' => 'User removed',
                         'activeTab' => 'managed_group',
-                        'ModalSeATGroup' => $seat_group_id
+                        'ModalSeATGroup' => $seat_group_id,
                     ]);
 
         }
@@ -136,13 +136,13 @@ class SeatGroupUserController extends Controller
 
                 return redirect()->back()->with([
                     'success' => 'Updated',
-                    'activeTab' => 'open_group'
+                    'activeTab' => 'open_group',
                 ]);
             }
 
             return redirect()->back()->with([
                 'error' => 'You are not allowed to opt-in into this group',
-                'activeTab' => 'open_group'
+                'activeTab' => 'open_group',
             ]);
         }
 
@@ -157,13 +157,13 @@ class SeatGroupUserController extends Controller
 
                 return redirect()->back()->with([
                     'info' => 'you successfully applied to ' . $seatgroup->name,
-                    'activeTab' => 'managed_group'
+                    'activeTab' => 'managed_group',
                 ]);
             }
 
             return redirect()->back()->with([
                 'error' => 'You are not allowed to apply for this group',
-                'activeTab' => 'managed_group'
+                'activeTab' => 'managed_group',
             ]);
         }
 

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 10.10.2018
- * Time: 18:58
+ * Time: 18:58.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Alliances;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 
@@ -24,5 +23,4 @@ class AddAllianceAffiliation
 
         return true;
     }
-
 }

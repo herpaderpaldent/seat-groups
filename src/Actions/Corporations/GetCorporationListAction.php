@@ -31,7 +31,7 @@ class GetCorporationListAction //TODO: Refactor this Class and rename
 
         //Add all corporation in alliance to existing_affiliation
         if($seatgroup->alliance->isNotEmpty()){
-            $corp_ids = CorporationInfo::whereIn('alliance_id',$seatgroup->alliance->pluck('alliance_id'))
+            $corp_ids = CorporationInfo::whereIn('alliance_id', $seatgroup->alliance->pluck('alliance_id'))
                 ->select('corporation_id')->get()->pluck('corporation_id');
             $existing_affiliations->push($corp_ids);
         }
