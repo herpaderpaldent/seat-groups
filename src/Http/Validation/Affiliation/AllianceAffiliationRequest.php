@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 10.10.2018
- * Time: 18:48
+ * Time: 18:48.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation;
-
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -37,5 +36,4 @@ class AllianceAffiliationRequest extends FormRequest
             'seatgroup_id'=>'required',
         ];
     }
-
 }

@@ -68,7 +68,7 @@ class Seatgroup extends Model
     public function alliance()
     {
 
-        return $this->belongsToMany('Seat\Eveapi\Models\Alliances\Alliance','alliance_seatgroup','seatgroup_id','alliance_id');
+        return $this->belongsToMany('Seat\Eveapi\Models\Alliances\Alliance', 'alliance_seatgroup', 'seatgroup_id', 'alliance_id');
     }
 
     /**

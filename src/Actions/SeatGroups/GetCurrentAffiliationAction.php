@@ -26,11 +26,11 @@ class GetCurrentAffiliationAction
                 'all_corporations' => 'all_corporations',
             ]);
 
-        $seatgroup->alliance->each(function ($alliance) use ($affiliations, $seatgroup){
+        $seatgroup->alliance->each(function ($alliance) use ($affiliations, $seatgroup) {
             $affiliations->push([
                 'seatgroup_id' => $seatgroup->id,
                 'alliance_id' => $alliance->alliance_id,
-                'name' => $alliance->name
+                'name' => $alliance->name,
             ]);
         });
 

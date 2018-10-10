@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 10.10.2018
- * Time: 16:16
+ * Time: 16:16.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Alliances;
@@ -29,8 +29,7 @@ class GetAllianceListAction
 
         $alliance_ids = $all_corporations->pluck('alliance_id')->unique();
 
-        return Alliance::whereIn('alliance_id',$alliance_ids)->select('alliance_id','name')->get();
+        return Alliance::whereIn('alliance_id', $alliance_ids)->select('alliance_id', 'name')->get();
 
     }
-
 }
