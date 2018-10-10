@@ -4,10 +4,15 @@
 
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs">
+    <li><a href="#alliance-filter" data-toggle="tab">Alliance Filter</a></li>
     <li class="active"><a href="#corporation-filter" data-toggle="tab">Corporation Filter</a></li>
     <li><a href="#title-filter" data-toggle="tab">Corporation Title Filter</a></li>
   </ul>
   <div class="tab-content">
+
+    <div class="tab-pane" id="alliance-filter">
+      @include('seatgroups::affiliation.partials.alliance-form')
+    </div>
 
     <div class="tab-pane active" id="corporation-filter">
       @include('seatgroups::affiliation.partials.corporation-form')

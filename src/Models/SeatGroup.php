@@ -10,6 +10,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationAction;
 use Illuminate\Database\Eloquent\Model;
+use Seat\Eveapi\Models\Alliances\Alliance;
 use Seat\Web\Models\Group;
 
 class Seatgroup extends Model
@@ -62,6 +63,12 @@ class Seatgroup extends Model
 
         return $this->belongsToMany('Seat\Web\Models\Group')
             ->wherePivot('on_waitlist', 1);
+    }
+
+    public function alliance()
+    {
+
+        return $this->belongsToMany('Seat\Eveapi\Models\Alliances\Alliance','alliance_seatgroup','seatgroup_id','alliance_id');
     }
 
     /**
@@ -150,11 +157,15 @@ class Seatgroup extends Model
                     }
                 }
 
-                //Check if main_character is an affiliated corporation
+                //Check if character is an affiliated corporation
                 if (isset($affiliation['corporation_id']) && $affiliation['corporation_id'] === $user->character->corporation_id && ! isset($affiliation['corporation_title'])) {
 
                     return true;
                 }
+
+                //Check if character is in an affiliated alliance
+                if(isset($affiliation['alliance_id']) && $affiliation['alliance_id'] === $user->character->alliance_id)
+                    return true;
 
             }
         }

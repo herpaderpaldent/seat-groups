@@ -91,6 +91,14 @@ Route::group([
             'as'    => 'affiliation.add.corp.affiliation',
             'uses'  => 'SeatGroupCorporationController@addCorporationAffiliation',
         ]);
+        Route::post('/add/alliance', [
+            'as'    => 'affiliation.add.alliance.affiliation',
+            'uses'  => 'SeatGroupAllianceController@addAllianceAffiliation',
+        ]);
+        Route::post('/remove/alliance', [
+            'as'    => 'affiliation.remove.alliance.affiliation',
+            'uses'  => 'SeatGroupAllianceController@removeAllianceAffiliation',
+        ]);
 
     });
 

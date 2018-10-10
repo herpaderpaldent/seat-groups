@@ -9,12 +9,12 @@
 
   <div class="row">
     <div class="col-lg-12">
-      @if($seatgroup->corporation->isEmpty() && !$seatgroup->all_corporations && $seatgroup->corporationTitles->isEmpty())
+      @if($seatgroup->corporation->isEmpty() && !$seatgroup->all_corporations && $seatgroup->corporationTitles->isEmpty() && $seatgroup->alliance->isEmpty())
         <div class="alert alert-info alert-dismissible">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
           <h4><i class="icon fa fa-info"></i> SeAT-Group is not working</h4>
           SeAT-Group needs an affiliation to set to work correctly. This will prevent members that have been purged from
-          corporation or lost their title, to still keep their roles.
+          alliance, corporation or lost their title, to still keep their roles.
         </div>
       @endif
     </div>
