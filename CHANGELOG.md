@@ -1,3 +1,6 @@
+# Version 1.4.1
+* missed a migration.
+
 # Version 1.4.0
 Introduction of Alliance Filter
 * alliance filter
