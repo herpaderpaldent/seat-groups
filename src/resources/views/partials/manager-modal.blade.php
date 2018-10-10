@@ -1,15 +1,15 @@
 <!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#ModalSeATGrooup{{$seatgroup->id}}">Manage Members</button>
+<button type="button" class="btn btn-xs btn-info pull-right" data-toggle="modal" data-target="#ModalSeATGroup{{$seatgroup->id}}">Manage Members</button>
 
 <!-- Modal -->
-<div id="ModalSeATGrooup{{$seatgroup->id}}" class="modal fade" role="dialog">
+<div id="ModalSeATGroup{{$seatgroup->id}}" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Manage Memebers: {{$seatgroup->name}}</h4>
+        <h4 class="modal-title">Manage Members: {{$seatgroup->name}}</h4>
       </div>
       <div class="modal-body">
         <table id="current_member_table_{{$seatgroup->id}}" class="display table-hover table-condensed table-striped" style="width:100%" >
