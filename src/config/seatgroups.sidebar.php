@@ -20,12 +20,6 @@ return [
                 'permission'    => 'seatgroups.view',
             ],
             [
-                'name'  => 'Add new SeAT Group',
-                'icon'  => 'fa-plus-square',
-                'permission' => 'seatgroups.create',
-                'route' => 'seatgroups.create',
-            ],
-            [
                 'name'  => 'About',
                 'icon'  => 'fa-info-circle',
                 'permission' => 'seatgroups.view',

@@ -45,7 +45,7 @@ class SeatGroupsController extends Controller
 
         $roles = Role::all();
 
-        return view('seatgroups::create', compact('roles'));
+        return response()->json($roles);
     }
 
     /**
