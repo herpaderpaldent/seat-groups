@@ -1,3 +1,13 @@
+# Version 1.4.0
+Introduction of Alliance Filter
+* alliance filter
+* styleCI Badge
+* using `loadMigrationsFrom()` in ServiceProvider 
+* refactored some classes for testing
+* respect origin on SeAT-Group interaction
+
+After this version `php artisan vendor:publish --force --all` will not be needed anymore. Migrations are directly loaded from the ServiceProvider. Finally you can add alliance filters. Finally if you are working on a SeAT-Group modal, accepting or denying members will return you to the modal instead of the default index file.
+
 # Version 1.3.6
 This update includes preparations for package-testing and better test-coverage, an improvement to `corporation_titles` table which caused users to lose corp titles in seat in some rare cases.
 
