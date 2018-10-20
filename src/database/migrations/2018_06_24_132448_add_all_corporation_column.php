@@ -14,7 +14,7 @@ class AddAllCorporationColumn extends Migration
     public function up()
     {
         Schema::table('seatgroups', function (Blueprint $table) {
-            $table->boolean('all_corporations')->default(false);
+            $table->boolean('all_corporations')->after('type')->default(false);
         });
     }
 
