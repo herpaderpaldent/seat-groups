@@ -22,7 +22,6 @@ class SetupCorrectForeignKeysForCorporationTitleSeatgroupsTable extends Migratio
                 ->on('corporation_titles')
                 ->onDelete('cascade');
 
-
             $table->primary(['corporation_id', 'title_id', 'seatgroup_id'], 'corporation_title_seatgroups_primary');
 
         });

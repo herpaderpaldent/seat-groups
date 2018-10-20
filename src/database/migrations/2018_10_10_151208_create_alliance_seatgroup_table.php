@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAllianceSeatgroupTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateAllianceSeatgroupTable extends Migration
             $table->foreign('seatgroup_id')->references('id')->on('seatgroups')->onDelete('cascade');
             $table->integer('alliance_id')->index();
             $table->foreign('alliance_id')->references('alliance_id')->on('alliances')->onDelete('cascade');
-            $table->primary(['seatgroup_id','alliance_id']);
+            $table->primary(['seatgroup_id', 'alliance_id']);
         });
     }
 
