@@ -1,3 +1,8 @@
+# Version 1.4.2
+* Fixxed a bug causing to show all hidden-groups, instead of only the hidden-groups where a user is a member of. Thank you @jediefe for reporting this.
+* Removed raw:db statements from migrations (preparation for testing).
+* Added badge to `manage_members` button to indicate members in waitlist. Thank you @Busterguy for suggesting. 
+
 # Version 1.4.1
 * missed a migration.
 

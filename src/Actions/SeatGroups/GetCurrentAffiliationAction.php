@@ -46,7 +46,7 @@ class GetCurrentAffiliationAction
         $seatgroup->corporationTitles->each(function ($corporation_title) use ($affiliations, $seatgroup) {
             $corporation = CorporationInfo::find($corporation_title->corporation_id);
             $title_name = CorporationTitle::where('corporation_id', $corporation_title->corporation_id)
-                ->where('title_id', $corporation_title->title_id)->first()->name;
+                ->where('title_id', $corporation_title->title_id)->first()->name; //TODO check if i could use get()
 
             $affiliations->push([
                 'seatgroup_id' => $seatgroup->id,
