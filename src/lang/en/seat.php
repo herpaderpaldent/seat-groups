@@ -48,4 +48,9 @@ return [
 
     'seat_groups_about' => 'About',
 
+    'available_alliances' => 'Available Alliances',
+    'add_alliance' => 'Add Alliance'
+
+
+
 ];
