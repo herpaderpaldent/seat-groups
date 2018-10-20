@@ -29,20 +29,25 @@ please do report any findings to seat-slack and report it as an issue*
 
 ### auto group
 Members of set corporation are getting assigned the corresponding roles
+
 ![AutoGrouo](https://i.imgur.com/JE6DsWu.png)
 
 ### opt-in group
 Members of set corporation can opt-in into a seat group and get then assigned
 the corresponding roles
+
 ![OpenGroup](https://i.imgur.com/uRiTxN1.png)
 
 ### managed groups
 Members may apply for these groups. Managers may accept or deny the application
+
 ![Managed](https://i.imgur.com/GcXv50A.png)
 
 ### hidden groups
 This seat group is for hidden groups f.e. CEO. This group is only shown on the overview for users with `seatgroup.create` and `superuser` Permission.
+
 ![Hidden](https://i.imgur.com/f7Ry5SA.png)
+
 ---
 
 ## FAQ:
@@ -56,6 +61,10 @@ Restart supervisor or `seat-worker` container to load the new code to workers.
 ### I have set an affiliation but it isn't shown
 Make sure you are running the latest version. Later versions interfered with AdBlockers. Disable your adblocker temporally as work around and update.
 
+# Contributions
+Open Source is best when supported by a community. Any size of contribution is **very** appreciated. A little hall of fame for your code-contribution: 
+
+ ![Contributors of (herpaderpaldent) seat-groups](https://contrichart.io/charts/herpaderpaldent/seat-groups?cols=2&style=square)
 
 # Donations
 

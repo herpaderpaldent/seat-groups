@@ -3,7 +3,7 @@
   <input name="_method3" type="hidden" value="PATCH">
   <input type="hidden" name="seatgroup_id" value="{{ $seatgroup->id }}">
   <div class="form-group">
-    <label for="alliances">{{ trans('web::seat.available_corporations') }}</label>
+    <label for="alliances">{{ trans('seatgroups::seat.available_alliances') }}</label>
     <select name="alliance_ids[]" id="seat-group-alliance-id" style="width: 100%" multiple required>
 
       @if(!$seatgroup->all_corporations)
@@ -19,7 +19,7 @@
   <div class="row">
     <div class="col-md-6"></div>
     <div class="form-group col-md-12">
-      <button type="submit" class="btn btn-success btn-block">Add Corporation</button>
+      <button type="submit" class="btn btn-success btn-block">{{ trans('seatgroups::seat.add_alliance') }}</button>
     </div>
   </div>
 </form>
