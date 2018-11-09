@@ -31,7 +31,7 @@ class GroupDispatcher extends SeatGroupsJobBase
             {
                $job = new GroupSync($users_group);
 
-               dispatch($job);
+               dispatch($job)->onQueue('high');
             });
 
         }, function ()
