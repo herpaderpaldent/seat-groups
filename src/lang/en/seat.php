@@ -52,4 +52,7 @@ return [
     'available_alliances' => 'Available Alliances',
     'add_alliance'        => 'Add Alliance',
 
+    //Event Log
+    'event' => 'Event',
+
 ];

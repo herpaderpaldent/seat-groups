@@ -1,3 +1,14 @@
+# Version 1.5.0
+Another major update on seat-groups. Containing many demanded features such as:
+* Dispatching update job via web interface.
+* Seat-Groups jobs are now dispatched on `high` queue (thanks @mmolitor87 for the suggestion).
+* Clicking multiple times on `Add new SeAT Group` does not append multiple sets of roles anymore (thank you @MoucceuWildfire for reporting).
+* SeAT-Groups now only logs attached and detached role events instead of every successful run (thank you @warlof for the idea).
+* Deactivated users don't raise `MissingRefreshTokenExceptions` anymore
+* `MissingRefreshTokenExceptions` are now more verbose.
+
+As you can see many of the implemented features are based from your valuable input. Please don't hesitate to contact me IG or via [slack](https://eveseat-slack.herokuapp.com/) (join plugin channel) with anything you'd like to discuss.
+
 # Version 1.4.2
 * Fixxed a bug causing to show all hidden-groups, instead of only the hidden-groups where a user is a member of. Thank you @jediefe for reporting this.
 * Removed raw:db statements from migrations (preparation for testing).

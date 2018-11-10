@@ -67,17 +67,22 @@
 
   <script type="text/javascript">
 
-    $(document).ready(function(){
+    $(document).ready(function () {
       $("#SeATGroupCreate").on('show.bs.modal', function () {
         $("#available_roles").select2({
           placeholder: "{{ trans('web::seat.select_item_add') }}"
         });
         $.ajax({
-          type: 'GET',
-          url: '{{ route('seatgroups.create') }}',
-          success: function(data){
+          type   : 'GET',
+          url    : '{{ route('seatgroups.create') }}',
+          success: function (data) {
+
+            var select = $('#available_roles');
+
+            select.empty();
+
             for (var i = 0; i < data.length; i++) {
-              $('#available_roles').append($('<option></option>').attr('value', data[i].id).text(data[i].title));
+              select.append($('<option></option>').attr('value', data[i].id).text(data[i].title));
             }
           },
           error  : function (xhr, textStatus, errorThrown) {

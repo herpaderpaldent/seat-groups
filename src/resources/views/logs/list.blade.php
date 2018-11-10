@@ -2,7 +2,7 @@
   <thead>
   <tr>
     <th>{{ trans('web::seat.date') }}</th>
-    <th>{{ trans('web::seat.category') }}</th>
+    <th>{{ trans('seatgroups::seat.event') }}</th>
     <th>{{ trans('web::seat.message') }}</th>
   </tr>
   </thead>

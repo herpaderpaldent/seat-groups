@@ -11,6 +11,7 @@ use Herpaderpaldent\Seat\SeatGroups\Http\Validation\CreateSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\DeleteSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Seat\Services\Repositories\Character\Character;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Http\Controllers\Controller;
@@ -166,5 +167,15 @@ class SeatGroupsController extends Controller
         $changelog = $action->execute();
 
         return view('seatgroups::about', compact('changelog'));
+    }
+
+    public function dispatchUpdate()
+    {
+
+        Artisan::queue('seat-groups:users:update')->onQueue('high');
+
+        return redirect()->back()
+            ->with('success', 'SeAT Group update scheduled. Check back in a few moments');
+
     }
 }

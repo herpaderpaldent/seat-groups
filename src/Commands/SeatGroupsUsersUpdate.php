@@ -38,13 +38,13 @@ class SeatGroupsUsersUpdate extends Command
                     return $users_group->main_character_id != '0';
                 })
                 ->each(function ($group) {
-                    dispatch(new GroupSync($group));
+                    dispatch(new GroupSync($group))->onQueue('high');
                     $this->info(sprintf('A synchronization job has been queued in order to update %s (%s) roles.', $group->main_character->name,
                         $group->users->map(function ($user) { return $user->name; })->implode(', ')));
             });
 
         } else {
-            GroupDispatcher::dispatch();
+            GroupDispatcher::dispatch()->onQueue('high');
             $this->info('A synchronization job has been queued in order to update all SeAT Group roles.');
         }
 
