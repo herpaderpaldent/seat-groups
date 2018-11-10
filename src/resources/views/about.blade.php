@@ -36,7 +36,7 @@
 
       <legend>Bugs and issues</legend>
 
-      <p>If you find something is not working as expectected, please don't hesitate and contact me. Either use SeAT-Slack or submit an <a href="https://github.com/herpaderpaldent/seat-groups/issues/new">issue on Github</a></p>
+      <p>If you find something is not working as expected, please don't hesitate and contact me. Either use SeAT-Slack or submit an <a href="https://github.com/herpaderpaldent/seat-groups/issues/new">issue on Github</a></p>
 
     </div>
   </div>
@@ -46,7 +46,7 @@
     <div class="box-header with-border">
       <i class="fa fa-archive"></i>
 
-      <h3 class="box-title">Last Event log</h3>
+      <h3 class="box-title">Last {{trans('seatgroups::seat.event')}} Log</h3>
 
       <span class="log-clear-button"></span>
 
