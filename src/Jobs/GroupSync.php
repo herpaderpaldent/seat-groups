@@ -157,7 +157,7 @@ class GroupSync extends SeatGroupsJobBase
                 ]);
 
                 // throw exception
-                throw new MissingRefreshTokenException();
+                $this->fail(new MissingRefreshTokenException($user));
             }
         }
     }
@@ -173,6 +173,8 @@ class GroupSync extends SeatGroupsJobBase
                 $this->main_character->name, $this->group->users->map(function ($user) { return $user->name; })->implode(', ')),
 
         ]);
+
+        $this->fail($exception);
 
     }
 
