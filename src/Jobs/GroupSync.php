@@ -44,6 +44,7 @@ class GroupSync extends SeatGroupsJobBase
      */
     public function __construct(Group $group)
     {
+
         $this->group = $group;
         $this->main_character = $group->main_character;
         if (is_null($group->main_character)) {
@@ -65,12 +66,13 @@ class GroupSync extends SeatGroupsJobBase
 
     public function handle()
     {
+
         // in case no main character has been set, throw an exception and abort the process
         if (is_null($this->main_character))
             throw new MissingMainCharacterException($this->group);
 
-        Redis::funnel('seat-groups:jobs.group_sync_' . $this->group->id)->limit(1)->then(function ()
-        {
+        Redis::funnel('seat-groups:jobs.group_sync_' . $this->group->id)->limit(1)->then(function () {
+
             $this->beforeStart();
 
             try {
@@ -95,7 +97,7 @@ class GroupSync extends SeatGroupsJobBase
                                 foreach ($seat_group->role as $role) {
                                     $roles->push($role->id);
                                 }
-                                if(! in_array($group->id, $seat_group->group->pluck('id')->toArray())){
+                                if (! in_array($group->id, $seat_group->group->pluck('id')->toArray())) {
                                     // add user_group to seat_group as member if no member yet.
                                     $seat_group->member()->attach($group->id);
                                 }
@@ -111,7 +113,7 @@ class GroupSync extends SeatGroupsJobBase
                                 }
                                 break;
                         }
-                    } elseif(in_array($group->id, $seat_group->group->pluck('id')->toArray())) {
+                    } elseif (in_array($group->id, $seat_group->group->pluck('id')->toArray())) {
                         $seat_group->member()->detach($group->id);
                     }
                 });
@@ -128,8 +130,8 @@ class GroupSync extends SeatGroupsJobBase
 
             }
 
-        }, function ()
-        {
+        }, function () {
+
             logger()->warning('A GroupSync job is already running for ' . $this->main_character->name . ' Removing the job from the queue.');
 
             $this->delete();
@@ -151,6 +153,7 @@ class GroupSync extends SeatGroupsJobBase
                 // take away all roles
                 $this->group->roles()->sync([]);
                 Seatgroup::all()->each(function ($seatgroup) {
+
                     $seatgroup->member()->detach($this->group->id);
                 });
 
