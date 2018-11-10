@@ -12,6 +12,7 @@ use Herpaderpaldent\Seat\SeatGroups\Exceptions\MissingRefreshTokenException;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
 use Illuminate\Support\Facades\Redis;
+use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
 
 class GroupSync extends SeatGroupsJobBase
@@ -115,9 +116,9 @@ class GroupSync extends SeatGroupsJobBase
                     }
                 });
 
-                $group->roles()->sync($roles->unique());
+                $sync = $group->roles()->sync($roles->unique());
 
-                $this->onFinish();
+                $this->onFinish($sync);
 
                 logger()->debug('Group has beend synced for ' . $this->main_character->name);
 
@@ -154,10 +155,10 @@ class GroupSync extends SeatGroupsJobBase
                 });
 
                 SeatgroupLog::create([
-                    'event' => 'warning',
-                    'message' => sprintf('The RefreshToken of %s is missing, therefore user group of %s (%s) loses all permissions.',
-                        $user->name, $this->main_character->name, $this->group->users->map(function ($user) { return $user->name; })->implode(', ')),
-
+                    'event'   => 'error',
+                    'message' => sprintf('The RefreshToken of %s is missing, therefore user group of %s (%s) loses all permissions.' .
+                        'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. ',
+                        $user->name, $this->main_character->name, $this->group->users->map(function ($user) {return $user->name;})->implode(', ')),
                 ]);
 
                 // throw exception
@@ -176,23 +177,46 @@ class GroupSync extends SeatGroupsJobBase
         report($exception);
 
         SeatgroupLog::create([
-            'event' => 'error',
+            'event'   => 'error',
             'message' => sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
-                $this->main_character->name, $this->group->users->map(function ($user) { return $user->name; })->implode(', ')),
-
+                $this->main_character->name, $this->group->users->map(function ($user) {return $user->name;})->implode(', ')),
         ]);
 
         $this->fail($exception);
 
     }
 
-    public function onFinish()
+    public function onFinish($sync)
     {
-        SeatgroupLog::create([
-            'event' => 'success',
-            'message' => sprintf('The user group of %s (%s) has successfully been synced.',
-                $this->main_character->name, $this->group->users->map(function ($user) { return $user->name; })->implode(', ')),
 
-        ]);
+        if (! empty($sync['attached'])) {
+
+            SeatgroupLog::create([
+                'event'   => 'attached',
+                'message' => sprintf('The user group of %s (%s) has successfully been attached to the following roles: %s.',
+                    $this->main_character->name,
+                    $this->group->users->map(function ($user) {
+
+                        return $user->name;
+                    })->implode(', '),
+                    Role::whereIn('id', $sync['attached'])->pluck('title')->implode(', ')
+                ),
+            ]);
+        }
+
+        if (! empty($sync['detached'])) {
+
+            SeatgroupLog::create([
+                'event'   => 'detached',
+                'message' => sprintf('The user group of %s (%s) has been detached from the following roles: %s.',
+                    $this->main_character->name,
+                    $this->group->users->map(function ($user) {
+
+                        return $user->name;
+                    })->implode(', '),
+                    Role::whereIn('id', $sync['detached'])->pluck('title')->implode(', ')
+                ),
+            ]);
+        }
     }
 }
