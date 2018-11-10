@@ -42,23 +42,40 @@
   </div>
 
   @if(auth()->user()->hasRole('seatgroups.create'))
-  <div class="box box-default">
-    <div class="box-header with-border">
-      <i class="fa fa-archive"></i>
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <i class="fa fa-refresh"></i>
 
-      <h3 class="box-title">Last {{trans('seatgroups::seat.event')}} Log</h3>
+        <h3 class="box-title">{{ trans('web::seat.update') }} {{ trans('seatgroups::seat.seat_groups') }}</h3>
 
-      <span class="log-clear-button"></span>
 
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <a href="{{route('seatgroup.user.update')}}" class="btn btn-block btn-primary" role="button">{{ trans('seatgroups::seat.seat_groups') }} {{ trans_choice('web::seat.user',2) }} {{ trans('web::seat.update') }}</a>
+
+      </div>
+      <!-- /.box-body -->
     </div>
-    <!-- /.box-header -->
-    <div class="box-body">
+
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <i class="fa fa-archive"></i>
+
+        <h3 class="box-title">Last {{trans('seatgroups::seat.event')}} Log</h3>
+
+        <span class="log-clear-button"></span>
+
+
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
 
         @include('seatgroups::logs.list')
 
+      </div>
+      <!-- /.box-body -->
     </div>
-    <!-- /.box-body -->
-  </div>
   @endif
 
 @stop

@@ -53,6 +53,10 @@ Route::group([
             'as'   => 'seatgroupuser.remove.manager',
             'uses' => 'SeatGroupUserController@removeManager',
         ]);
+        Route::get('/update', [
+            'as'   => 'seatgroup.user.update',
+            'uses' => 'SeatGroupsController@dispatchUpdate',
+        ]);
 
     });
 
