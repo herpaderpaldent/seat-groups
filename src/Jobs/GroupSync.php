@@ -141,6 +141,10 @@ class GroupSync extends SeatGroupsJobBase
 
         foreach ($this->group->users as $user) {
 
+            //If user is deactivated skip the refresh_token check
+            if (! $user->active)
+                continue;
+
             // If a RefreshToken is missing
             if (is_null($user->refresh_token)) {
                 // take away all roles
@@ -160,6 +164,10 @@ class GroupSync extends SeatGroupsJobBase
                 $this->fail(new MissingRefreshTokenException($user));
             }
         }
+
+        // If deactivated user is alone in a group delete this job
+        if (! $this->group->users->first()->active && $this->group->users->count() === 1)
+            $this->delete();
     }
 
     public function onFail($exception)
