@@ -76,11 +76,14 @@ class GroupSync extends SeatGroupsJobBase
                 $roles = collect();
                 $group = $this->group;
 
-                //Catch Superuser
+                //Catch superuser permissions
                 foreach ($group->roles as $role) {
-                    if ($role->title === 'Superuser') {
-                        $roles->push($role->id);
+                    foreach ($role->permissions as $permission) {
+                        if ($permission->title === 'superuser') {
+                            $roles->push($role->id);
+                        }
                     }
+
                 }
 
                 Seatgroup::all()->each(function ($seat_group) use ($roles, $group) {
