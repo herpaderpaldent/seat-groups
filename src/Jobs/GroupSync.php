@@ -161,7 +161,7 @@ class GroupSync extends SeatGroupsJobBase
                     'event'   => 'error',
                     'message' => sprintf('The RefreshToken of %s is missing, therefore user group of %s (%s) loses all permissions.' .
                         'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. ',
-                        $user->name, $this->main_character->name, $this->group->users->map(function ($user) {return $user->name;})->implode(', ')),
+                        $user->name, $this->main_character->name, $this->group->users->map(function ($user) {return $user->name; })->implode(', ')),
                 ]);
 
                 // throw exception
@@ -182,7 +182,7 @@ class GroupSync extends SeatGroupsJobBase
         SeatgroupLog::create([
             'event'   => 'error',
             'message' => sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
-                $this->main_character->name, $this->group->users->map(function ($user) {return $user->name;})->implode(', ')),
+                $this->main_character->name, $this->group->users->map(function ($user) {return $user->name; })->implode(', ')),
         ]);
 
         $this->fail($exception);
