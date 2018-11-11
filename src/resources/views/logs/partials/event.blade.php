@@ -7,6 +7,7 @@
     @break
   @case('error')
     <span class="label label-danger"> {{$row->event}} </span>
+    @break
   @default
     <span class="label label-default"> {{$row->event}} </span>
 @endswitch
