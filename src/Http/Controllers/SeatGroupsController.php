@@ -30,6 +30,10 @@ class SeatGroupsController extends Controller
     public function index()
     {
 
+        if (! isset(auth()->user()->group->main_character)) {
+            return redirect()->route('profile.view')->with('error', 'You must set your ' . trans('web::seat.main_character') . ' to use seat-groups.');
+        }
+
         $seatgroups = SeatGroup::all()->filter(function ($seatgroup) {
             return $seatgroup->isAllowedToSeeSeatGroup();
         });

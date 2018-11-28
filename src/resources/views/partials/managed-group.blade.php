@@ -8,8 +8,8 @@
     <div class="box-body">
       @includeWhen($seatgroup->isQualified(auth()->user()->group),'seatgroups::partials.join-button')
       {{$seatgroup->description}} <br>
-      @if($seatgroup->isMember(auth()->user()->group))
-        Members: {{$seatgroup->member->map(function($group) { return $group->main_character->name;})->implode(', ')}}
+      @if($seatgroup->isMember(auth()->user()->group) || auth()->user()->hasRole('seatgroups.create'))
+        Members: {{$seatgroup->member->map(function($group) { return optional($group->main_character)->name;})->implode(', ')}}
       @endif
 
 

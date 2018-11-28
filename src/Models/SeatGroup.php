@@ -10,7 +10,6 @@ namespace Herpaderpaldent\Seat\SeatGroups\Models;
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationAction;
 use Illuminate\Database\Eloquent\Model;
-use Seat\Eveapi\Models\Alliances\Alliance;
 use Seat\Web\Models\Group;
 
 class Seatgroup extends Model
@@ -145,6 +144,9 @@ class Seatgroup extends Model
         $affiliations = collect($action->execute(['seatgroup_id' => $this->id]));
 
         foreach ($group->users as $user){
+
+            if (is_null($user->refresh_token))
+                continue;
 
             foreach($affiliations as $affiliation){
 
