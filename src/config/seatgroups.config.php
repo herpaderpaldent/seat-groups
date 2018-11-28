@@ -6,7 +6,7 @@
  * Time: 10:24.
  */
 return [
-    'version'   => '1.5.0',
+    'version'   => '1.5.1',
 ];
 
 //TODO: Update Version
