@@ -8,7 +8,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
 
-use Herpaderpaldent\Seat\SeatGroups\Exceptions\MissingRefreshTokenException;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
 use Illuminate\Support\Facades\Redis;
@@ -142,6 +141,10 @@ class GroupSync extends SeatGroupsJobBase
     public function beforeStart()
     {
 
+        $is_single_user_group = $this->group->users->count() === 1 ? true : false;
+
+        logger()->debug('$is_single_user_group' . $is_single_user_group);
+
         foreach ($this->group->users as $user) {
 
             //If user is deactivated skip the refresh_token check
@@ -159,19 +162,14 @@ class GroupSync extends SeatGroupsJobBase
 
                 SeatgroupLog::create([
                     'event'   => 'error',
-                    'message' => sprintf('The RefreshToken of %s is missing, therefore user group of %s (%s) loses all permissions.' .
-                        'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. ',
+                    'message' => sprintf('The RefreshToken of %s in user group of %s (%s) is missing. '
+                        . 'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. '
+                        . 'This user group will lose all potentially gained roles through this character.',
                         $user->name, $this->main_character->name, $this->group->users->map(function ($user) {return $user->name; })->implode(', ')),
                 ]);
 
-                // throw exception
-                $this->fail(new MissingRefreshTokenException($user));
             }
         }
-
-        // If deactivated user is alone in a group delete this job
-        if (! $this->group->users->first()->active && $this->group->users->count() === 1)
-            $this->delete();
     }
 
     public function onFail($exception)
@@ -185,7 +183,7 @@ class GroupSync extends SeatGroupsJobBase
                 $this->main_character->name, $this->group->users->map(function ($user) {return $user->name; })->implode(', ')),
         ]);
 
-        $this->fail($exception);
+        throw $exception;
 
     }
 
