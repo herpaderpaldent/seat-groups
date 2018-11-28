@@ -1,6 +1,6 @@
 # Version 1.5.1
 This is a security update including some smaller improvements:
-* MissingRefreshToken Exception removed, however potentially gained roles by missing character are seized until refresh token is provided. Thank you @Naidin Iwaira for report this issue.
+* MissingRefreshToken Exception removed, however potentially gained roles by missing character are seized until refresh token is provided. Thank you @fundaris for report this issue.
 * Managed Group Members don't throw null-object exceptions anymore, if a main-character has not been set. (Thank you @warlof)
 * Users without a main character set will be redirected to profile settings, by trying to access seat-groups index page.
 
