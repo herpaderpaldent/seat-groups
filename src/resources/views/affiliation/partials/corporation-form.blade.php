@@ -4,7 +4,7 @@
   <input type="hidden" name="seatgroup_id" value="{{ $seatgroup->id }}">
   <div class="form-group">
     <label for="corporations">{{ trans('web::seat.available_corporations') }}</label>
-    <select name="corporation_ids[]" id="seat-group-corporation-id" style="width: 100%" multiple>
+    <select name="corporation_ids[]" id="seat-group-corporation-id" style="width: 100%" multiple required>
 
       @if(!$seatgroup->all_corporations)
         <option value="-1">All Corporation</option>
