@@ -1,3 +1,11 @@
+# Version 1.5.2
+This is a minor usability update. All of the found improvements are based from @Eingang's Feedback. Whenever you find any issues please don't hesitate to open an issue.
+* Empty corporation affiliation request caused an error. This update adds validation to form request
+* Added front end validation to corporation title affiliation 
+* Corrected an error preventing to add multiple user groups to hidden seatgroup.
+
+Thank you again for your feedback. 
+
 # Version 1.5.1
 This is a security update including some smaller improvements:
 * MissingRefreshToken Exception removed, however potentially gained roles by missing character are seized until refresh token is provided. Thank you @fundaris for report this issue.
