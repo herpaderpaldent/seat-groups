@@ -169,16 +169,16 @@ class SeatGroupUserController extends Controller
 
         //Handle hidden group
         if ($seatgroup->type == 'hidden') {
-            if(auth()->user()->hasRole('seatgroups.create')) {
+            if (auth()->user()->hasRole('seatgroups.create')) {
                 $this->validate(request(), [
-                    'groups'=>'required',
+                    'groups' => 'required|array',
                 ]);
                 $groups = $request->get('groups');
                 foreach ($groups as $group) {
                     $seatgroup->group()->attach($group);
-
-                    return redirect()->back()->with('success', 'Updated');
                 }
+
+                return redirect()->back()->with('success', 'Updated');
             }
         }
 

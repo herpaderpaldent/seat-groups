@@ -138,7 +138,7 @@
               <input name="_method3" type="hidden" value="PATCH">
               <div class="form-group">
                 <label for="groups">{{ trans_choice('web::seat.available_groups',2) }}</label>
-                <select name="groups[]" id="available_users" style="width: 100%" multiple>
+                <select name="groups[]" id="available_users" style="width: 100%" multiple required>
 
                   @foreach($all_groups as $group)
                     @if(!in_array($group->id,$seatgroup->member->pluck('id')->toArray())))

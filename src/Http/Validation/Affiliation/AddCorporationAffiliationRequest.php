@@ -32,8 +32,8 @@ class AddCorporationAffiliationRequest extends FormRequest
     {
 
         return [
-            //'corporation_ids.*'=>'required',
-            'seatgroup_id'=>'required',
+            'corporation_ids' => 'required|array',
+            'seatgroup_id' => 'required',
         ];
     }
 }
