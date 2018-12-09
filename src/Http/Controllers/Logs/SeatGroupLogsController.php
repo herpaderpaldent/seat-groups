@@ -10,7 +10,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Logs;
 
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
 use Seat\Web\Http\Controllers\Controller;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\DataTables;
 
 class SeatGroupLogsController extends Controller
 {
@@ -26,13 +26,14 @@ class SeatGroupLogsController extends Controller
     {
         $logs = SeatgroupLog::query();
 
-        return Datatables::of($logs)
+        return DataTables::of($logs)
             ->editColumn('created_at', function ($row) {
                 return view('seatgroups::logs.partials.date', compact('row'));
             })
             ->editColumn('event', function ($row) {
                 return view('seatgroups::logs.partials.event', compact('row'));
             })
+            ->rawColumns(['created_at', 'event'])
             ->make(true);
 
     }

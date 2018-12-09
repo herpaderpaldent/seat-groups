@@ -63,15 +63,12 @@
               <div class="col-md-12"></div>
               <div class="form-group col-md-12">
                 <label for="type">{{trans('seatgroups::seat.seat_groups_type')}}</label>
-                {{Form::select('type',[
-                    'auto' => 'auto',
-                    'managed'=>[
-                        'open'=>'open',
-                        'managed' => 'managed'
-                    ],
-                    'hidden' => 'hidden'
-                ], $seatgroup->type,['class'=>'form-control'])}}
-
+                <select class="form-control" name="type">
+                  <option value="auto" {{$seatgroup->type === 'auto' ? 'selected' : ''}}>auto</option>
+                  <option value="open" {{$seatgroup->type === 'open' ? 'selected' : ''}}>open</option>
+                  <option value="managed" {{$seatgroup->type === 'managed' ? 'selected' : ''}}>managed</option>
+                  <option value="hidden" {{$seatgroup->type === 'hidden' ? 'selected' : ''}}>hidden</option>
+                </select>
               </div>
             </div>
 
@@ -172,12 +169,13 @@
                     {{ $group->users->map(function($user) { return $user->name; })->implode(', ') }}
                   </td>
                   <td>
-                    {!! Form::open(['method' => 'DELETE',
-                'route' => ['seatgroupuser.removeGroupFromSeatGroup',$seatgroup->id,$group->id],
-                'style'=>'display:inline'
-                ]) !!}
-                    {!! Form::submit(trans('web::seat.remove'), ['class' => 'btn btn-danger btn-xs pull-right']) !!}
-                    {!! Form::close() !!}
+
+                    <form role="form" action="{{ route('seatgroupuser.removeGroupFromSeatGroup',['seat_group_id' => $seatgroup->id, 'group_id' => $group->id]) }}" method="post">
+                      {{ csrf_field() }}
+                      <button type="submit" class="btn btn-danger btn-xs pull-right">
+                        {{ trans('web::seat.remove') }}
+                      </button>
+                    </form>
                   </td>
                 </tr>
 

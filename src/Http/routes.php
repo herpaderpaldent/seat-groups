@@ -156,7 +156,7 @@ Route::group([
             'uses'       => 'SeatGroupsController@removeAffiliation',
         ]);
 
-        Route::delete('/{seat_group_id}/user/{group_id}', [
+        Route::post('/{seat_group_id}/user/{group_id}', [
             'as'         => 'seatgroupuser.removeGroupFromSeatGroup',
             'middleware' => 'bouncer:seatgroups.create',
             'uses'       => 'SeatGroupUserController@removeGroupFromSeatGroup',

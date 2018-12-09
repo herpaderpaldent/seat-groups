@@ -1,3 +1,7 @@
+# Version 1.6.0
+This version is suited for the latest release of eveseat/web 3.0.10 and higher. SeAT now uses a newer version of datatables and therefore raw columns need to be enabled to show its html content.
+Also the dependency on form generator in edit blade was removed.
+
 # Version 1.5.2
 This is a minor usability update. All of the found improvements are based from @Eingang's Feedback. Whenever you find any issues please don't hesitate to open an issue.
 * Empty corporation affiliation request caused an error. This update adds validation to form request

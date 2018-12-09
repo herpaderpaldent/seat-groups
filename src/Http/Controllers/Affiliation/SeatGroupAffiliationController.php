@@ -11,7 +11,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Affiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\GetCurrentAffiliationsRequest;
 use Illuminate\Routing\Controller;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\DataTables;
 
 class SeatGroupAffiliationController extends Controller
 {
@@ -20,13 +20,14 @@ class SeatGroupAffiliationController extends Controller
 
         $affiliations = collect($action->execute($request->all()));
 
-        return Datatables::of($affiliations)
+        return DataTables::of($affiliations)
             ->addColumn('affiliation', function ($row) {
                 return view('seatgroups::affiliation.partials.table-partials.affiliation', compact('row'))->render();
             })
             ->addColumn('remove', function ($row) {
                 return view('seatgroups::affiliation.partials.table-partials.remove-button', compact('row'))->render();
             })
+            ->rawColumns(['affiliation', 'remove'])
             ->make(true);
 
     }
