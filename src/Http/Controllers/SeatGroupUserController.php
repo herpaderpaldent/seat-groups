@@ -11,7 +11,7 @@ use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\DataTables;
 
 class SeatGroupUserController extends Controller
 {
@@ -226,13 +226,14 @@ class SeatGroupUserController extends Controller
     {
         $seatgroup_members = Seatgroup::find($id)->group;
 
-        return Datatables::of($seatgroup_members)
+        return DataTables::of($seatgroup_members)
             ->addColumn('name', function ($row) {
                 return view('seatgroups::partials.modal-partials.modal-name', compact('row'))->render();
             })
             ->addColumn('actions', function ($row) {
                 return view('seatgroups::partials.modal-partials.modal-actions', compact('row'))->render();
             })
+            ->rawColumns(['name', 'actions'])
             ->make(true);
     }
 }
