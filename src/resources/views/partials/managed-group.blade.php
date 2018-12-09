@@ -15,7 +15,7 @@
 
     </div>
     <div class="box-footer">
-      Managers: {{$seatgroup->manager->map(function($user) { return $user->main_character->name; })->concat($seatgroup->children->map(function($children) { return $children->name; }))->implode(', ')}}
+      Managers: {{$seatgroup->manager->map(function($user) { return optional($user->main_character)->name; })->concat($seatgroup->children->map(function($children) { return $children->name; }))->implode(', ')}}
 
       @includeWhen($seatgroup->isManager(auth()->user()->group) || auth()->user()->hasSuperUser(),'seatgroups::partials.manager-modal')
 
