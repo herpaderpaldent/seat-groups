@@ -90,7 +90,6 @@ class GroupSync extends SeatGroupsJobBase
 
         Redis::funnel('seat-groups:jobs.group_sync_' . $this->group->id)->limit(1)->then(function () {
 
-
             try {
 
                 $this->beforeStart();
@@ -183,7 +182,7 @@ class GroupSync extends SeatGroupsJobBase
                     $seatgroup->member()->detach($this->group->id);
                 });
 
-                $message =  sprintf('The RefreshToken of %s in user group of %s (%s) is missing. '
+                $message = sprintf('The RefreshToken of %s in user group of %s (%s) is missing. '
                     . 'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. '
                     . 'This user group will lose all potentially gained roles through this character.',
                     $user->name, $this->main_character->name, $this->group->users->map(function ($user) {return $user->name; })
@@ -212,10 +211,9 @@ class GroupSync extends SeatGroupsJobBase
             $this->group->users->map(function ($user) {return $user->name; })->implode(', ')
         );
 
-
         SeatgroupLog::create([
             'event'   => 'error',
-            'message' => $message
+            'message' => $message,
         ]);
 
         if (! empty($this->recipients))

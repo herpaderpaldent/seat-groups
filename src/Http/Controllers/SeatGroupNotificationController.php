@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 02.01.2019
- * Time: 10:29
+ * Time: 10:29.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\AddSeatGroupNotificationSubscriptionRequest;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
@@ -72,5 +71,4 @@ class SeatGroupNotificationController extends BaseNotificationController
     {
         return SeatGroupNotification::where('via', $via)->count() > 0 ? true : false;
     }
-
 }

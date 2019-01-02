@@ -35,9 +35,9 @@ class SeatGroupUpdateNotification extends BaseNotification
      */
     protected $group;
 
-    protected $attached_roles = "none";
+    protected $attached_roles = 'none';
 
-    protected $detached_roles = "none";
+    protected $detached_roles = 'none';
 
     public function __construct(Group $group, array $sync)
     {
@@ -65,15 +65,17 @@ class SeatGroupUpdateNotification extends BaseNotification
 
         switch($notifiable->via) {
             case 'discord':
-                $this->tags = array_merge($this->tags,[
+                $this->tags = array_merge($this->tags, [
                     'discord',
                 ]);
+
                 return [DiscordChannel::class];
                 break;
             case 'slack':
-                $this->tags = array_merge($this->tags,[
+                $this->tags = array_merge($this->tags, [
                     'slack',
                 ]);
+
                 return [SlackChannel::class];
                 break;
             default:
@@ -134,5 +136,4 @@ class SeatGroupUpdateNotification extends BaseNotification
                     ->thumb($this->image);
             });
     }
-
 }
