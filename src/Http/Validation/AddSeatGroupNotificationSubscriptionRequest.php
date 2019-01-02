@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 02.01.2019
- * Time: 12:03
+ * Time: 12:03.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Validation;
-
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -36,5 +35,4 @@ class AddSeatGroupNotificationSubscriptionRequest extends FormRequest
             'via'=>'required',
         ];
     }
-
 }
