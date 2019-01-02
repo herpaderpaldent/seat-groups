@@ -13,9 +13,6 @@ use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordMessage;
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackChannel;
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackMessage;
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
-use Seat\Eveapi\Models\Character\CharacterInfo;
-use Seat\Web\Models\Acl\Role;
-use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
 class SeatGroupErrorNotification extends BaseNotification
@@ -43,7 +40,7 @@ class SeatGroupErrorNotification extends BaseNotification
         $this->user = $user;
         $this->image = 'https://imageserver.eveonline.com/Character/' . $this->user->id . '_128.jpg';
         $this->message = $message;
-        $this->url = route('character.view.sheet',['character_id' => $this->user->id]);
+        $this->url = route('character.view.sheet', ['character_id' => $this->user->id]);
     }
 
     /**
@@ -57,15 +54,17 @@ class SeatGroupErrorNotification extends BaseNotification
 
         switch($notifiable->via) {
             case 'discord':
-                $this->tags = array_merge($this->tags,[
+                $this->tags = array_merge($this->tags, [
                     'discord',
                 ]);
+
                 return [DiscordChannel::class];
                 break;
             case 'slack':
-                $this->tags = array_merge($this->tags,[
+                $this->tags = array_merge($this->tags, [
                     'slack',
                 ]);
+
                 return [SlackChannel::class];
                 break;
             default:
@@ -104,5 +103,4 @@ class SeatGroupErrorNotification extends BaseNotification
                     ->content($this->message);
             });
     }
-
 }
