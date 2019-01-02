@@ -11,7 +11,7 @@ use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Illuminate\Http\Request;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\DataTables;
 
 class SeatGroupUserController extends Controller
 {
@@ -169,16 +169,16 @@ class SeatGroupUserController extends Controller
 
         //Handle hidden group
         if ($seatgroup->type == 'hidden') {
-            if(auth()->user()->hasRole('seatgroups.create')) {
+            if (auth()->user()->hasRole('seatgroups.create')) {
                 $this->validate(request(), [
-                    'groups'=>'required',
+                    'groups' => 'required|array',
                 ]);
                 $groups = $request->get('groups');
                 foreach ($groups as $group) {
                     $seatgroup->group()->attach($group);
-
-                    return redirect()->back()->with('success', 'Updated');
                 }
+
+                return redirect()->back()->with('success', 'Updated');
             }
         }
 
@@ -226,13 +226,14 @@ class SeatGroupUserController extends Controller
     {
         $seatgroup_members = Seatgroup::find($id)->group;
 
-        return Datatables::of($seatgroup_members)
+        return DataTables::of($seatgroup_members)
             ->addColumn('name', function ($row) {
                 return view('seatgroups::partials.modal-partials.modal-name', compact('row'))->render();
             })
             ->addColumn('actions', function ($row) {
                 return view('seatgroups::partials.modal-partials.modal-actions', compact('row'))->render();
             })
+            ->rawColumns(['name', 'actions'])
             ->make(true);
     }
 }

@@ -8,7 +8,7 @@ which correlate to SeAT-Roles.
 [![License](https://poser.pugx.org/herpaderpaldent/seat-groups/license)](https://packagist.org/packages/herpaderpaldent/seat-groups)
 [![Total Downloads](https://poser.pugx.org/herpaderpaldent/seat-groups/downloads)](https://packagist.org/packages/herpaderpaldent/seat-groups)
 
-***Important**: seat-groups are work in progress and certainly have som bugs
+***Important**: seat-groups are work in progress and certainly have some bugs
 please do report any findings to seat-slack and report it as an issue*
 
 ## Installation

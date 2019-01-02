@@ -5,7 +5,7 @@
 
   <div class="form-group">
     <label for="corporations">{{ trans('web::seat.available_corporations') }}</label>
-    <select name="seatgroup-corporation-id" id="seatgroup-corporation-id" style="width: 100%" >
+    <select name="seatgroup-corporation-id" id="seatgroup-corporation-id" style="width: 100%" required>
       <option></option>
       @if(!$seatgroup->all_corporations)
         @foreach($all_corporations_for_title as $corporation)
@@ -17,7 +17,7 @@
 
   <div class="form-group">
     <label for="corporation-title">{{ trans_choice('web::seat.corporation_titles', 2)}}</label>
-    <select name="seatgroup-title-id" id="seatgroup-title-id" style="width: 100%">
+    <select name="seatgroup-title-id" id="seatgroup-title-id" style="width: 100%" required>
       <option></option>
     </select>
   </div>
