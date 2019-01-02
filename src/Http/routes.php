@@ -127,6 +127,22 @@ Route::group([
         ]);
     });
 
+    // Routes for SeatgroupsLogs
+    Route::group([
+        'prefix'     => 'notifications',
+        'middleware' => 'bouncer:seatgroups.create',
+    ], function () {
+
+        Route::post('/subscribe', [
+            'as'   => 'seatgroups.subscribe',
+            'uses' => 'SeatGroupNotificationController@subscribeChannel',
+        ]);
+        Route::get('/unsubscribe/{via}', [
+            'as'   => 'seatgroups.unsubscribe',
+            'uses' => 'SeatGroupNotificationController@unsubscribeChannel',
+        ]);
+    });
+
     // TODO Cleanup the legacy routes from prior 1.1.0
     Route::group([
         'middleware' => ['web', 'auth'],
