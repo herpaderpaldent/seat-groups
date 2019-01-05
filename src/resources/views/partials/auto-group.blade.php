@@ -3,7 +3,7 @@
     <div class="box-header with-border">
       <h3 class="box-title">{{$seatgroup->name}}</h3>
 
-    @includeWhen(auth()->user()->hasRole('seatgroups.create'),'seatgroups::partials.edit-button')
+    @includeWhen(auth()->user()->has('seatgroups.create', false),'seatgroups::partials.edit-button')
     <!-- /.box-tools -->
     </div>
     <!-- /.box-header -->

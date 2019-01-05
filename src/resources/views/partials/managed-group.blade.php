@@ -2,13 +2,13 @@
 
   <div class="box box-warning">
     <div class="box-header with-border">
-      @includeWhen(auth()->user()->hasRole('seatgroups.create'),'seatgroups::partials.edit-button')
+      @includeWhen(auth()->user()->has('seatgroups.create', false),'seatgroups::partials.edit-button')
       <h3 class="box-title">{{$seatgroup->name}}</h3>
     </div>
     <div class="box-body">
       @includeWhen($seatgroup->isQualified(auth()->user()->group),'seatgroups::partials.join-button')
       {{$seatgroup->description}} <br>
-      @if($seatgroup->isMember(auth()->user()->group) || auth()->user()->hasRole('seatgroups.create'))
+      @if($seatgroup->isMember(auth()->user()->group) || auth()->user()->has('seatgroups.create', false))
         Members: {{$seatgroup->member->map(function($group) { return optional($group->main_character)->name;})->implode(', ')}}
       @endif
 

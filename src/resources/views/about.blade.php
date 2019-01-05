@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  @if(auth()->user()->hasRole('seatgroups.create'))
+  @if(auth()->user()->has('seatgroups.create', false))
     <div class="box box-default">
       <div class="box-header with-border">
         <i class="fa fa-refresh"></i>

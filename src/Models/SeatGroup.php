@@ -100,7 +100,7 @@ class Seatgroup extends Model
     public function isAllowedToSeeSeatGroup()
     {
 
-        if (auth()->user()->hasSuperUser() || auth()->user()->hasRole('seatgroups.edit') || $this->isManager(auth()->user()->group) || $this->isMember(auth()->user()->group))
+        if (auth()->user()->hasSuperUser() || auth()->user()->has('seatgroups.edit', false) || $this->isManager(auth()->user()->group) || $this->isMember(auth()->user()->group))
             return true;
 
         if($this->type === 'hidden')

@@ -13,7 +13,7 @@
       @if($seatgroups->where('type', 'hidden')->count()>0)
         <li><a href="#hidden_group" data-toggle="tab">{{ trans('seatgroups::seat.seat_groups_hiddengroup')}}  <i class="fa fa-info" data-toggle="tooltip" data-title="Only Members of a hidden SeAT Group can see this tab"></i></a></li>
       @endif
-      @includeWhen(auth()->user()->hasRole('seatgroups.create'),'seatgroups::partials.create-modal')
+      @includeWhen(auth()->user()->has('seatgroups.create', false),'seatgroups::partials.create-modal')
     </ul>
     <div class="tab-content">
       <div class="tab-pane " id="auto_group">
