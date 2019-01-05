@@ -1,3 +1,6 @@
+# Version 1.6.2
+Refactoring some of the logic regarding permission checks. 
+
 # Version 1.6.1
 This update brings some minor refactoring of some logic `beforeStart()` to better catch superusers and do not strip their roles.
 Also notifications have been added for anyone using [seat-notifications](https://github.com/herpaderpaldent/seat-notifications)

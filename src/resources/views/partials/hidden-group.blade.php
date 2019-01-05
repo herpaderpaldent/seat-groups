@@ -1,7 +1,7 @@
 <div class="col-md-4">
     <div class="box box-danger">
       <div class="box-header with-border">
-        @includeWhen(auth()->user()->hasRole('seatgroups.create'),'seatgroups::partials.edit-button')
+        @includeWhen(auth()->user()->has('seatgroups.create', false),'seatgroups::partials.edit-button')
         <h3 class="box-title"> {{$seatgroup->name}} </h3>
       </div>
       <div class="box-body">
