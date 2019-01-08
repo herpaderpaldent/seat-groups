@@ -2,6 +2,12 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups;
 
+use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
+use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
+use Herpaderpaldent\Seat\SeatGroups\Listeners\CreateSyncedSeatLogsEntry;
+use Herpaderpaldent\Seat\SeatGroups\Listeners\CreateSyncFailedLogsEntry;
+use Herpaderpaldent\Seat\SeatGroups\Listeners\GroupSyncedNotification;
+use Herpaderpaldent\Seat\SeatGroups\Listeners\GroupSyncFailedNotification;
 use Herpaderpaldent\Seat\SeatGroups\Observers\RefreshTokenObserver;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +30,9 @@ class GroupsServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
 
         RefreshToken::observe(RefreshTokenObserver::class);
+
+        $this->add_events();
+
     }
 
     /**
@@ -69,6 +78,15 @@ class GroupsServiceProvider extends ServiceProvider
     private function addTranslations()
     {
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'seatgroups');
+    }
+
+    private function add_events()
+    {
+        $this->app->events->listen(GroupSynced::class, CreateSyncedSeatLogsEntry::class);
+        $this->app->events->listen(GroupSynced::class, GroupSyncedNotification::class);
+
+        $this->app->events->listen(GroupSyncFailed::class, CreateSyncFailedLogsEntry::class);
+        $this->app->events->listen(GroupSyncFailed::class, GroupSyncFailedNotification::class);
     }
 
     /**
