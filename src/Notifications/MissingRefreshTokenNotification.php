@@ -85,7 +85,7 @@ class MissingRefreshTokenNotification extends BaseNotification
         );
 
         return (new DiscordMessage)
-            ->embed(function ($embed) use ($message){
+            ->embed(function ($embed) use ($message) {
 
                 $embed->title('** Error **')
                     ->thumbnail($this->image)

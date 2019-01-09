@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 08.01.2019
- * Time: 22:40
+ * Time: 22:40.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Events;
-
 
 use Illuminate\Queue\SerializesModels;
 use Seat\Eveapi\Models\Character\CharacterInfo;
@@ -26,5 +25,4 @@ class MissingRefreshToken
         $this->user = $user;
         $this->main_character = $main_character;
     }
-
 }

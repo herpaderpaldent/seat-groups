@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 08.01.2019
- * Time: 20:38
+ * Time: 20:38.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
@@ -20,7 +19,7 @@ class GroupSyncFailedNotification
 {
     public function __construct()
     {
-        //
+
     }
 
     public function handle(GroupSyncFailed $event)
@@ -41,5 +40,4 @@ class GroupSyncFailedNotification
             Notification::send($recipients, (new SeatGroupErrorNotification(User::find($event->main_character->character_id), $message)));
         }
     }
-
 }

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 08.01.2019
- * Time: 20:20
+ * Time: 20:20.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Events;
-
 
 use Illuminate\Queue\SerializesModels;
 use Seat\Eveapi\Models\Character\CharacterInfo;
@@ -29,5 +28,4 @@ class GroupSynced
         $this->main_character = $main_character;
         $this->sync = $sync;
     }
-
 }
