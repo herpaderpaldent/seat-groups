@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 08.01.2019
- * Time: 20:38
+ * Time: 20:38.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
@@ -19,7 +18,7 @@ class GroupSyncedNotification
 {
     public function __construct()
     {
-        //
+
     }
 
     public function handle(GroupSynced $event)
@@ -42,5 +41,4 @@ class GroupSyncedNotification
             Notification::send($recipients, (new SeatGroupUpdateNotification($event->group, $event->sync)));
         }
     }
-
 }

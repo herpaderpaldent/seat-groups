@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 08.01.2019
- * Time: 22:23
+ * Time: 22:23.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
@@ -17,7 +16,7 @@ class CreateSyncFailedLogsEntry implements ShouldQueue
 {
     public function __construct()
     {
-        //
+
     }
 
     public function handle(GroupSyncFailed $event)
@@ -34,5 +33,4 @@ class CreateSyncFailedLogsEntry implements ShouldQueue
         ]);
 
     }
-
 }

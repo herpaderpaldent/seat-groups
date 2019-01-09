@@ -12,13 +12,7 @@ use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
 use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
-use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupErrorNotification;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupUpdateNotification;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redis;
-use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 

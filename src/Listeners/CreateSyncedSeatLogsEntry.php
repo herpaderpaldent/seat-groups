@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 08.01.2019
- * Time: 20:28
+ * Time: 20:28.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
@@ -21,12 +20,12 @@ class CreateSyncedSeatLogsEntry implements ShouldQueue
 
     public function __construct()
     {
-        //
+
     }
 
     public function handle(GroupSynced $event)
     {
-        if ( empty($event->sync['attached']) && empty($event->sync['detached']))
+        if (empty($event->sync['attached']) && empty($event->sync['detached']))
             $this->delete();
 
         if (! empty($event->sync['attached'])) {
@@ -73,5 +72,4 @@ class CreateSyncedSeatLogsEntry implements ShouldQueue
     {
         report($exception);
     }
-
 }

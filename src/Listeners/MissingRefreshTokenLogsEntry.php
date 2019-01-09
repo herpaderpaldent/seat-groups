@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: felix
  * Date: 09.01.2019
- * Time: 19:12
+ * Time: 19:12.
  */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
@@ -17,7 +16,7 @@ class MissingRefreshTokenLogsEntry implements ShouldQueue
 {
     public function __construct()
     {
-        //
+
     }
 
     public function handle(MissingRefreshToken $event)
@@ -36,5 +35,4 @@ class MissingRefreshTokenLogsEntry implements ShouldQueue
         ]);
 
     }
-
 }
