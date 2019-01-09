@@ -10,6 +10,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
+use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
@@ -180,20 +181,7 @@ class GroupSync extends SeatGroupsJobBase
                     $seatgroup->member()->detach($this->group->id);
                 });
 
-                $message = sprintf('The RefreshToken of %s in user group of %s (%s) is missing. '
-                    . 'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. '
-                    . 'This user group will lose all potentially gained roles through this character.',
-                    $user->name, $this->main_character->name, $this->group->users->map(function ($user) {return $user->name; })
-                        ->implode(', ')
-                );
-
-                SeatgroupLog::create([
-                    'event'   => 'error',
-                    'message' => $message,
-                ]);
-
-                if (! empty($this->recipients))
-                    Notification::send($this->recipients, (new SeatGroupErrorNotification($user, $message)));
+                event(new MissingRefreshToken($user, $this->main_character));
 
             }
         }
@@ -211,7 +199,7 @@ class GroupSync extends SeatGroupsJobBase
 
     private function onFinish($sync)
     {
-
-        event(new GroupSynced($this->group, $this->main_character, $sync));
+        if (! (empty($sync['attached']) && empty($sync['detached'])))
+            event(new GroupSynced($this->group, $this->main_character, $sync));
     }
 }
