@@ -8,14 +8,11 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
 
+use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
+use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
+use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
 use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Herpaderpaldent\Seat\SeatGroups\Models\SeatgroupLog;
-use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupErrorNotification;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupUpdateNotification;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redis;
-use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
@@ -47,11 +44,6 @@ class GroupSync extends SeatGroupsJobBase
     public $tries = 1;
 
     /**
-     * @var \Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification
-     */
-    protected $recipients;
-
-    /**
      * ConversationOrchestrator constructor.
      *
      * @param \Seat\Web\Models\Group $group
@@ -76,13 +68,14 @@ class GroupSync extends SeatGroupsJobBase
                 $this->group->users->map(function ($user) { return $user->name; })->implode(', ')));
         }
 
-        $this->recipients = SeatGroupNotification::all();
         $this->roles = collect();
 
     }
 
     public function handle()
     {
+
+        var_dump('test');
 
         // in case no main character has been set, throw an exception and abort the process
         if (is_null($this->main_character))
@@ -182,20 +175,7 @@ class GroupSync extends SeatGroupsJobBase
                     $seatgroup->member()->detach($this->group->id);
                 });
 
-                $message = sprintf('The RefreshToken of %s in user group of %s (%s) is missing. '
-                    . 'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. '
-                    . 'This user group will lose all potentially gained roles through this character.',
-                    $user->name, $this->main_character->name, $this->group->users->map(function ($user) {return $user->name; })
-                        ->implode(', ')
-                );
-
-                SeatgroupLog::create([
-                    'event'   => 'error',
-                    'message' => $message,
-                ]);
-
-                if (! empty($this->recipients))
-                    Notification::send($this->recipients, (new SeatGroupErrorNotification($user, $message)));
+                event(new MissingRefreshToken($user, $this->main_character));
 
             }
         }
@@ -206,63 +186,14 @@ class GroupSync extends SeatGroupsJobBase
 
         report($exception);
 
-        $message = sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
-            $this->main_character->name,
-            $this->group->users->map(function ($user) {return $user->name; })->implode(', ')
-        );
-
-        SeatgroupLog::create([
-            'event'   => 'error',
-            'message' => $message,
-        ]);
-
-        if (! empty($this->recipients))
-            Notification::send($this->recipients, (new SeatGroupErrorNotification(User::find($this->main_character->character_id), $message)));
+        event(new GroupSyncFailed($this->group, $this->main_character));
 
         throw $exception;
-
     }
 
     private function onFinish($sync)
     {
-        $should_send_notification = false;
-
-        if (! empty($sync['attached'])) {
-
-            SeatgroupLog::create([
-                'event'   => 'attached',
-                'message' => sprintf('The user group of %s (%s) has successfully been attached to the following roles: %s.',
-                    $this->main_character->name,
-                    $this->group->users->map(function ($user) {
-
-                        return $user->name;
-                    })->implode(', '),
-                    Role::whereIn('id', $sync['attached'])->pluck('title')->implode(', ')
-                ),
-            ]);
-
-            $should_send_notification = true;
-        }
-
-        if (! empty($sync['detached'])) {
-
-            SeatgroupLog::create([
-                'event'   => 'detached',
-                'message' => sprintf('The user group of %s (%s) has been detached from the following roles: %s.',
-                    $this->main_character->name,
-                    $this->group->users->map(function ($user) {
-
-                        return $user->name;
-                    })->implode(', '),
-                    Role::whereIn('id', $sync['detached'])->pluck('title')->implode(', ')
-                ),
-            ]);
-
-            $should_send_notification = true;
-        }
-
-        if (! empty($this->recipients) && $should_send_notification)
-            Notification::send($this->recipients, (new SeatGroupUpdateNotification($this->group, $sync)));
-
+        if (! (empty($sync['attached']) && empty($sync['detached'])))
+            event(new GroupSynced($this->group, $this->main_character, $sync));
     }
 }

@@ -1,3 +1,12 @@
+#Version 1.6.3
+This version attempts to resolve major outages in using seat-groups >1.6.0 if not used with seat-notifications installed.
+
+* Refactored GroupSync job to use events for missing refreshtoken, successful attaches/detached role updates and failed syncs
+* Events have two listeners: one for writing a log entry and one to dispatch a notification
+* `MissingRefreshTokenNotification` for discord contains a link to the configuration page of that user to quicker resolve false positive messages.
+
+log events are queued into the default queue whereas notifications are prioritized. Thank you @Lawin for pointing out this bug.
+
 # Version 1.6.2
 Refactoring some of the logic regarding permission checks. 
 
