@@ -13,7 +13,6 @@ use Herpaderpaldent\Seat\SeatGroups\Listeners\MissingRefreshTokenLogsEntry;
 use Herpaderpaldent\Seat\SeatGroups\Listeners\MissingRefreshTokenNotification;
 use Herpaderpaldent\Seat\SeatGroups\Observers\RefreshTokenObserver;
 use Illuminate\Support\Arr;
-use Illuminate\Support\ServiceProvider;
 use Seat\Eveapi\Models\RefreshToken;
 use Seat\Services\AbstractSeatPlugin;
 
