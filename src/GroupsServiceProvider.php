@@ -13,10 +13,10 @@ use Herpaderpaldent\Seat\SeatGroups\Listeners\MissingRefreshTokenLogsEntry;
 use Herpaderpaldent\Seat\SeatGroups\Listeners\MissingRefreshTokenNotification;
 use Herpaderpaldent\Seat\SeatGroups\Observers\RefreshTokenObserver;
 use Illuminate\Support\Arr;
-use Illuminate\Support\ServiceProvider;
 use Seat\Eveapi\Models\RefreshToken;
+use Seat\Services\AbstractSeatPlugin;
 
-class GroupsServiceProvider extends ServiceProvider
+class GroupsServiceProvider extends AbstractSeatPlugin
 {
     /**
      * Bootstrap the application services.
@@ -138,5 +138,71 @@ class GroupsServiceProvider extends ServiceProvider
         }
 
         return $array;
+    }
+
+    /**
+     * Return an URI to a CHANGELOG.md file or an API path which will be providing changelog history.
+     *
+     * @return string|null
+     */
+    public function getChangelogUri(): ?string
+    {
+
+        return 'https://raw.githubusercontent.com/herpaderpaldent/seat-groups/master/CHANGELOG.md';
+    }
+
+    /**
+     * Return the plugin public name as it should be displayed into settings.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+
+        return 'seat-groups';
+    }
+
+    /**
+     * Return the plugin repository address.
+     *
+     * @return string
+     */
+    public function getPackageRepositoryUrl(): string
+    {
+
+        return 'https://github.com/herpaderpaldent/seat-groups';
+    }
+
+    /**
+     * Return the plugin technical name as published on package manager.
+     *
+     * @return string
+     */
+    public function getPackagistPackageName(): string
+    {
+
+        return 'seat-groups';
+    }
+
+    /**
+     * Return the plugin vendor tag as published on package manager.
+     *
+     * @return string
+     */
+    public function getPackagistVendorName(): string
+    {
+
+        return 'herpaderpaldent';
+    }
+
+    /**
+     * Return the plugin installed version.
+     *
+     * @return string
+     */
+    public function getVersion(): string
+    {
+
+        return config('seatgroups.config.version');
     }
 }

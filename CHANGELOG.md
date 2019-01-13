@@ -1,4 +1,8 @@
-#Version 1.6.3
+# Version 1.6.4
+* Include new seat plugin service pattern.
+* Use proper form-id to subscribe to notifications
+
+# Version 1.6.3
 This version attempts to resolve major outages in using seat-groups >1.6.0 if not used with seat-notifications installed.
 
 * Refactored GroupSync job to use events for missing refreshtoken, successful attaches/detached role updates and failed syncs
