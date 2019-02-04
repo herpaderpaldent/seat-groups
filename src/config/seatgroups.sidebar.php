@@ -1,13 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Mutterschiff
- * Date: 11.02.2018
- * Time: 18:19.
- */
 
 return [
-    'slackbot' => [
+    'seatgroups' => [
         'name'          => 'SeAT Groups',
         'icon'          => 'fa-group',
         'route_segment' => 'seatgroups',
