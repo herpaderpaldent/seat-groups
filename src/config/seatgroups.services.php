@@ -3,7 +3,7 @@
 return [
 
     'seat-notification' => [
-        'seatgroup' => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\SeatGroupNotificationController::class,
+        'seatgroup_sync' => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupSyncController::class,
     ],
 
 ];

@@ -10,7 +10,8 @@ namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupUpdateNotification;
+use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSyncNotification;
+use Herpaderpaldent\Seat\SeatNotifications\Models\SeatNotificationRecipient;
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -36,9 +37,12 @@ class GroupSyncedNotification
 
         if ($should_send){
 
-            $recipients = SeatGroupNotification::all();
+            $recipients = SeatNotificationRecipient::all()
+                ->filter(function ($recipient) {
+                    return $recipient->shouldReceive('seatgroup_sync');
+                });
 
-            Notification::send($recipients, (new SeatGroupUpdateNotification($event->group, $event->sync)));
+            Notification::send($recipients, (new SeatGroupSyncNotification($event->group, $event->sync)));
         }
     }
 }

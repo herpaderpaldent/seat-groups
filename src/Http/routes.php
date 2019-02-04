@@ -127,20 +127,39 @@ Route::group([
         ]);
     });
 
-    // Routes for SeatgroupsLogs
+    // Routes for Seatgroup Notifications
     Route::group([
+        'namespace'  => 'Notifications',
         'prefix'     => 'notifications',
         'middleware' => 'bouncer:seatgroups.create',
     ], function () {
 
-        Route::post('/subscribe', [
-            'as'   => 'seatgroups.subscribe',
-            'uses' => 'SeatGroupNotificationController@subscribeChannel',
+        Route::get('/seatgroup_sync/{via}/subscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_sync.subscribe.user',
+            'uses' => 'SeatGroupSyncController@subscribeDm',
         ]);
-        Route::get('/unsubscribe/{via}', [
-            'as'   => 'seatgroups.unsubscribe',
-            'uses' => 'SeatGroupNotificationController@unsubscribeChannel',
+
+        Route::get('/seatgroup_sync/{via}/unsubscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_sync.unsubscribe.user',
+            'uses' => 'SeatGroupSyncController@unsubscribeDm',
         ]);
+
+        Route::group([
+            'middleware' => ['bouncer:seatnotifications.configuration'],
+        ], function () {
+
+            Route::post('/seatgroup_sync/channel', [
+                'as'   => 'seatnotifications.seatgroup_sync.subscribe.channel',
+                'uses' => 'SeatGroupSyncController@subscribeChannel',
+            ]);
+
+            Route::get('/seatgroup_sync/{via}/unsubscribe', [
+                'as'   => 'seatnotifications.seatgroup_sync.unsubscribe.channel',
+                'uses' => 'SeatGroupSyncController@unsubscribeChannel',
+            ]);
+
+        });
+
     });
 
     // TODO Cleanup the legacy routes from prior 1.1.0
