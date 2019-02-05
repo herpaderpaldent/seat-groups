@@ -31,7 +31,10 @@ class MissingRefreshTokenNotification
 
         if ($should_send){
 
-            $recipients = SeatGroupNotification::all();
+            $recipients = SeatGroupNotification::all()
+                ->filter(function ($recipient) {
+                    return $recipient->shouldReceive('missing_refreshtoken');
+                });
 
             Notification::send($recipients, (new RefreshTokenNotification($event->user)));
         }
