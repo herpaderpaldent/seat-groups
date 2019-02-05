@@ -2,7 +2,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Http\Controllers\BaseNotificationController;
 
 class SeatGroupSyncController extends BaseNotificationController
@@ -91,5 +90,4 @@ class SeatGroupSyncController extends BaseNotificationController
     {
         return $this->hasPermission('seatgroups.create');
     }
-
 }

@@ -167,7 +167,6 @@ Route::group([
             'uses' => 'MissingRefreshTokenController@unsubscribeDm',
         ]);
 
-
         Route::group([
             'middleware' => ['bouncer:seatnotifications.configuration'],
         ], function () {

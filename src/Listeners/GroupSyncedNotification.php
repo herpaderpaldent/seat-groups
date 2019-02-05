@@ -9,7 +9,6 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
-use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroupNotification;
 use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSyncNotification;
 use Herpaderpaldent\Seat\SeatNotifications\Models\SeatNotificationRecipient;
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
