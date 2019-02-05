@@ -1,6 +1,6 @@
 {
     "name": "herpaderpaldent/seat-groups",
-    "description": "A module for SeAT that adds the ability of using goups to assign roles to user that are in a group",
+    "description": "A module for SeAT that adds the ability of using groups to assign roles to user that are in a group",
     "type": "seat-plugin",
     "require": {
         "php": ">=7.1",
@@ -12,7 +12,7 @@
         "orchestra/database" : "~3.5",
         "phpunit/phpunit": "~6.0"
     },
-    "license": "GPL-2.0-only",
+    "license": "MIT",
     "authors": [
         {
             "name": "Felix Huber",
