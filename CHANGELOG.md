@@ -1,3 +1,14 @@
+# Version 1.6.5
+This update takes advantage on the most recent seat-notification update (>1.1.0). Notifications may now be selected individually:
+* SeatGroup Sync Event: Dispatched whenever a user group is attached or detached from a role
+* SeATGroup Error Event: Dispatched whenever an error happens and laravel log should be investigated
+* Missing Refresh Token Event: Dispatched every time SeAT Group finds a refresh token to be missing. Please note you can stop SeAT to notify you about a certain user that might have left your corporation or sold his character by deactivating the user (link is provided inside the notification to do so).
+
+Furthermore:
+* Fixed smaller typos
+* Assure `eveseat/web ~3.0.14` is present
+* Changed licence to MIT
+
 # Version 1.6.4
 * Include new seat plugin service pattern.
 * Use proper form-id to subscribe to notifications
