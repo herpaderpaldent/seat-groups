@@ -127,20 +127,84 @@ Route::group([
         ]);
     });
 
-    // Routes for SeatgroupsLogs
+    // Routes for Seatgroup Notifications
     Route::group([
+        'namespace'  => 'Notifications',
         'prefix'     => 'notifications',
         'middleware' => 'bouncer:seatgroups.create',
     ], function () {
 
-        Route::post('/subscribe', [
-            'as'   => 'seatgroups.subscribe',
-            'uses' => 'SeatGroupNotificationController@subscribeChannel',
+        // SeatGroupSync
+        Route::get('/seatgroup_sync/{via}/subscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_sync.subscribe.user',
+            'uses' => 'SeatGroupSyncController@subscribeDm',
         ]);
-        Route::get('/unsubscribe/{via}', [
-            'as'   => 'seatgroups.unsubscribe',
-            'uses' => 'SeatGroupNotificationController@unsubscribeChannel',
+
+        Route::get('/seatgroup_sync/{via}/unsubscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_sync.unsubscribe.user',
+            'uses' => 'SeatGroupSyncController@unsubscribeDm',
         ]);
+
+        // SeatGroupError
+        Route::get('/seatgroup_error/{via}/subscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_error.subscribe.user',
+            'uses' => 'SeatGroupErrorController@subscribeDm',
+        ]);
+
+        Route::get('/seatgroup_error/{via}/unsubscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_error.unsubscribe.user',
+            'uses' => 'SeatGroupErrorController@unsubscribeDm',
+        ]);
+
+        // SeatGroupMissingRefreshToken
+        Route::get('/missing_refreshtoken/{via}/subscribe/private', [
+            'as'   => 'seatnotifications.missing_refreshtoken.subscribe.user',
+            'uses' => 'MissingRefreshTokenController@subscribeDm',
+        ]);
+
+        Route::get('/missing_refreshtoken/{via}/unsubscribe/private', [
+            'as'   => 'seatnotifications.missing_refreshtoken.unsubscribe.user',
+            'uses' => 'MissingRefreshTokenController@unsubscribeDm',
+        ]);
+
+        Route::group([
+            'middleware' => ['bouncer:seatnotifications.configuration'],
+        ], function () {
+
+            // SeatGroupSync
+            Route::post('/seatgroup_sync/channel', [
+                'as'   => 'seatnotifications.seatgroup_sync.subscribe.channel',
+                'uses' => 'SeatGroupSyncController@subscribeChannel',
+            ]);
+
+            Route::get('/seatgroup_sync/{via}/unsubscribe', [
+                'as'   => 'seatnotifications.seatgroup_sync.unsubscribe.channel',
+                'uses' => 'SeatGroupSyncController@unsubscribeChannel',
+            ]);
+
+            // SeatGroupError
+            Route::post('/seatgroup_error/channel', [
+                'as'   => 'seatnotifications.seatgroup_error.subscribe.channel',
+                'uses' => 'SeatGroupErrorController@subscribeChannel',
+            ]);
+
+            Route::get('/seatgroup_error/{via}/unsubscribe', [
+                'as'   => 'seatnotifications.seatgroup_error.unsubscribe.channel',
+                'uses' => 'SeatGroupErrorController@unsubscribeChannel',
+            ]);
+
+            // SeatGroupError
+            Route::post('/missing_refreshtoken/channel', [
+                'as'   => 'seatnotifications.missing_refreshtoken.subscribe.channel',
+                'uses' => 'MissingRefreshTokenController@subscribeChannel',
+            ]);
+
+            Route::get('/missing_refreshtoken/{via}/unsubscribe', [
+                'as'   => 'seatnotifications.missing_refreshtoken.unsubscribe.channel',
+                'uses' => 'MissingRefreshTokenController@unsubscribeChannel',
+            ]);
+        });
+
     });
 
     // TODO Cleanup the legacy routes from prior 1.1.0

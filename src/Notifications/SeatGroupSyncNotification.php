@@ -16,12 +16,12 @@ use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
 use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
 
-class SeatGroupUpdateNotification extends BaseNotification
+class SeatGroupSyncNotification extends BaseNotification
 {
     /**
      * @var array
      */
-    protected $tags = ['seat_group', 'update'];
+    protected $tags = ['seat_group', 'sync'];
 
     protected $image;
 
@@ -52,6 +52,8 @@ class SeatGroupUpdateNotification extends BaseNotification
 
         if (! empty($sync['detached']))
             $this->detached_roles = Role::whereIn('id', $sync['detached'])->pluck('title')->implode(', ');
+
+        array_push($this->tags, 'group_id:' . $group->id);
     }
 
     /**
@@ -65,16 +67,12 @@ class SeatGroupUpdateNotification extends BaseNotification
 
         switch($notifiable->via) {
             case 'discord':
-                $this->tags = array_merge($this->tags, [
-                    'discord',
-                ]);
+                array_push($this->tags, 'discord');
 
                 return [DiscordChannel::class];
                 break;
             case 'slack':
-                $this->tags = array_merge($this->tags, [
-                    'slack',
-                ]);
+                array_push($this->tags, 'slack');
 
                 return [SlackChannel::class];
                 break;

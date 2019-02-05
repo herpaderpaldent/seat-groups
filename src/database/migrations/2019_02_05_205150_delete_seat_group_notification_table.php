@@ -22,9 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return [
-    'version'   => '1.6.5',
-];
+class DeleteSeatGroupNotificationTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::dropIfExists('herpaderp_seat_group_notifications');
+    }
 
-//TODO: Update Version
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+
+        Schema::create('herpaderp_seat_group_notifications', function (Blueprint $table) {
+            $table->string('channel_id');
+            $table->string('via');
+            $table->timestamps();
+
+            $table->primary('channel_id', 'herpaderp_seatgroup_notification_primary');
+        });
+    }
+}
