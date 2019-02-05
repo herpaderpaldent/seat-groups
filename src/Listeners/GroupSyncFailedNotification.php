@@ -31,7 +31,11 @@ class GroupSyncFailedNotification
 
         if ($should_send){
 
-            $recipients = SeatGroupNotification::all();
+            $recipients = SeatGroupNotification::all()
+                ->filter(function ($recipient) {
+                    return $recipient->shouldReceive('seatgroup_error');
+                });
+
             $message = sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
                 $event->main_character->name,
                 $event->group->users->map(function ($user) {return $user->name; })->implode(', ')

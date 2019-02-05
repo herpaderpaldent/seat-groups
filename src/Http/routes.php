@@ -134,6 +134,7 @@ Route::group([
         'middleware' => 'bouncer:seatgroups.create',
     ], function () {
 
+        // SeatGroupSync
         Route::get('/seatgroup_sync/{via}/subscribe/private', [
             'as'   => 'seatnotifications.seatgroup_sync.subscribe.user',
             'uses' => 'SeatGroupSyncController@subscribeDm',
@@ -144,10 +145,22 @@ Route::group([
             'uses' => 'SeatGroupSyncController@unsubscribeDm',
         ]);
 
+        // SeatGroupError
+        Route::get('/seatgroup_error/{via}/subscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_error.subscribe.user',
+            'uses' => 'SeatGroupErrorController@subscribeDm',
+        ]);
+
+        Route::get('/seatgroup_error/{via}/unsubscribe/private', [
+            'as'   => 'seatnotifications.seatgroup_error.unsubscribe.user',
+            'uses' => 'SeatGroupErrorController@unsubscribeDm',
+        ]);
+
         Route::group([
             'middleware' => ['bouncer:seatnotifications.configuration'],
         ], function () {
 
+            // SeatGroupSync
             Route::post('/seatgroup_sync/channel', [
                 'as'   => 'seatnotifications.seatgroup_sync.subscribe.channel',
                 'uses' => 'SeatGroupSyncController@subscribeChannel',
@@ -158,6 +171,16 @@ Route::group([
                 'uses' => 'SeatGroupSyncController@unsubscribeChannel',
             ]);
 
+            // SeatGroupError
+            Route::post('/seatgroup_error/channel', [
+                'as'   => 'seatnotifications.seatgroup_error.subscribe.channel',
+                'uses' => 'SeatGroupErrorController@subscribeChannel',
+            ]);
+
+            Route::get('/seatgroup_error/{via}/unsubscribe', [
+                'as'   => 'seatnotifications.seatgroup_error.unsubscribe.channel',
+                'uses' => 'SeatGroupErrorController@unsubscribeChannel',
+            ]);
         });
 
     });
