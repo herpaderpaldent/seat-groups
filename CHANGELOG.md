@@ -1,3 +1,6 @@
+# Version 1.6.6
+Small fix to select correct notification channel
+
 # Version 1.6.5
 This update takes advantage on the most recent seat-notification update (>1.1.0). Notifications may now be selected individually:
 * SeatGroup Sync Event: Dispatched whenever a user group is attached or detached from a role
