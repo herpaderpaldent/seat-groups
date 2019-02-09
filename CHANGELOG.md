@@ -1,3 +1,11 @@
+# Version 1.6.7
+This version replaces `SeATGroupNotification` models in:
+* `GroupSyncFailedNotification` listener
+* `MissingRefreshTokenNotification` listener
+with correct `SeatNotificationRecipient` model.
+
+Sorry about that and thank you @GoemFunaila for reporting this issue.
+
 # Version 1.6.6
 Small fix to select correct notification channel
 
