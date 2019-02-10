@@ -35,7 +35,7 @@ class GroupApplicationNotification
 {
     public function __construct()
     {
-        //
+
     }
 
     public function handle(GroupApplication $event)
