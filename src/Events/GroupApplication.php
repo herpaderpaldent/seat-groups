@@ -23,13 +23,23 @@
  * SOFTWARE.
  */
 
-return [
+namespace Herpaderpaldent\Seat\SeatGroups\Events;
 
-    'seat-notification' => [
-        'seatgroup_sync'       => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupSyncController::class,
-        'seatgroup_error'      => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupErrorController::class,
-        'missing_refreshtoken' => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\MissingRefreshTokenController::class,
-        'seatgroup_application' => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupApplicationController::class,
-    ],
+use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Illuminate\Queue\SerializesModels;
+use Seat\Web\Models\Group;
 
-];
+class GroupApplication
+{
+    use SerializesModels;
+
+    public $group;
+
+    public $seatgroup;
+
+    public function __construct(Group $group, Seatgroup $seatgroup)
+    {
+        $this->group = $group;
+        $this->seatgroup = $seatgroup;
+    }
+}
