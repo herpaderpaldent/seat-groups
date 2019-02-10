@@ -23,8 +23,23 @@
  * SOFTWARE.
  */
 
-return [
-    'version'   => '1.6.8',
-];
+namespace Herpaderpaldent\Seat\SeatGroups\Events;
 
-//TODO: Update Version
+use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Illuminate\Queue\SerializesModels;
+use Seat\Web\Models\Group;
+
+class GroupApplication
+{
+    use SerializesModels;
+
+    public $group;
+
+    public $seatgroup;
+
+    public function __construct(Group $group, Seatgroup $seatgroup)
+    {
+        $this->group = $group;
+        $this->seatgroup = $seatgroup;
+    }
+}

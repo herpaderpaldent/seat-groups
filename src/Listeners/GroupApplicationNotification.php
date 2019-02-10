@@ -25,21 +25,20 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
-use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupErrorNotification;
+use Herpaderpaldent\Seat\SeatGroups\Events\GroupApplication;
+use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplicationNotification;
 use Herpaderpaldent\Seat\SeatNotifications\Models\SeatNotificationRecipient;
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
 use Illuminate\Support\Facades\Notification;
-use Seat\Web\Models\User;
 
-class GroupSyncFailedNotification
+class GroupApplicationNotification
 {
     public function __construct()
     {
 
     }
 
-    public function handle(GroupSyncFailed $event)
+    public function handle(GroupApplication $event)
     {
         $should_send = false;
 
@@ -50,15 +49,24 @@ class GroupSyncFailedNotification
 
             $recipients = SeatNotificationRecipient::all()
                 ->filter(function ($recipient) {
-                    return $recipient->shouldReceive('seatgroup_error');
+                    return $recipient->shouldReceive('seatgroup_application');
+                })
+                ->filter(function ($recipient) use ($event) {
+
+                    // Check if recipient is superuser
+                    foreach ($event->group->roles as $role) {
+                        foreach ($role->permissions as $permission) {
+                            if ($permission->title === 'superuser')
+                                return true;
+                        }
+                    }
+
+                    // Check if recipient is manager
+                    return $event->seatgroup->isManager($recipient->notification_user->group);
                 });
 
-            $message = sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
-                $event->main_character->name,
-                $event->group->users->map(function ($user) {return $user->name; })->implode(', ')
-            );
-
-            Notification::send($recipients, (new SeatGroupErrorNotification(User::find($event->main_character->character_id), $message)));
+            if($recipients->isNotEmpty())
+                Notification::send($recipients, (new SeatGroupApplicationNotification($event->seatgroup, $event->group)));
         }
     }
 }
