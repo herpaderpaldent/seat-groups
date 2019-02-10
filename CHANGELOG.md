@@ -1,8 +1,6 @@
 # Version 1.6.8
 This update adds application notification about candidates which are applying to a managed group. Works only for private channel notification to managers and superusers only.
 
-![Application Notification](https://i.imgur.com/K6D0Mos.png)
-
 This feature was suggested by @aaronmallen. Thank you all for providing me with all this valuable feedback and ideas on how to make SeAT Group great. 
 
 # Version 1.6.7
