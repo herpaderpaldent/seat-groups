@@ -101,7 +101,7 @@ class SeatGroupApplicationNotification extends BaseNotification
     {
 
         return (new DiscordMessage)
-            ->embed(function ($embed){
+            ->embed(function ($embed) {
 
                 $embed->title('** New Application for a managed SeAT Group **')
                     ->thumbnail($this->image)
@@ -131,7 +131,7 @@ class SeatGroupApplicationNotification extends BaseNotification
                         $this->main_character->name))
                     ->fields([
                         'SeAT Group' => $this->seatgroup->name,
-                        'User group' => $this->group->users->map(function ($user) {return $user->name; })->implode(', ')
+                        'User group' => $this->group->users->map(function ($user) {return $user->name; })->implode(', '),
                     ]);
             });
     }
