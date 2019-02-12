@@ -1,3 +1,10 @@
+# Version 1.6.9
+Small improvement based on community feedback:
+
+* SeAT Groups are now sort alphabetically instead of in order of creation thank you @eingang for suggesting
+* Fixed a bug where managed groups did not show number of open applications on button. Thank you @warlof for reporting this
+* Added other outstanding applications to discord and slack notification. Thank you @warlof for suggesting this feature.
+
 # Version 1.6.8
 This update adds application notification about candidates which are applying to a managed group. Works only for private channel notification to managers and superusers only.
 
