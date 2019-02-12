@@ -55,6 +55,12 @@ class SeatGroupApplicationNotification extends BaseNotification
 
     protected $main_character;
 
+    protected $seatgroup_string;
+
+    protected $usergroup_string;
+
+    protected $pending_applications;
+
     /**
      * @var \Seat\Web\Models\Group
      */
@@ -70,6 +76,20 @@ class SeatGroupApplicationNotification extends BaseNotification
         $this->main_character = $this->getMainCharacter($group);
         $this->image = 'https://imageserver.eveonline.com/Character/' . $this->main_character->character_id . '_128.jpg';
         $this->url = route('seatgroups.index') . '#managed_group';
+
+        $this->seatgroup_string = (string) $this->seatgroup->name;
+        $this->usergroup_string = (string) $this->group->users->map(function ($user) {return $user->name; })->implode(', ');
+
+        $applications_helper = $this->seatgroup
+            ->waitlist
+            ->filter(function ($group) {
+                return $group->id !== $this->group->id;
+            })
+            ->map(function ($group) {
+                return $this->getMainCharacter($group)->name;
+            });
+
+        $this->pending_applications = (string) $applications_helper->isNotEmpty() ? $applications_helper->implode(', ') : 'none';
     }
 
     /**
@@ -108,8 +128,9 @@ class SeatGroupApplicationNotification extends BaseNotification
                     ->color('1548984')
                     ->description(sprintf('%s just applied to a SeAT Group you are managing. Head over to [SeAT Groups](%s) and accept or deny the candidate.',
                         $this->main_character->name, $this->url))
-                    ->field('SeAT Group', $this->seatgroup->name, true)
-                    ->field('User group', $this->group->users->map(function ($user) {return $user->name; })->implode(', '), true);
+                    ->field('SeAT Group', $this->seatgroup_string, true)
+                    ->field('User group', $this->usergroup_string, true)
+                    ->field('Other pending applications', $this->pending_applications, false);
             });
     }
 
@@ -130,8 +151,9 @@ class SeatGroupApplicationNotification extends BaseNotification
                     ->content(sprintf('%s just applied to a SeAT Group you are managing. Head over to SeAT Groups and accept or deny the candidate.',
                         $this->main_character->name))
                     ->fields([
-                        'SeAT Group' => $this->seatgroup->name,
-                        'User group' => $this->group->users->map(function ($user) {return $user->name; })->implode(', '),
+                        'SeAT Group' => $this->seatgroup_string,
+                        'User group' => $this->usergroup_string,
+                        'Other pending applications' => $this->pending_applications,
                     ]);
             });
     }
