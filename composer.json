@@ -12,6 +12,9 @@
         "orchestra/database" : "~3.5",
         "phpunit/phpunit": "~6.0"
     },
+    "conflict": {
+        "herpaderpaldent/seat-notifications": "^2.0.0"
+    },
     "license": "MIT",
     "authors": [
         {
