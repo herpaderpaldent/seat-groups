@@ -33,7 +33,11 @@ return [
         Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken\AbstractMissingRefreshTokenNotification::class => [
             'discord' => Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken\DiscordMissingRefreshTokenNotification::class,
             'slack' => Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken\SlackMissingRefreshTokenNotification::class,
-        ]
+        ],
+        Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\AbstractSeatGroupApplicationNotification::class => [
+            'discord' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\DiscordSeatGroupApplicationNotification::class,
+            'slack' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\SlackSeatGroupApplicationNotification::class,
+        ],
         /*'seatgroup_sync'       => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupSyncController::class,
         'seatgroup_error'      => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupErrorController::class,
         'missing_refreshtoken' => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\MissingRefreshTokenController::class,

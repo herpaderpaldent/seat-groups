@@ -23,16 +23,16 @@
  * SOFTWARE.
  */
 
-namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSync;
+namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication;
 
-use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackChannel;
-use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackMessage;
+
+use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordChannel;
+use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordMessage;
 use Seat\Web\Models\Group;
 
-class SlackSeatGroupSyncNotification extends AbstractSeatGroupSyncNotification
+class DiscordSeatGroupApplicationNotification extends AbstractSeatGroupApplicationNotification
 {
-    const INFO_COLOR = '17A2B8';
-
+    const INFO_COLOR = '49391';
     /**
      * Determine if channel has personal notification setup.
      *
@@ -45,42 +45,35 @@ class SlackSeatGroupSyncNotification extends AbstractSeatGroupSyncNotification
 
     /**
      * @param $notifiable
-     * @return array
+     *
+     * @return mixed
      */
     public function via($notifiable)
     {
         array_push($this->tags, is_null($notifiable->group_id) ? 'to channel' : 'private to: ' . $this->getMainCharacter(Group::find($notifiable->group_id))->name);
 
-        return [SlackChannel::class];
+        return [DiscordChannel::class];
     }
 
     /**
      * @param $notifiable
      *
-     * @return \Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackMessage
+     * @return mixed
      */
-    public function toSlack($notifiable)
+    public function toDiscord($notifiable)
     {
-        $main_character = sprintf('The user group of %s has just been updated.',
-            $this->main_character->name);
 
-        $users = sprintf('Users in user group: %s',
-            $this->group->users->map(function ($user) {
+        return (new DiscordMessage)
+            ->embed(function ($embed) {
 
-                return $user->name;
-            })->implode(', '));
-
-        return (new SlackMessage)
-            ->attachment(function ($attachment) use ($main_character, $users) {
-                $attachment
-                    ->title($main_character, route('character.view.sheet', ['character_id' => $this->main_character->character_id]))
-                    ->fields([
-                        'Attachhed roles' => $this->attached_roles,
-                        'Detached roles' => $this->detached_roles,
-                    ])
-                    ->content($users)
+                $embed->title('** New Application for a managed SeAT Group **')
+                    ->thumbnail($this->image)
                     ->color(self::INFO_COLOR)
-                    ->thumb($this->image);
+                    ->description(sprintf('%s just applied to a SeAT Group you are managing. Head over to [SeAT Groups](%s) and accept or deny the candidate.',
+                        $this->main_character->name, $this->url))
+                    ->field('SeAT Group', $this->seatgroup_string, true)
+                    ->field('User group', $this->usergroup_string, true)
+                    ->field('Other pending applications', $this->pending_applications, false);
             });
     }
 
