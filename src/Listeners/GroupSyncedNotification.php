@@ -23,13 +23,6 @@
  * SOFTWARE.
  */
 
-/**
- * Created by PhpStorm.
- * User: felix
- * Date: 08.01.2019
- * Time: 20:38.
- */
-
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
