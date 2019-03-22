@@ -30,7 +30,7 @@ use Herpaderpaldent\Seat\SeatNotifications\Notifications\AbstractNotification;
 use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
 
-class AbstractSeatGroupSyncNotification extends AbstractNotification
+abstract class AbstractSeatGroupSyncNotification extends AbstractNotification
 {
     /**
      * @var array
@@ -119,4 +119,10 @@ class AbstractSeatGroupSyncNotification extends AbstractNotification
     {
         return true;
     }
+
+    /**
+     * @param $notifiable
+     * @return mixed
+     */
+    abstract public function via($notifiable);
 }
