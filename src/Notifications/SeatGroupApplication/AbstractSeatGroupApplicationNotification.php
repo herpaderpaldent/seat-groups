@@ -146,6 +146,15 @@ abstract class AbstractSeatGroupApplicationNotification extends AbstractNotifica
     }
 
     /**
+     * Determine the permission needed to represent driver buttons.
+     * @return string
+     */
+    public static function getPermission(): string
+    {
+        return 'seatgroups.group_application_notification';
+    }
+
+    /**
      * @param $notifiable
      * @return mixed
      */

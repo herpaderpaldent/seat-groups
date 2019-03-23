@@ -10,5 +10,9 @@ return [
     'seatgroups' => [
         'view',
         'create',
+        'missing_refresh_token_notification',
+        'group_application_notification',
+        'error_notification',
+        'sync_notification'
     ],
 ];
