@@ -23,15 +23,16 @@
  * SOFTWARE.
  */
 
-namespace Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken;
+namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupError;
 
-use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackChannel;
-use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackMessage;
+
+use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordChannel;
+use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordMessage;
 use Seat\Web\Models\Group;
 
-class SlackMissingRefreshTokenNotification extends AbstractMissingRefreshTokenNotification
+class DiscordSeatGroupErrorNotification extends AbstractSeatGroupErrorNotification
 {
-    const DANGER_COLOR = '#DD4B39';
+    const DANGER_COLOR = '14502713';
 
     /**
      * Determine if channel has personal notification setup.
@@ -45,40 +46,32 @@ class SlackMissingRefreshTokenNotification extends AbstractMissingRefreshTokenNo
 
     /**
      * @param $notifiable
-     *
-     * @return mixed
+     * @return array
      */
     public function via($notifiable)
     {
-        array_push($this->tags, is_null($notifiable->group_id) ? 'to channel' : 'private to: ' . $this->getMainCharacter(Group::find($notifiable->group_id))->name);
+        array_push($this->tags, is_null($notifiable->group_id) ? 'to channel' : 'private to: '
+            . $this->getMainCharacter(Group::find($notifiable->group_id))->name);
 
-        return [SlackChannel::class];
+        return [DiscordChannel::class];
     }
 
     /**
      * @param $notifiable
      *
-     * @return \Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackMessage
+     * @return mixed
      */
-    public function toSlack($notifiable)
+    public function toDiscord($notifiable)
     {
-        $message = sprintf('The RefreshToken of %s in user group of %s (%s) is missing. '
-            . 'Ask the owner of this user group to login again with this user, in order to provide a new RefreshToken. '
-            . 'This user group will lose all potentially gained roles through this character.',
-            $this->user->name,
-            $this->main_character,
-            $this->group->users->map(function ($user) {return $user->name; })
-                ->implode(', ')
-        );
 
-        return (new SlackMessage)
-            ->warning()
-            ->attachment(function ($attachment) use ($message) {
-                $attachment
-                    ->title('Error', $this->url)
-                    ->thumb($this->image)
-                    ->color(self::DANGER_COLOR)
-                    ->content($message);
+        return (new DiscordMessage)
+            ->embed(function ($embed) {
+
+                $embed
+                    ->title('** Error **', $this->url)
+                    ->thumbnail($this->image)
+                    ->color('12727073')
+                    ->description($this->message);
             });
     }
 }

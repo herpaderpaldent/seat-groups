@@ -32,7 +32,7 @@ use Seat\Web\Models\Group;
 
 class DiscordMissingRefreshTokenNotification extends AbstractMissingRefreshTokenNotification
 {
-    const WARNING_COLOR = '14502713';
+    const DANGER_COLOR = '14502713';
 
     /**
      * Determine if channel has personal notification setup.
@@ -74,7 +74,7 @@ class DiscordMissingRefreshTokenNotification extends AbstractMissingRefreshToken
 
                 $embed->title('** Error **')
                     ->thumbnail($this->image)
-                    ->color(self::WARNING_COLOR)
+                    ->color(self::DANGER_COLOR)
                     ->field('Missing Refresh Token', $message, false)
                     ->field('Main character', $this->main_character, true)
                     ->field('User group', $this->group->users->map(function ($user) {return $user->name; })->implode(', '), true);
