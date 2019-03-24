@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\AbstractNotification;
 use Seat\Web\Models\User;
 

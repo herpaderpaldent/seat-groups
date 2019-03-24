@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSync;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordChannel;
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordMessage;
 use Seat\Web\Models\Group;
@@ -81,5 +80,4 @@ class DiscordSeatGroupSyncNotification extends AbstractSeatGroupSyncNotification
                     ->field('Detached roles', $this->detached_roles, true);
             });
     }
-
 }

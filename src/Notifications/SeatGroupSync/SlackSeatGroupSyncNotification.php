@@ -83,5 +83,4 @@ class SlackSeatGroupSyncNotification extends AbstractSeatGroupSyncNotification
                     ->thumb($this->image);
             });
     }
-
 }

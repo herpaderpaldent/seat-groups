@@ -27,10 +27,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupApplication;
 use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\AbstractSeatGroupApplicationNotification;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplicationNotification;
 use Herpaderpaldent\Seat\SeatNotifications\Models\NotificationRecipient;
-use Herpaderpaldent\Seat\SeatNotifications\Models\SeatNotificationRecipient;
-use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
 use Herpaderpaldent\Seat\SeatNotifications\SeatNotificationsServiceProvider;
 use Illuminate\Support\Facades\Notification;
 

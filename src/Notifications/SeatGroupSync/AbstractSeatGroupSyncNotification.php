@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSync;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\AbstractNotification;
 use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
@@ -84,6 +83,7 @@ abstract class AbstractSeatGroupSyncNotification extends AbstractNotification
 
         array_push($this->tags, 'group_id:' . $group->id);
     }
+
     /**
      * Return a title for the notification which will be displayed in UI notification list.
      * @return string

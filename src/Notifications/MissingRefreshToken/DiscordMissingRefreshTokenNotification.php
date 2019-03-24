@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordChannel;
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordMessage;
 use Seat\Web\Models\Group;
@@ -80,5 +79,4 @@ class DiscordMissingRefreshTokenNotification extends AbstractMissingRefreshToken
                     ->field('User group', $this->group->users->map(function ($user) {return $user->name; })->implode(', '), true);
             });
     }
-
 }
