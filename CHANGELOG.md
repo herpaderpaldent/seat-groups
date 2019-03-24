@@ -1,3 +1,6 @@
+# Version 1.7.0
+This version allows the usage of seat-notifications 2.0. Be aware your subscriptions have been reset and you must resubscribe.
+
 # Version 1.6.9
 Small improvement based on community feedback:
 
