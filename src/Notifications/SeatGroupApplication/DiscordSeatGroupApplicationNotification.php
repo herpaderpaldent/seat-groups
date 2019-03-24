@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordChannel;
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordMessage;
 use Seat\Web\Models\Group;
@@ -33,6 +32,7 @@ use Seat\Web\Models\Group;
 class DiscordSeatGroupApplicationNotification extends AbstractSeatGroupApplicationNotification
 {
     const INFO_COLOR = '49391';
+
     /**
      * Determine if channel has personal notification setup.
      *
@@ -76,5 +76,4 @@ class DiscordSeatGroupApplicationNotification extends AbstractSeatGroupApplicati
                     ->field('Other pending applications', $this->pending_applications, false);
             });
     }
-
 }

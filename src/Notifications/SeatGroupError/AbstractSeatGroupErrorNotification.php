@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupError;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\AbstractNotification;
 use Seat\Web\Models\User;
 

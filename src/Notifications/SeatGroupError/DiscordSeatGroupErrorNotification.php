@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupError;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordChannel;
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Discord\DiscordMessage;
 use Seat\Web\Models\Group;

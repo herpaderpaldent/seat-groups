@@ -25,7 +25,6 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication;
 
-
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackChannel;
 use Herpaderpaldent\Seat\SeatNotifications\Channels\Slack\SlackMessage;
 use Seat\Web\Models\Group;
@@ -80,5 +79,4 @@ class SlackSeatGroupApplicationNotification extends AbstractSeatGroupApplication
                     ]);
             });
     }
-
 }

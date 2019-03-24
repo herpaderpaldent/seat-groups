@@ -151,7 +151,6 @@ Route::group([
         ]);
     });
 
-
     // TODO Cleanup the legacy routes from prior 1.1.0
     Route::group([
         'middleware' => ['web', 'auth'],
