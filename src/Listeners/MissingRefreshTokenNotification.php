@@ -62,7 +62,7 @@ class MissingRefreshTokenNotification
 
             if($recipients->isEmpty()){
                 logger()->debug('No Receiver found for ' . AbstractMissingRefreshTokenNotification::getTitle() . ' Notification. This job is going to be deleted.');
-                $this->delete();
+                return false;
             }
 
             $recipients->groupBy('driver')

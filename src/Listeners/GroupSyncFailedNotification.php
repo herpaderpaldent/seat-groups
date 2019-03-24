@@ -55,7 +55,7 @@ class GroupSyncFailedNotification
 
             if($recipients->isEmpty()){
                 logger()->debug('No Receiver found for ' . AbstractSeatGroupErrorNotification::getTitle() . ' Notification. This job is going to be deleted.');
-                $this->delete();
+                return false;
             }
 
             $recipients->groupBy('driver')

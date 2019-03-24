@@ -60,7 +60,7 @@ class GroupSyncedNotification
 
             if($recipients->isEmpty()){
                 logger()->debug('No Receiver found for ' . AbstractSeatGroupSyncNotification::getTitle() . ' Notification. This job is going to be deleted.');
-                $this->delete();
+                return false;
             }
 
             $recipients->groupBy('driver')

@@ -67,7 +67,7 @@ class GroupApplicationNotification
 
             if($recipients->isEmpty()){
                 logger()->debug('No Receiver found for ' . AbstractSeatGroupApplicationNotification::getTitle() . ' Notification. This job is going to be deleted.');
-                $this->delete();
+                return false;
             }
 
             $recipients->groupBy('driver')
