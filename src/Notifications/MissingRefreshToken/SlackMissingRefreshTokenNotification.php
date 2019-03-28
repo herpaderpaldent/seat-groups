@@ -50,6 +50,9 @@ class SlackMissingRefreshTokenNotification extends AbstractMissingRefreshTokenNo
      */
     public function via($notifiable)
     {
+        if($this->dontSend($notifiable))
+            return [];
+
         array_push($this->tags, is_null($notifiable->group_id) ? 'to channel' : 'private to: ' . $this->getMainCharacter(Group::find($notifiable->group_id))->name);
 
         return [SlackChannel::class];
