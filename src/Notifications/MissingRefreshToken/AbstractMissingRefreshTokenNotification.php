@@ -26,7 +26,6 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken;
 
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\AbstractNotification;
-use Illuminate\Support\Facades\Cache;
 use Seat\Web\Models\User;
 
 abstract class AbstractMissingRefreshTokenNotification extends AbstractNotification
@@ -142,7 +141,7 @@ abstract class AbstractMissingRefreshTokenNotification extends AbstractNotificat
             'content' => get_object_vars($this)
         ])->toJson();
 
-        $key = md5($value);
+        $key = sha1($value);
 
         if (empty(cache($key))) {
             cache([$key => $value], now()->addHours(4));
