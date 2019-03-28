@@ -47,6 +47,7 @@ class DiscordMissingRefreshTokenNotification extends AbstractMissingRefreshToken
      * @param $notifiable
      *
      * @return mixed
+     * @throws \Exception
      */
     public function via($notifiable)
     {
