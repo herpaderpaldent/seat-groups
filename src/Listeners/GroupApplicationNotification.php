@@ -30,6 +30,7 @@ use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\AbstractS
 use Herpaderpaldent\Seat\SeatNotifications\Models\NotificationRecipient;
 use Herpaderpaldent\Seat\SeatNotifications\SeatNotificationsServiceProvider;
 use Illuminate\Support\Facades\Notification;
+use Seat\Web\Models\Group;
 
 class GroupApplicationNotification
 {
@@ -51,10 +52,17 @@ class GroupApplicationNotification
                 ->filter(function ($recipient) {
                     return $recipient->shouldReceive(AbstractSeatGroupApplicationNotification::class);
                 })
+                ->filter(function ($recipient) {
+
+                    //Filter public subscription as only private subscription is allowed
+                    return ! empty($recipient->group_id);
+                })
                 ->filter(function ($recipient) use ($event) {
 
+                    $recipient_group = Group::find($recipient->group_id);
+
                     // Check if recipient is superuser
-                    foreach ($event->group->roles as $role) {
+                    foreach ($recipient_group->roles as $role) {
                         foreach ($role->permissions as $permission) {
                             if ($permission->title === 'superuser')
                                 return true;
@@ -62,7 +70,7 @@ class GroupApplicationNotification
                     }
 
                     // Check if recipient is manager
-                    return $event->seatgroup->isManager($recipient->notification_user->group);
+                    return $event->seatgroup->isManager($recipient_group);
                 });
 
             if($recipients->isEmpty()){

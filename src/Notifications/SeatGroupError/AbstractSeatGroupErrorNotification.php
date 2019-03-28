@@ -121,4 +121,29 @@ abstract class AbstractSeatGroupErrorNotification extends AbstractNotification
      * @return mixed
      */
     abstract public function via($notifiable);
+
+    /**
+     * @param $notifiable
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function dontSend($notifiable) :bool
+    {
+        $value = collect([
+            'recipient' => $notifiable->driver_id,
+            'notification' => get_called_class(),
+            'content' => get_object_vars($this),
+        ])->toJson();
+
+        $key = sha1($value);
+
+        if (empty(cache($key))) {
+            cache([$key => $value], now()->addHours(4));
+
+            return false;
+        }
+
+        return true;
+    }
 }
