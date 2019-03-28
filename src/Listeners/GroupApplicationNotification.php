@@ -55,7 +55,7 @@ class GroupApplicationNotification
                 ->filter(function ($recipient) {
 
                     //Filter public subscription as only private subscription is allowed
-                    return !empty($recipient->group_id);
+                    return ! empty($recipient->group_id);
                 })
                 ->filter(function ($recipient) use ($event) {
 
