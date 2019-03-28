@@ -124,7 +124,7 @@ abstract class AbstractSeatGroupApplicationNotification extends AbstractNotifica
      */
     public static function getDescription(): string
     {
-        return 'Receive a notification about new SeAT Group candidates which are on the wait list.';
+        return 'Receive a notification about new SeAT Group candidates which are on the waitlist of a SeAT group you are managing.';
     }
 
     /**
