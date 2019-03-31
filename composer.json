@@ -8,7 +8,7 @@
         "eveseat/web": "~3.0.14"
     },
     "require-dev": {
-        "orchestra/testbench": "3.5.*",
+        "orchestra/testbench": "~3.5",
         "orchestra/database" : "~3.5",
         "phpunit/phpunit": "~6.0"
     },
