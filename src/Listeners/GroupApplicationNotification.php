@@ -26,10 +26,11 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupApplication;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplicationNotification;
-use Herpaderpaldent\Seat\SeatNotifications\Models\SeatNotificationRecipient;
-use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
+use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\AbstractSeatGroupApplicationNotification;
+use Herpaderpaldent\Seat\SeatNotifications\Models\NotificationRecipient;
+use Herpaderpaldent\Seat\SeatNotifications\SeatNotificationsServiceProvider;
 use Illuminate\Support\Facades\Notification;
+use Seat\Web\Models\Group;
 
 class GroupApplicationNotification
 {
@@ -42,19 +43,26 @@ class GroupApplicationNotification
     {
         $should_send = false;
 
-        if (class_exists(BaseNotification::class))
+        if (class_exists(SeatNotificationsServiceProvider::class))
             $should_send = true;
 
         if ($should_send){
 
-            $recipients = SeatNotificationRecipient::all()
+            $recipients = NotificationRecipient::all()
                 ->filter(function ($recipient) {
-                    return $recipient->shouldReceive('seatgroup_application');
+                    return $recipient->shouldReceive(AbstractSeatGroupApplicationNotification::class);
+                })
+                ->filter(function ($recipient) {
+
+                    //Filter public subscription as only private subscription is allowed
+                    return ! empty($recipient->group_id);
                 })
                 ->filter(function ($recipient) use ($event) {
 
+                    $recipient_group = Group::find($recipient->group_id);
+
                     // Check if recipient is superuser
-                    foreach ($event->group->roles as $role) {
+                    foreach ($recipient_group->roles as $role) {
                         foreach ($role->permissions as $permission) {
                             if ($permission->title === 'superuser')
                                 return true;
@@ -62,11 +70,22 @@ class GroupApplicationNotification
                     }
 
                     // Check if recipient is manager
-                    return $event->seatgroup->isManager($recipient->notification_user->group);
+                    return $event->seatgroup->isManager($recipient_group);
                 });
 
-            if($recipients->isNotEmpty())
-                Notification::send($recipients, (new SeatGroupApplicationNotification($event->seatgroup, $event->group)));
+            if($recipients->isEmpty()){
+                logger()->debug('No Receiver found for ' . AbstractSeatGroupApplicationNotification::getTitle() . ' Notification. This job is going to be deleted.');
+
+                return false;
+            }
+
+            $recipients->groupBy('driver')
+                ->each(function ($grouped_recipients) use ($event) {
+                    $driver = (string) $grouped_recipients->first()->driver;
+                    $notification_class = AbstractSeatGroupApplicationNotification::getDriverImplementation($driver);
+
+                    Notification::send($grouped_recipients, (new $notification_class($event->seatgroup, $event->group)));
+                });
         }
     }
 }

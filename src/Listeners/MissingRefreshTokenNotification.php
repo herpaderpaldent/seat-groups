@@ -33,9 +33,9 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshTokenNotification as RefreshTokenNotification;
-use Herpaderpaldent\Seat\SeatNotifications\Models\SeatNotificationRecipient;
-use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
+use Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken\AbstractMissingRefreshTokenNotification;
+use Herpaderpaldent\Seat\SeatNotifications\Models\NotificationRecipient;
+use Herpaderpaldent\Seat\SeatNotifications\SeatNotificationsServiceProvider;
 use Illuminate\Support\Facades\Notification;
 
 class MissingRefreshTokenNotification
@@ -50,17 +50,29 @@ class MissingRefreshTokenNotification
         $should_send = false;
         logger()->debug('notificationListener');
 
-        if (class_exists(BaseNotification::class))
+        if (class_exists(SeatNotificationsServiceProvider::class))
             $should_send = true;
 
         if ($should_send){
 
-            $recipients = SeatNotificationRecipient::all()
+            $recipients = NotificationRecipient::all()
                 ->filter(function ($recipient) {
-                    return $recipient->shouldReceive('missing_refreshtoken');
+                    return $recipient->shouldReceive(AbstractMissingRefreshTokenNotification::class);
                 });
 
-            Notification::send($recipients, (new RefreshTokenNotification($event->user)));
+            if($recipients->isEmpty()){
+                logger()->debug('No Receiver found for ' . AbstractMissingRefreshTokenNotification::getTitle() . ' Notification. This job is going to be deleted.');
+
+                return false;
+            }
+
+            $recipients->groupBy('driver')
+                ->each(function ($grouped_recipients) use ($event) {
+                    $driver = (string) $grouped_recipients->first()->driver;
+                    $notification_class = AbstractMissingRefreshTokenNotification::getDriverImplementation($driver);
+
+                    Notification::send($grouped_recipients, (new $notification_class($event->user)));
+                });
         }
     }
 }

@@ -26,9 +26,9 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Listeners;
 
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
-use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupErrorNotification;
-use Herpaderpaldent\Seat\SeatNotifications\Models\SeatNotificationRecipient;
-use Herpaderpaldent\Seat\SeatNotifications\Notifications\BaseNotification;
+use Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupError\AbstractSeatGroupErrorNotification;
+use Herpaderpaldent\Seat\SeatNotifications\Models\NotificationRecipient;
+use Herpaderpaldent\Seat\SeatNotifications\SeatNotificationsServiceProvider;
 use Illuminate\Support\Facades\Notification;
 use Seat\Web\Models\User;
 
@@ -43,22 +43,34 @@ class GroupSyncFailedNotification
     {
         $should_send = false;
 
-        if (class_exists(BaseNotification::class))
+        if (class_exists(SeatNotificationsServiceProvider::class))
             $should_send = true;
 
         if ($should_send){
 
-            $recipients = SeatNotificationRecipient::all()
+            $recipients = NotificationRecipient::all()
                 ->filter(function ($recipient) {
-                    return $recipient->shouldReceive('seatgroup_error');
+                    return $recipient->shouldReceive(AbstractSeatGroupErrorNotification::class);
                 });
 
-            $message = sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
-                $event->main_character->name,
-                $event->group->users->map(function ($user) {return $user->name; })->implode(', ')
-            );
+            if($recipients->isEmpty()){
+                logger()->debug('No Receiver found for ' . AbstractSeatGroupErrorNotification::getTitle() . ' Notification. This job is going to be deleted.');
 
-            Notification::send($recipients, (new SeatGroupErrorNotification(User::find($event->main_character->character_id), $message)));
+                return false;
+            }
+
+            $recipients->groupBy('driver')
+                ->each(function ($grouped_recipients) use ($event) {
+                    $driver = (string) $grouped_recipients->first()->driver;
+                    $notification_class = AbstractSeatGroupErrorNotification::getDriverImplementation($driver);
+
+                    $message = sprintf('An error occurred while syncing user group of %s (%s). Please check the logs.',
+                        $event->main_character->name,
+                        $event->group->users->map(function ($user) {return $user->name; })->implode(', ')
+                    );
+
+                    Notification::send($grouped_recipients, (new $notification_class(User::find($event->main_character->character_id), $message)));
+                });
         }
     }
 }

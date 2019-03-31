@@ -26,10 +26,22 @@
 return [
 
     'seat-notification' => [
-        'seatgroup_sync'       => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupSyncController::class,
-        'seatgroup_error'      => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupErrorController::class,
-        'missing_refreshtoken' => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\MissingRefreshTokenController::class,
-        'seatgroup_application' => Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Notifications\SeatGroupApplicationController::class,
+        Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSync\AbstractSeatGroupSyncNotification::class => [
+            'discord' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSync\DiscordSeatGroupSyncNotification::class,
+            'slack' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupSync\SlackSeatGroupSyncNotification::class,
+        ],
+        Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken\AbstractMissingRefreshTokenNotification::class => [
+            'discord' => Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken\DiscordMissingRefreshTokenNotification::class,
+            'slack' => Herpaderpaldent\Seat\SeatGroups\Notifications\MissingRefreshToken\SlackMissingRefreshTokenNotification::class,
+        ],
+        Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\AbstractSeatGroupApplicationNotification::class => [
+            'discord' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\DiscordSeatGroupApplicationNotification::class,
+            'slack' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication\SlackSeatGroupApplicationNotification::class,
+        ],
+        Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupError\AbstractSeatGroupErrorNotification::class => [
+            'discord' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupError\DiscordSeatGroupErrorNotification::class,
+            'slack' => Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupError\SlackSeatGroupErrorNotification::class,
+        ],
     ],
 
 ];
