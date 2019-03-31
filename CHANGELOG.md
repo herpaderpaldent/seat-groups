@@ -6,6 +6,9 @@ New features:
 * Identical Sync SeAT-Groups notifications will not be resend within 4hrs period.
 * Identical Error SeAT-Groups notifications will not be resend within 4hrs period.
 
+Fixes:
+* SeAT-Group Application notification were previously not send out correctly to all groups administrators
+
 # Version 1.6.9
 Small improvement based on community feedback:
 
