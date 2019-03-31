@@ -1,6 +1,11 @@
 # Version 1.7.0
 This version allows the usage of seat-notifications 2.0. Be aware your subscriptions have been reset and you must resubscribe.
 
+New features: 
+* Identical Missing Refresh Token SeAT-Groups notifications will not be resend within 4hrs period.
+* Identical Sync SeAT-Groups notifications will not be resend within 4hrs period.
+* Identical Error SeAT-Groups notifications will not be resend within 4hrs period.
+
 # Version 1.6.9
 Small improvement based on community feedback:
 
