@@ -12,6 +12,7 @@ use Herpaderpaldent\Seat\SeatGroups\GroupsServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Seat\Eveapi\EveapiServiceProvider;
 use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\RefreshToken;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 use Seat\Web\WebServiceProvider;
@@ -34,10 +35,16 @@ abstract class TestCase extends OrchestraTestCase
         $this->withFactories(__DIR__ . '/database/factories');
 
         $this->test_user = factory(User::class)->create();
+
         factory(CharacterInfo::class)->create([
             'character_id' => $this->test_user->id,
             'name' => $this->test_user->name
         ]);
+
+        factory(RefreshToken::class)->create([
+            'character_id' => $this->test_user->id,
+        ]);
+
         $this->group = Group::find($this->test_user->group_id);
     }
 

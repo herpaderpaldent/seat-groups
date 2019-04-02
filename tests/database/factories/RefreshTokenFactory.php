@@ -23,30 +23,17 @@
  * SOFTWARE.
  */
 
-namespace Herpaderpaldent\Seat\SeatGroups\Test\Feature;
 
-use Herpaderpaldent\Seat\SeatGroups\Test\TestCase;
+use Faker\Generator as Faker;
+use Seat\Eveapi\Models\RefreshToken;
 
-class UserTest extends TestCase
-{
+$factory->define(RefreshToken::class, function (Faker $faker) {
 
-    public function testUserCreated(){
-
-        $this->assertEquals('testbench', $this->test_user->character_owner_hash);
-    }
-
-    public function testCharacterInfosCreated()
-    {
-
-        $this->assertDatabaseHas('character_infos', [
-            'name' => $this->test_user->name
-        ]);
-    }
-
-    public function testCharacterRefreshTokenCreated()
-    {
-        $this->assertDatabaseHas('refresh_tokens', [
-            'character_id' => $this->test_user->id
-        ]);
-    }
-}
+    return [
+        'character_id'  => $faker->numberBetween(9000000, 98000000),
+        'refresh_token' => $faker->isbn13,
+        'scopes'        => collect([$faker->realText($faker->numberBetween(10,20))])->toJson(),
+        'expires_on'    => $faker->dateTime(),
+        'token'         => $faker->realText($faker->numberBetween(10,20)),
+    ];
+});
