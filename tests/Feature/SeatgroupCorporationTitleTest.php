@@ -9,6 +9,7 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test\Feature;
 
 
+use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
 use Herpaderpaldent\Seat\SeatGroups\Test\TestCase;
 
 
@@ -21,7 +22,7 @@ class SeatgroupCorporationTitleTest extends TestCase
      */
     public function testSeatGroupCreation()
     {
-        $seatgroup = factory(\Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup::class)->create([
+        $seatgroup = factory(app(Seatgroup::class))->create([
             'name' => 'TestSeatGroup'
         ]);
 
