@@ -13,6 +13,7 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Seat\Eveapi\EveapiServiceProvider;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\RefreshToken;
+use Seat\Services\ServicesServiceProvider;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 use Seat\Web\WebServiceProvider;
