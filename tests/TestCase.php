@@ -46,6 +46,11 @@ abstract class TestCase extends OrchestraTestCase
         ]);
 
         $this->group = Group::find($this->test_user->group_id);
+
+        // add 2 users to test_users user_group.
+        factory(User::class, 2)->create([
+            'group_id' => $this->test_user->group_id
+        ]);
     }
 
 
@@ -61,7 +66,7 @@ abstract class TestCase extends OrchestraTestCase
         return [
             \Orchestra\Database\ConsoleServiceProvider::class,
             WebServiceProvider::class,
-            EveapiServiceProvider::class,
+            //EveapiServiceProvider::class,
             GroupsServiceProvider::class,
         ];
     }

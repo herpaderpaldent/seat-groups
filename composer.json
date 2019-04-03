@@ -5,12 +5,13 @@
     "require": {
         "php": ">=7.1",
         "laravel/framework": "5.5.*",
-        "eveseat/web": "~3.0.14"
+        "eveseat/web": "~3.0.15"
     },
     "require-dev": {
         "orchestra/testbench": "~3.5",
         "orchestra/database" : "~3.5",
-        "phpunit/phpunit": "~6.0"
+        "phpunit/phpunit": "~6.0",
+        "spatie/phpunit-watcher": "^1.8"
     },
     "conflict": {
         "herpaderpaldent/seat-notifications": "<2.0.0"
