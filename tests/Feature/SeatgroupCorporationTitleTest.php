@@ -9,9 +9,6 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test\Feature;
 
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Herpaderpaldent\Seat\SeatGroups\Test\TestCase;
 
 
@@ -24,7 +21,7 @@ class SeatgroupCorporationTitleTest extends TestCase
      */
     public function testSeatGroupCreation()
     {
-        $seatgroup = factory(Seatgroup::class)->create([
+        $seatgroup = factory(\Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup::class)->create([
             'name' => 'TestSeatGroup'
         ]);
 
