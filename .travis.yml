@@ -6,6 +6,10 @@ php:
 services:
   - redis-server
 
+addons:
+  hosts:
+    -redis
+
 before_script:
 - composer self-update
 - composer install --no-interaction
