@@ -14,19 +14,25 @@ use Seat\Web\Models\Group;
 
 class SeatGroup extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'seatgroups';
 
     protected $fillable = ['name', 'description', 'type', 'role_id'];
 
     public function role()
     {
 
-        return $this->belongsToMany('Seat\Web\Models\Acl\Role');
+        return $this->belongsToMany('Seat\Web\Models\Acl\Role', 'role_seatgroup', 'seatgroup_id');
     }
 
     public function group()
     {
 
-        return $this->belongsToMany('Seat\Web\Models\Group')
+        return $this->belongsToMany('Seat\Web\Models\Group', 'group_seatgroup', 'seatgroup_id')
             ->withPivot('is_manager', 'on_waitlist');
     }
 
@@ -46,21 +52,21 @@ class SeatGroup extends Model
     public function manager()
     {
 
-        return $this->belongsToMany('Seat\Web\Models\Group')
+        return $this->belongsToMany('Seat\Web\Models\Group', 'group_seatgroup', 'seatgroup_id')
             ->wherePivot('is_manager', 1);
     }
 
     public function member()
     {
 
-        return $this->belongsToMany('Seat\Web\Models\Group')
+        return $this->belongsToMany('Seat\Web\Models\Group', 'group_seatgroup', 'seatgroup_id')
             ->wherePivot('on_waitlist', 0);
     }
 
     public function waitlist()
     {
 
-        return $this->belongsToMany('Seat\Web\Models\Group')
+        return $this->belongsToMany('Seat\Web\Models\Group', 'group_seatgroup', 'seatgroup_id')
             ->wherePivot('on_waitlist', 1);
     }
 
