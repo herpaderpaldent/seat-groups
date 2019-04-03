@@ -39,8 +39,6 @@ class ManagedGroupSyncTest extends TestCase
 {
     public function testManagedGroupSync()
     {
-        Queue::fake();
-
         $seatgroup = factory(SeatGroup::class)->create([
             'type' => 'managed',
             'all_corporations' => false,
@@ -61,9 +59,6 @@ class ManagedGroupSyncTest extends TestCase
         ]);
 
         (new GroupSync($this->group))->handle();
-
-        /*$job = new GroupSync($this->group);
-        dispatch_now($job);*/
 
         $this->assertTrue(in_array($role->id, SeatGroup::find($seatgroup->id)->role()->pluck('id')->toArray()));
     }

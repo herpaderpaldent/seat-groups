@@ -10,10 +10,8 @@ namespace Herpaderpaldent\Seat\SeatGroups\Test;
 
 use Herpaderpaldent\Seat\SeatGroups\GroupsServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Seat\Eveapi\EveapiServiceProvider;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\RefreshToken;
-use Seat\Services\ServicesServiceProvider;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 use Seat\Web\WebServiceProvider;
@@ -77,7 +75,6 @@ abstract class TestCase extends OrchestraTestCase
         // Path to our migrations to load
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->artisan('migrate', ['--database' => 'testbench']);
-
 
     }
 
