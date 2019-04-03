@@ -11,7 +11,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
 use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Support\Facades\Redis;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
@@ -87,7 +87,7 @@ class GroupSync extends SeatGroupsJobBase
 
                 $this->beforeStart();
 
-                Seatgroup::all()->each(function ($seat_group) {
+                SeatGroup::all()->each(function ($seat_group) {
 
                     if ($seat_group->isQualified($this->group)) {
                         switch ($seat_group->type) {
@@ -170,7 +170,7 @@ class GroupSync extends SeatGroupsJobBase
             if (is_null($user->refresh_token)) {
                 // take away all roles
                 $this->group->roles()->sync([]);
-                Seatgroup::all()->each(function ($seatgroup) {
+                SeatGroup::all()->each(function ($seatgroup) {
 
                     $seatgroup->member()->detach($this->group->id);
                 });

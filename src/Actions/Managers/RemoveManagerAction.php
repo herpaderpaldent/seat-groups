@@ -8,13 +8,13 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Managers;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 
 class RemoveManagerAction
 {
     public function execute(array $data)
     {
-        $seatgroup = Seatgroup::find($data['seatgroup_id']);
+        $seatgroup = SeatGroup::find($data['seatgroup_id']);
         $group_id = $data['group_id'];
         $children_id = $data['children_id'];
 

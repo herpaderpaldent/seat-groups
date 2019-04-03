@@ -1,9 +1,9 @@
 <?php
 
 use Faker\Generator as Faker;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 
-$factory->define(Seatgroup::class, function (Faker $faker) {
+$factory->define(SeatGroup::class, function (Faker $faker) {
     return [
         'name'            => $faker->name,
         'description'     => $faker->text,

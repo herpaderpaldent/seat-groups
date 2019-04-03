@@ -12,7 +12,7 @@ use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetCurrentAffiliationActi
 use Illuminate\Database\Eloquent\Model;
 use Seat\Web\Models\Group;
 
-class Seatgroup extends Model
+class SeatGroup extends Model
 {
 
     protected $fillable = ['name', 'description', 'type', 'role_id'];
@@ -181,6 +181,6 @@ class Seatgroup extends Model
 
     public function children()
     {
-        return $this->belongsToMany(Seatgroup::class, 'seatgroup_seatgroups', 'parent_id', 'child_id');
+        return $this->belongsToMany(SeatGroup::class, 'seatgroup_seatgroups', 'parent_id', 'child_id');
     }
 }

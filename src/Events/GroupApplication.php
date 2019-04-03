@@ -25,7 +25,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Events;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Queue\SerializesModels;
 use Seat\Web\Models\Group;
 
@@ -37,7 +37,7 @@ class GroupApplication
 
     public $seatgroup;
 
-    public function __construct(Group $group, Seatgroup $seatgroup)
+    public function __construct(Group $group, SeatGroup $seatgroup)
     {
         $this->group = $group;
         $this->seatgroup = $seatgroup;

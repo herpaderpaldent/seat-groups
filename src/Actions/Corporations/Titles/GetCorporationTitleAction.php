@@ -8,7 +8,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\Titles;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Seat\Eveapi\Models\Corporation\CorporationTitle;
 
 class GetCorporationTitleAction
@@ -18,7 +18,7 @@ class GetCorporationTitleAction
         $corporationId = $data['corporation_id'];
         $seatgroup_id = $data['seatgroup_id'];
 
-        $existing_affiliations = Seatgroup::find($seatgroup_id)
+        $existing_affiliations = SeatGroup::find($seatgroup_id)
             ->corporationTitles
             ->where('corporation_id', $corporationId)
             ->pluck('title_id');

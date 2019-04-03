@@ -25,7 +25,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Notifications\SeatGroupApplication;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Herpaderpaldent\Seat\SeatNotifications\Notifications\AbstractNotification;
 use Seat\Web\Models\Group;
 
@@ -43,7 +43,7 @@ abstract class AbstractSeatGroupApplicationNotification extends AbstractNotifica
     public $image;
 
     /**
-     * @var \Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup
+     * @var \Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup
      */
     public $seatgroup;
 
@@ -80,10 +80,10 @@ abstract class AbstractSeatGroupApplicationNotification extends AbstractNotifica
     /**
      * AbstractSeatGroupApplicationNotification constructor.
      *
-     * @param \Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup $seatgroup
+     * @param \Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup $seatgroup
      * @param \Seat\Web\Models\Group                            $group
      */
-    public function __construct(Seatgroup $seatgroup, Group $group)
+    public function __construct(SeatGroup $seatgroup, Group $group)
     {
         parent::__construct();
 

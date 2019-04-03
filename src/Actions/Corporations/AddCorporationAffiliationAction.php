@@ -2,7 +2,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Seat\Services\Repositories\Corporation\Corporation;
 
 class AddCorporationAffiliationAction
@@ -20,7 +20,7 @@ class AddCorporationAffiliationAction
         $seat_group_id = $data['seatgroup_id'];
         $corporations = $data['corporation_ids'];
 
-        $seat_group = Seatgroup::find($seat_group_id);
+        $seat_group = SeatGroup::find($seat_group_id);
 
         if(in_array('-1', $corporations)){
             // First set SeAT Group to $all_corporation = true

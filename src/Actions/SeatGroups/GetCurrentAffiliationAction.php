@@ -8,7 +8,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Corporation\CorporationTitle;
 
@@ -16,7 +16,7 @@ class GetCurrentAffiliationAction
 {
     public function execute(array $data)
     {
-        $seatgroup = Seatgroup::find($data['seatgroup_id']);
+        $seatgroup = SeatGroup::find($data['seatgroup_id']);
 
         $affiliations = collect();
 

@@ -27,7 +27,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Herpaderpaldent\\Seat\\SeatGroups\\": "src/"
+            "Herpaderpaldent\\Seat\\SeatGroups\\": "src"
         }
     },
     "autoload-dev": {
