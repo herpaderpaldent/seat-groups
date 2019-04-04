@@ -75,6 +75,7 @@ class GroupSync extends SeatGroupsJobBase
     public function handle()
     {
 
+        var_dump('group_sync');
         // in case no main character has been set, throw an exception and abort the process
         if (is_null($this->main_character))
             throw new MissingMainCharacterException($this->group);

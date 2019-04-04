@@ -21,7 +21,4 @@
         <env name="REDIS_PASSWORD" value="null"/>
         <env name="REDIS_PORT" value="6379"/>
     </php>
-    <logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-    </logging>
 </phpunit>

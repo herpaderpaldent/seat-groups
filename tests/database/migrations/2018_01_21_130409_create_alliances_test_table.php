@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015, 2016, 2017, 2018  Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSchedulesTestTable extends Migration
+class CreateAlliancesTestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -34,23 +34,25 @@ class CreateSchedulesTestTable extends Migration
     public function up()
     {
 
-        if(!Schema::hasTable('schedules'))
-        {
-            Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('alliances', function (Blueprint $table) {
 
-                $table->increments('id');
-                $table->string('command');
-                $table->string('expression');
-                $table->boolean('allow_overlap')->default(false);
-                $table->boolean('allow_maintenance')->default(false);
-                $table->string('ping_before')->nullable();
-                $table->string('ping_after')->nullable();
+            $table->integer('alliance_id');
+            $table->string('name')->nullable();
+            $table->bigInteger('creator_id')->nullable();
+            $table->bigInteger('creator_corporation_id')->nullable();
+            $table->string('ticker')->nullable();
+            $table->bigInteger('executor_corporation_id')->nullable();
+            $table->timestamp('date_founded')->useCurrent();
+            $table->integer('faction_id')->nullable();
 
-                $table->timestamps();
-            });
-        }
+            $table->primary('alliance_id');
+            $table->index('creator_id');
+            $table->index('creator_corporation_id');
+            $table->index('executor_corporation_id');
+            $table->index('faction_id');
 
-
+            $table->timestamps();
+        });
     }
 
     /**
@@ -61,6 +63,6 @@ class CreateSchedulesTestTable extends Migration
     public function down()
     {
 
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('alliances');
     }
 }
