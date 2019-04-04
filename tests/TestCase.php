@@ -9,9 +9,11 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test;
 
 use Herpaderpaldent\Seat\SeatGroups\GroupsServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\RefreshToken;
+use Seat\Services\ServicesServiceProvider;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 use Seat\Web\WebServiceProvider;
@@ -33,6 +35,7 @@ abstract class TestCase extends OrchestraTestCase
         $this->setupDatabase($this->app);
         $this->withFactories(__DIR__ . '/database/factories');
 
+        //dd(Schema::getColumnListing('users'));
         $this->test_user = factory(User::class)->create();
 
         factory(CharacterInfo::class)->create([
@@ -66,6 +69,7 @@ abstract class TestCase extends OrchestraTestCase
             \Orchestra\Database\ConsoleServiceProvider::class,
             WebServiceProvider::class,
             //EveapiServiceProvider::class,
+            ServicesServiceProvider::class,
             GroupsServiceProvider::class,
         ];
     }

@@ -83,6 +83,8 @@ class GroupSync extends SeatGroupsJobBase
 
             try {
 
+                var_dump('group_sync');
+
                 $this->beforeStart();
 
                 SeatGroup::all()->each(function ($seat_group) {
