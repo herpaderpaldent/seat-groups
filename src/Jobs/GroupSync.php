@@ -92,7 +92,9 @@ class GroupSync extends SeatGroupsJobBase
 
                 $this->beforeStart();
 
-                $this->roles->merge((new GetRolesToSyncAction)->execute($this->group));
+                $roles_to_sync = (new GetRolesToSyncAction)->execute($this->group);
+
+                $this->roles = $this->roles->merge($roles_to_sync);
 
                 $roles_to_sync = $this->roles->unique()->reject(function ($role) {
                     return in_array($role, $this->roles_to_temporary_remove->toArray());
@@ -121,7 +123,7 @@ class GroupSync extends SeatGroupsJobBase
     private function beforeStart()
     {
 
-        $this->roles->merge((new CatchSuperuserAction)->execute($this->group));
+        $this->roles = $this->roles->merge((new CatchSuperuserAction)->execute($this->group));
 
         /*
          * if group is member of a group for which he still qualifies but is missing

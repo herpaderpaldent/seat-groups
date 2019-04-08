@@ -37,7 +37,8 @@
         }
     },
     "scripts":{
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "watch": "vendor/bin/phpunit-watcher watch"
     },
     "extra": {
         "laravel": {
