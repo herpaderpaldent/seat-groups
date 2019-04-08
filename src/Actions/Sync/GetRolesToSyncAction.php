@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Sync;
 
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
@@ -21,7 +20,7 @@ class GetRolesToSyncAction
     public function execute(Group $group) : Collection
     {
 
-        $this->group =$group;
+        $this->group = $group;
 
         SeatGroup::all()->each(function ($seat_group) {
 
@@ -47,7 +46,7 @@ class GetRolesToSyncAction
                         }
                         break;
                 }
-            } else if (in_array($this->group->id, $seat_group->group->pluck('id')->toArray())) {
+            } elseif (in_array($this->group->id, $seat_group->group->pluck('id')->toArray())) {
                 $seat_group->member()->detach($this->group->id);
             }
         });

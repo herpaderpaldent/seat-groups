@@ -16,7 +16,6 @@ use Herpaderpaldent\Seat\SeatGroups\Actions\Sync\GetRolesToSyncAction;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
 use Herpaderpaldent\Seat\SeatGroups\Exceptions\MissingMainCharacterException;
-use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Support\Facades\Redis;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;

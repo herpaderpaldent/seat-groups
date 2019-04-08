@@ -42,6 +42,7 @@ class AddCorporationAffiliationAction
         } catch (Exception $e) {
 
             report($e);
+
             return false;
         }
 
