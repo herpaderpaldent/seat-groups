@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Sync;
-
 
 use Seat\Web\Models\Group;
 
@@ -32,5 +30,4 @@ class CatchSuperuserAction
 
         return $this->roles;
     }
-
 }

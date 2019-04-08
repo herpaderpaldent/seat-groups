@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Sync;
-
 
 use Herpaderpaldent\Seat\SeatGroups\Actions\Seat\GetMainCharacterAction;
 use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
@@ -56,7 +54,7 @@ class CatchMissingRefreshTokenAction
             SeatGroup::all()->each(function ($seatgroup) {
 
                 // If group is member and no longer qualified
-                if (!$seatgroup->isQualified($this->group) && $seatgroup->isMember($this->group)) {
+                if (! $seatgroup->isQualified($this->group) && $seatgroup->isMember($this->group)) {
 
                     // remove member status
                     $seatgroup->member()->detach($this->group->id);
@@ -81,5 +79,4 @@ class CatchMissingRefreshTokenAction
                 return in_array($role, $this->superuser_roles->toArray());
             });
     }
-
 }
