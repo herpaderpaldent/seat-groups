@@ -23,12 +23,6 @@
  * SOFTWARE.
  */
 
-/**
- * Created by PhpStorm.
- * User: felix
- * Date: 08.10.2018
- * Time: 13:57
- */
 
 namespace Herpaderpaldent\Seat\SeatGroups\Test\Unit;
 
