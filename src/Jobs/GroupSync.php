@@ -8,9 +8,14 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
 
+use Exception;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Seat\GetMainCharacterAction;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Sync\CatchMissingRefreshTokenAction;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Sync\CatchSuperuserAction;
+use Herpaderpaldent\Seat\SeatGroups\Actions\Sync\GetRolesToSyncAction;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSynced;
 use Herpaderpaldent\Seat\SeatGroups\Events\GroupSyncFailed;
-use Herpaderpaldent\Seat\SeatGroups\Events\MissingRefreshToken;
+use Herpaderpaldent\Seat\SeatGroups\Exceptions\MissingMainCharacterException;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Support\Facades\Redis;
 use Seat\Web\Models\Group;
@@ -39,6 +44,11 @@ class GroupSync extends SeatGroupsJobBase
     private $roles;
 
     /**
+     * @var \Illuminate\Support\Collection;
+     */
+    private $roles_to_temporary_remove;
+
+    /**
      * @var int
      */
     public $tries = 1;
@@ -47,18 +57,15 @@ class GroupSync extends SeatGroupsJobBase
      * ConversationOrchestrator constructor.
      *
      * @param \Seat\Web\Models\Group $group
+     *
+     * @throws \Herpaderpaldent\Seat\SeatGroups\Exceptions\MissingMainCharacterException
      */
     public function __construct(Group $group)
     {
+        $get_main_character_action = new GetMainCharacterAction();
 
         $this->group = $group;
-        $this->main_character = $group->main_character;
-        if (is_null($group->main_character)) {
-            logger()->warning('Group has no main character set. Attempt to make assignation based on first attached character.', [
-                'group_id' => $group->id,
-            ]);
-            $this->main_character = $group->users->first()->character;
-        }
+        $this->main_character = $get_main_character_action->execute($this->group);
 
         // avoid the construct to throw an exception if no character has been set
         if (! is_null($this->main_character)) {
@@ -69,13 +76,12 @@ class GroupSync extends SeatGroupsJobBase
         }
 
         $this->roles = collect();
-
+        $this->roles_to_temporary_remove = collect();
     }
 
     public function handle()
     {
 
-        var_dump('group_sync');
         // in case no main character has been set, throw an exception and abort the process
         if (is_null($this->main_character))
             throw new MissingMainCharacterException($this->group);
@@ -84,49 +90,23 @@ class GroupSync extends SeatGroupsJobBase
 
             try {
 
-                var_dump('group_sync');
-
                 $this->beforeStart();
 
-                SeatGroup::all()->each(function ($seat_group) {
+                $this->roles->merge((new GetRolesToSyncAction)->execute($this->group));
 
-                    if ($seat_group->isQualified($this->group)) {
-                        switch ($seat_group->type) {
-                            case 'auto':
-                                foreach ($seat_group->role as $role) {
-                                    $this->roles->push($role->id);
-                                }
-                                if (! in_array($this->group->id, $seat_group->group->pluck('id')->toArray())) {
-                                    // add user_group to seat_group as member if no member yet.
-                                    $seat_group->member()->attach($this->group->id);
-                                }
-                                break;
-                            case 'open':
-                            case 'managed':
-                            case 'hidden':
-                                // check if user is in the group
-                                if ($seat_group->isMember($this->group)) {
-                                    foreach ($seat_group->role as $role) {
-                                        $this->roles->push($role->id);
-                                    }
-                                }
-                                break;
-                        }
-                    } elseif (in_array($this->group->id, $seat_group->group->pluck('id')->toArray())) {
-                        $seat_group->member()->detach($this->group->id);
-                    }
+                $roles_to_sync = $this->roles->unique()->reject(function ($role) {
+                    return in_array($role, $this->roles_to_temporary_remove->toArray());
                 });
 
-                $sync = $this->group->roles()->sync($this->roles->unique());
+                $sync = $this->group->roles()->sync($roles_to_sync->toArray());
 
                 $this->onFinish($sync);
 
                 logger()->debug('Group has beend synced for ' . $this->main_character->name);
 
-            } catch (\Throwable $exception) {
+            } catch (Exception $exception) {
 
                 $this->onFail($exception);
-
             }
 
         }, function () {
@@ -141,45 +121,14 @@ class GroupSync extends SeatGroupsJobBase
     private function beforeStart()
     {
 
-        //Catch superuser permissions
-        foreach ($this->group->roles as $role) {
-            foreach ($role->permissions as $permission) {
-                if ($permission->title === 'superuser') {
-                    $this->roles->push($role->id);
-                }
-            }
-        }
+        $this->roles->merge((new CatchSuperuserAction)->execute($this->group));
 
         /*
-         * Check if a user is missing a refresh token
-         * if is missing take away all memberships gained
-         * through the missing character
+         * if group is member of a group for which he still qualifies but is missing
+         * add the roles which he would have gained to a temporary_remove list
          */
-        $this->catchMissingRefreshToken();
+        $this->roles_to_temporary_remove = (new CatchMissingRefreshTokenAction)->execute($this->group);
 
-    }
-
-    private function catchMissingRefreshToken()
-    {
-        foreach ($this->group->users as $user) {
-
-            //If user is deactivated skip the refresh_token check
-            if (! $user->active)
-                continue;
-
-            // If a RefreshToken is missing
-            if (is_null($user->refresh_token)) {
-                // take away all roles
-                $this->group->roles()->sync([]);
-                SeatGroup::all()->each(function ($seatgroup) {
-
-                    $seatgroup->member()->detach($this->group->id);
-                });
-
-                event(new MissingRefreshToken($user, $this->main_character));
-
-            }
-        }
     }
 
     private function onFail($exception)

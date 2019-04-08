@@ -9,9 +9,11 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test;
 
 use Herpaderpaldent\Seat\SeatGroups\GroupsServiceProvider;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\RefreshToken;
 use Seat\Services\ServicesServiceProvider;
 use Seat\Web\Models\Group;
@@ -20,10 +22,16 @@ use Seat\Web\WebServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
+    use RefreshDatabase;
 
     protected $test_user;
 
+    protected $test_character;
+
+    protected $test_corporation;
+
     protected $group;
+
     /**
      * Setup the test environment.
      */
@@ -38,13 +46,17 @@ abstract class TestCase extends OrchestraTestCase
         //dd(Schema::getColumnListing('users'));
         $this->test_user = factory(User::class)->create();
 
-        factory(CharacterInfo::class)->create([
+        factory(RefreshToken::class)->create([
+            'character_id' => $this->test_user->id,
+        ]);
+
+        $this->test_character = factory(CharacterInfo::class)->create([
             'character_id' => $this->test_user->id,
             'name' => $this->test_user->name
         ]);
 
-        factory(RefreshToken::class)->create([
-            'character_id' => $this->test_user->id,
+        $this->test_corporation = factory(CorporationInfo::class)->create([
+            'corporation_id' => $this->test_user->character->corporation_id
         ]);
 
         $this->group = Group::find($this->test_user->group_id);

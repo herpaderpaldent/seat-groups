@@ -33,8 +33,10 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test\Unit;
 
 
+use Herpaderpaldent\Seat\SeatGroups\Actions\Corporations\AddCorporationAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Test\TestCase;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
 
 
 class SeatGroupTest extends TestCase
@@ -50,8 +52,83 @@ class SeatGroupTest extends TestCase
             'name' => 'TestSeatGroup'
         ]);
 
-
         $this->assertEquals('TestSeatGroup',$seatgroup->name);
+    }
+
+    /**
+     * @test
+     */
+    public function isMemberFunction()
+    {
+        $seatgroup = factory(SeatGroup::class)->create([
+            'type' => 'managed',
+            'all_corporations' => false,
+        ]);
+
+        $seatgroup->group()->attach($this->group, [
+            'on_waitlist' => 0,
+        ]);
+
+        $this->assertTrue($seatgroup->isMember($this->group));
+    }
+
+    /**
+     * @test
+     */
+    public function isQualifiedFunction()
+    {
+        $seatgroup = factory(SeatGroup::class)->create([
+            'type' => 'managed',
+            'all_corporations' => true,
+        ]);
+
+        $seatgroup->group()->attach($this->group, [
+            'on_waitlist' => 0,
+        ]);
+
+        $this->assertTrue($seatgroup->isQualified($this->group));
+    }
+
+    /**
+     * @test
+     */
+    public function isTestUserQualifiedFunction()
+    {
+        $seatgroup = factory(SeatGroup::class)->create([
+            'type' => 'managed',
+            'all_corporations' => false,
+        ]);
+
+        $data = [
+            'seatgroup_id' => $seatgroup->id,
+            'corporation_ids' => [$this->test_corporation->corporation_id]
+        ];
+
+        // Assert if Action fails
+        $this->assertTrue((new AddCorporationAffiliationAction)->execute($data));
+
+        $this->assertTrue(SeatGroup::find($seatgroup->id)->isQualified($this->group));
+    }
+
+    /**
+     * @test
+     */
+    public function isTestUserNotQualified()
+    {
+        $seatgroup = factory(SeatGroup::class)->create([
+            'type' => 'managed',
+            'all_corporations' => false,
+        ]);
+
+        $data = [
+            'seatgroup_id' => $seatgroup->id,
+            'corporation_ids' => [$this->test_corporation->corporation_id + 1 ]
+        ];
+
+        // Assert if Action fails
+        $this->assertTrue((new AddCorporationAffiliationAction)->execute($data));
+
+        $this->assertFalse(SeatGroup::find($seatgroup->id)->isQualified($this->group));
     }
 
 }

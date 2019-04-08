@@ -28,15 +28,19 @@ namespace Herpaderpaldent\Seat\SeatGroups\Test\Integration;
 use Herpaderpaldent\Seat\SeatGroups\Jobs\GroupSync;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Test\TestCase;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Queue;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Services\Models\UserSetting;
+use Seat\Web\Acl\AccessManager;
 use Seat\Web\Models\Acl\Role;
 use Seat\Web\Models\Group;
 use Seat\Web\Models\User;
 
 class ManagedGroupSyncTest extends TestCase
 {
+    use AccessManager;
+
     public function testManagedGroupSync()
     {
         $seatgroup = factory(SeatGroup::class)->create([
@@ -58,9 +62,31 @@ class ManagedGroupSyncTest extends TestCase
             'value' => $this->test_user->id,
         ]);
 
-        (new GroupSync($this->group))->handle();
 
+
+        $this->giveGroupRole($this->group->id, $role->id);
+
+        // Assert if group has  Role
+        $this->assertTrue(in_array($role->title, $this->group->roles->pluck('title')->toArray()));
+
+        // Assert if seat_group has role
         $this->assertTrue(in_array($role->id, SeatGroup::find($seatgroup->id)->role()->pluck('id')->toArray()));
+
+        Queue::fake();
+
+        $job = new GroupSync($this->group);
+        $job->handle();
+
+        /*Queue::assertPushed(GroupSync::class, function ($job) use ($role) {
+            var_dump($job);
+            return in_array($role->id, $job->roles->toArray());
+        });*/
+
+
+        //var_dump('no longer');
+        // Assert if group has role no longer
+        //TODO: Fix this assertion
+        //$this->assertFalse(in_array($role->id, $this->group->roles->pluck('id')->toArray()));
     }
 
 }
