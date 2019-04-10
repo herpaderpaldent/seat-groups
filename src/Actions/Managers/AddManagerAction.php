@@ -8,13 +8,13 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Managers;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 
 class AddManagerAction
 {
     public function execute(array $data)
     {
-        $seatgroup = Seatgroup::find($data['seatgroup_id']);
+        $seatgroup = SeatGroup::find($data['seatgroup_id']);
 
         if(isset($data['groups'])){
             $groups = $data['groups'];

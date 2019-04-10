@@ -9,10 +9,29 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test;
 
 use Herpaderpaldent\Seat\SeatGroups\GroupsServiceProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
+use Seat\Eveapi\Models\RefreshToken;
+use Seat\Services\ServicesServiceProvider;
+use Seat\Web\Models\Group;
+use Seat\Web\Models\User;
+use Seat\Web\WebServiceProvider;
 
-abstract class TestCase extends Orchestra
+abstract class TestCase extends OrchestraTestCase
 {
+    use RefreshDatabase;
+
+    protected $test_user;
+
+    protected $test_character;
+
+    protected $test_corporation;
+
+    protected $group;
+
     /**
      * Setup the test environment.
      */
@@ -20,14 +39,32 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        /*$this->loadMigrationsFrom([
-            '--database' => 'testbench',
-            '--realpath' => realpath(__DIR__ . '/database/migrations')
-            ]);*/
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        // setup database
+        $this->setupDatabase($this->app);
         $this->withFactories(__DIR__ . '/database/factories');
 
-        // and other test setup steps you need to perform
+        //dd(Schema::getColumnListing('users'));
+        $this->test_user = factory(User::class)->create();
+
+        factory(RefreshToken::class)->create([
+            'character_id' => $this->test_user->id,
+        ]);
+
+        $this->test_character = factory(CharacterInfo::class)->create([
+            'character_id' => $this->test_user->id,
+            'name' => $this->test_user->name
+        ]);
+
+        $this->test_corporation = factory(CorporationInfo::class)->create([
+            'corporation_id' => $this->test_user->character->corporation_id
+        ]);
+
+        $this->group = Group::find($this->test_user->group_id);
+
+        // add 2 users to test_users user_group.
+        factory(User::class, 2)->create([
+            'group_id' => $this->test_user->group_id
+        ]);
     }
 
 
@@ -42,8 +79,19 @@ abstract class TestCase extends Orchestra
     {
         return [
             \Orchestra\Database\ConsoleServiceProvider::class,
-            GroupsServiceProvider::class
+            WebServiceProvider::class,
+            //EveapiServiceProvider::class,
+            ServicesServiceProvider::class,
+            GroupsServiceProvider::class,
         ];
+    }
+
+    protected function setupDatabase($app)
+    {
+        // Path to our migrations to load
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->artisan('migrate', ['--database' => 'testbench']);
+
     }
 
     /**
@@ -54,16 +102,11 @@ abstract class TestCase extends Orchestra
      */
     protected function getEnvironmentSetUp($app)
     {
-        //TODO: find a better way or use dedicated DB
-        // Setup default database to use sqlite :memory:
+        // Use memory SQLite, cleans it self up
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'mysql',
-            'host' => env('DB_HOST', 'mariadb'),
-            'port'        => env('DB_PORT', '3306'),
-            'database'    => env('DB_DATABASE', 'seat-dev'),
-            'username'    => env('DB_USERNAME', 'seat'),
-            'password'    => env('DB_PASSWORD', 'seatseat'),
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
             'prefix'   => '',
         ]);
     }

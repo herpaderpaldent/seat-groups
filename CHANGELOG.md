@@ -1,3 +1,11 @@
+# Version 1.7.1
+This new version has two main purposes:
+1. introduce testing
+2. temporally disable group memberships
+
+Firstly i have introduced testing to strengthen my confidence in seat-groups. Doing so, i am able to work on seat-groups with the confidence i need and assure not breaking anything.
+Secondly, users now will lose a role gained through SeAT Group role temporally if the user group is missing a refresh token. As soon as its been regained the user group will regain the roles from its SeAT Groups he is member of and is qualified (meaning has valid affiliation) for.
+
 # Version 1.7.0
 This version allows the usage of seat-notifications 2.0. Be aware your subscriptions have been reset and you must resubscribe.
 

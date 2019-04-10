@@ -31,7 +31,7 @@ use Herpaderpaldent\Seat\SeatGroups\Events\GroupApplication;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager\AddManagerRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Manager\RemoveManagerRequest;
 use Herpaderpaldent\Seat\SeatGroups\Jobs\GroupSync;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Http\Request;
 use Seat\Web\Acl\AccessManager;
 use Seat\Web\Http\Controllers\Controller;
@@ -60,7 +60,7 @@ class SeatGroupUserController extends Controller
     {
         switch($request->input('action')){
             case 'accept':
-                $seatgroup = Seatgroup::find($seat_group_id);
+                $seatgroup = SeatGroup::find($seat_group_id);
 
                 $seatgroup->group()->updateExistingPivot($request->input('group_id'), [
                     'on_waitlist' => 0,
@@ -74,7 +74,7 @@ class SeatGroupUserController extends Controller
                     ]);
                 break;
             case 'deny':
-                $seatgroup = Seatgroup::find($seat_group_id);
+                $seatgroup = SeatGroup::find($seat_group_id);
 
                 $seatgroup->group()->detach($request->input('group_id'));
 
@@ -98,7 +98,7 @@ class SeatGroupUserController extends Controller
      */
     public function removeMember($seat_group_id, $group_id)
     {
-        $seatgroup = Seatgroup::find($seat_group_id);
+        $seatgroup = SeatGroup::find($seat_group_id);
 
         $seatgroup->group()->detach($group_id);
 
@@ -145,7 +145,7 @@ class SeatGroupUserController extends Controller
     public function update(Request $request, $id)
     {
 
-        $seatgroup = Seatgroup::find($id);
+        $seatgroup = SeatGroup::find($id);
 
         //Handle open group
         if ($seatgroup->type == 'open') {
@@ -213,7 +213,7 @@ class SeatGroupUserController extends Controller
 
     public function removeGroupFromSeatGroup($seat_group_id, $group_id)
     {
-        Seatgroup::find($seat_group_id)->group()->detach($group_id);
+        SeatGroup::find($seat_group_id)->group()->detach($group_id);
 
         return redirect()->back()->with('success', ' removed');
     }
@@ -227,7 +227,7 @@ class SeatGroupUserController extends Controller
      */
     public function destroy($id)
     {
-        $seatgroup = Seatgroup::find($id);
+        $seatgroup = SeatGroup::find($id);
 
         if ($seatgroup->type == 'open') {
             $seatgroup->group()->detach(auth()->user()->group->id);
@@ -250,7 +250,7 @@ class SeatGroupUserController extends Controller
 
     public function getMembersTable($id)
     {
-        $seatgroup_members = Seatgroup::find($id)->group;
+        $seatgroup_members = SeatGroup::find($id)->group;
 
         return DataTables::of($seatgroup_members)
             ->addColumn('name', function ($row) {

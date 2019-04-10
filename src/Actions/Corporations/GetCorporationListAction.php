@@ -8,7 +8,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 
 class GetCorporationListAction //TODO: Refactor this Class and rename
@@ -16,7 +16,7 @@ class GetCorporationListAction //TODO: Refactor this Class and rename
     public function execute(array $data)
     {
 
-        $seatgroup = Seatgroup::find($data['seatgroup_id']);
+        $seatgroup = SeatGroup::find($data['seatgroup_id']);
 
         $existing_affiliations = collect();
 

@@ -23,8 +23,15 @@
  * SOFTWARE.
  */
 
-return [
-    'version'   => '1.7.1',
-];
+use Faker\Generator as Faker;
+use Seat\Services\Models\UserSetting;
 
-//TODO: Update Version
+$factory->define(UserSetting::class, function (Faker $faker) {
+
+    return [
+        'id'       => 1,
+        'group_id' => 1,
+        'name'     => $faker->name,
+        'value'    => $faker->text,
+    ];
+});

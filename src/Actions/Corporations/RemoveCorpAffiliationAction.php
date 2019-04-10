@@ -2,7 +2,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Seat\Services\Repositories\Corporation\Corporation;
 
 class RemoveCorpAffiliationAction
@@ -20,7 +20,7 @@ class RemoveCorpAffiliationAction
             $group_id = $data['seatgroup_id'];
             $corporation_id = $data['corporation_id'];
 
-            $seat_group = Seatgroup::find($group_id);
+            $seat_group = SeatGroup::find($group_id);
 
             $seat_group->corporation()->detach($corporation_id);
 
