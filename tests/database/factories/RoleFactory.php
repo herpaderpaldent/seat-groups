@@ -23,8 +23,12 @@
  * SOFTWARE.
  */
 
-return [
-    'version'   => '1.7.1',
-];
+use Faker\Generator as Faker;
+use Seat\Web\Models\Acl\Role;
 
-//TODO: Update Version
+$factory->define(Role::class, function (Faker $faker) {
+
+    return [
+        'title'    => $faker->domainWord,
+    ];
+});

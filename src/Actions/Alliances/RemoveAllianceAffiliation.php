@@ -8,7 +8,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Alliances;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 
 class RemoveAllianceAffiliation
 {
@@ -17,7 +17,7 @@ class RemoveAllianceAffiliation
         $seat_group_id = $data['seatgroup_id'];
         $alliance_ids = $data['alliance_ids'];
 
-        $seat_group = Seatgroup::find($seat_group_id);
+        $seat_group = SeatGroup::find($seat_group_id);
 
         $seat_group->alliance()->detach($alliance_ids);
 

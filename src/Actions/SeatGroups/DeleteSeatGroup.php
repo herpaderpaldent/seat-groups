@@ -8,7 +8,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 
 class DeleteSeatGroup
 {
@@ -16,7 +16,7 @@ class DeleteSeatGroup
     {
         $group_id = $data['seatgroup_id'];
 
-        $seatgroup = Seatgroup::find($group_id);
+        $seatgroup = SeatGroup::find($group_id);
         $seatgroup->delete();
 
         return true;

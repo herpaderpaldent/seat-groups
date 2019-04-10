@@ -1,6 +1,6 @@
 <?php
 
-namespace Herpaderpaldent\Seat\SeatGroups\Jobs;
+namespace Herpaderpaldent\Seat\SeatGroups\Exceptions;
 
 use Exception;
 use Seat\Web\Models\Group;

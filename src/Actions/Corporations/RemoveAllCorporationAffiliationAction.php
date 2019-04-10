@@ -8,7 +8,7 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\Corporations;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 
 class RemoveAllCorporationAffiliationAction
 {
@@ -16,7 +16,7 @@ class RemoveAllCorporationAffiliationAction
     {
         try {
             $seatgroup_id = $data['seatgroup_id'];
-            $seatgroup = Seatgroup::find($seatgroup_id);
+            $seatgroup = SeatGroup::find($seatgroup_id);
 
             $seatgroup->all_corporations = false;
             $seatgroup->save();

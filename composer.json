@@ -5,12 +5,14 @@
     "require": {
         "php": ">=7.1",
         "laravel/framework": "5.5.*",
-        "eveseat/web": "~3.0.14"
+        "eveseat/web": "~3.0.15"
     },
     "require-dev": {
-        "orchestra/testbench": "3.5.*",
+        "orchestra/testbench": "~3.5",
         "orchestra/database" : "~3.5",
-        "phpunit/phpunit": "~6.0"
+        "phpunit/phpunit": "~6.0",
+        "spatie/phpunit-watcher": "^1.8",
+        "codeclimate/php-test-reporter": "^0.4.4"
     },
     "conflict": {
         "herpaderpaldent/seat-notifications": "<2.0.0"
@@ -26,7 +28,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Herpaderpaldent\\Seat\\SeatGroups\\": "src/"
+            "Herpaderpaldent\\Seat\\SeatGroups\\": "src"
         }
     },
     "autoload-dev": {
@@ -35,7 +37,8 @@
         }
     },
     "scripts":{
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "watch": "vendor/bin/phpunit-watcher watch"
     },
     "extra": {
         "laravel": {

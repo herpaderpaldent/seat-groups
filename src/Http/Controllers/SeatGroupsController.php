@@ -32,7 +32,7 @@ use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\DeleteSeatGroup;
 use Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups\GetChangelog;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\CreateSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\DeleteSeatGroupRequest;
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Seat\Services\Repositories\Character\Character;
@@ -130,8 +130,8 @@ class SeatGroupsController extends Controller
             'origin' => 'corporation-tile-form',
         ]);
         $roles = Role::all();
-        $seatgroup = Seatgroup::find($id);
-        $available_seatgroups = Seatgroup::whereNotIn('id', $seatgroup->children->pluck('id')->push($id)->toArray())->get();
+        $seatgroup = SeatGroup::find($id);
+        $available_seatgroups = SeatGroup::whereNotIn('id', $seatgroup->children->pluck('id')->push($id)->toArray())->get();
         $all_groups = Group::all();
 
         return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups', 'all_corporations_for_title', 'available_seatgroups', 'all_available_alliances'));
@@ -155,7 +155,7 @@ class SeatGroupsController extends Controller
             'role_id'     => 'numeric',
         ]);
 
-        $seat_group = Seatgroup::find($id);
+        $seat_group = SeatGroup::find($id);
 
         $seat_group->fill([
             'name'        => $request->get('name'),

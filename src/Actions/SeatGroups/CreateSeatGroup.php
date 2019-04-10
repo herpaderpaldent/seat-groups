@@ -8,14 +8,14 @@
 
 namespace Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups;
 
-use Herpaderpaldent\Seat\SeatGroups\Models\Seatgroup;
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 
 class CreateSeatGroup
 {
-    public function execute(array $data) : Seatgroup
+    public function execute(array $data) : SeatGroup
     {
         //dd($data);
-        $seat_group = new Seatgroup;
+        $seat_group = new SeatGroup;
         $seat_group->name = $data['name'];
         $seat_group->description = $data['description'];
         $seat_group->type = $data['type'];

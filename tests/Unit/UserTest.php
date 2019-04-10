@@ -23,8 +23,30 @@
  * SOFTWARE.
  */
 
-return [
-    'version'   => '1.7.1',
-];
+namespace Herpaderpaldent\Seat\SeatGroups\Test\Feature;
 
-//TODO: Update Version
+use Herpaderpaldent\Seat\SeatGroups\Test\TestCase;
+
+class UserTest extends TestCase
+{
+
+    public function testUserCreated(){
+
+        $this->assertEquals('testbench', $this->test_user->character_owner_hash);
+    }
+
+    public function testCharacterInfosCreated()
+    {
+
+        $this->assertDatabaseHas('character_infos', [
+            'name' => $this->test_user->name
+        ]);
+    }
+
+    public function testCharacterRefreshTokenCreated()
+    {
+        $this->assertDatabaseHas('refresh_tokens', [
+            'character_id' => $this->test_user->id
+        ]);
+    }
+}

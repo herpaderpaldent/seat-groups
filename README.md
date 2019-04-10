@@ -5,6 +5,8 @@ which correlate to SeAT-Roles.
 [![Latest Stable Version](https://poser.pugx.org/herpaderpaldent/seat-groups/v/stable)](https://packagist.org/packages/herpaderpaldent/seat-groups)
 [![StyleCI](https://github.styleci.io/repos/120507448/shield?branch=master)](https://github.styleci.io/repos/120507448)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ec32c88b40e1407ede38/maintainability)](https://codeclimate.com/github/herpaderpaldent/seat-groups/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ec32c88b40e1407ede38/test_coverage)](https://codeclimate.com/github/herpaderpaldent/seat-groups/test_coverage)
+[![Build Status](https://travis-ci.org/herpaderpaldent/seat-groups.svg?branch=master)](https://travis-ci.org/herpaderpaldent/seat-groups)
 [![License](https://poser.pugx.org/herpaderpaldent/seat-groups/license)](https://packagist.org/packages/herpaderpaldent/seat-groups)
 [![Total Downloads](https://poser.pugx.org/herpaderpaldent/seat-groups/downloads)](https://packagist.org/packages/herpaderpaldent/seat-groups)
 
