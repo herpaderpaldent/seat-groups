@@ -5,7 +5,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Http\Controllers\Affiliation;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Skills\AddSkillAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Actions\Skills\RemoveSkillAffiliationAction;
 use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\AddSkillAffiliationRequest;
-use Herpaderpaldent\Seat\SeatGroups\Validation\Affiliation\RemoveSkillAffiliationRequest;
+use Herpaderpaldent\Seat\SeatGroups\Http\Validation\Affiliation\RemoveSkillAffiliationRequest;
 
 class SeatGroupSkillsController
 {
