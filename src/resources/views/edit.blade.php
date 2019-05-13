@@ -110,7 +110,7 @@
     </div>
 
     <!--Affiliation -->
-    <div class="col-md-4">
+    <div class="col-md-6">
       @include('seatgroups::affiliation.affiliation')
     </div>
 

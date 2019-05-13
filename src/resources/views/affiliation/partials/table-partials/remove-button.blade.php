@@ -28,6 +28,16 @@
     </button>
   </form>
 
+@elseif(isset($row['skill_id']))
+  <form role="form" action="{{ route('affiliation.remove.skill.affiliation') }}" method="post">
+    {{ csrf_field() }}
+    <input type="hidden" name="skill_id" value="{{ $row['skill_id'] }}">
+    <input type="hidden" name="skill_level" value="{{ $row['skill_level'] }}">
+    <input type="hidden" name="seatgroup_id" value="{{ $row['seatgroup_id'] }}">
+    <button type="submit" class="btn btn-danger btn-xs pull-right">
+      {{ trans('web::seat.remove') }}
+    </button>
+  </form>
 
 @else
   <form role="form" action="{{ route('affiliation.remove.corporation') }}" method="post">

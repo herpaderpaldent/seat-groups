@@ -11,6 +11,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Actions\SeatGroups;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Corporation\CorporationTitle;
+use Seat\Eveapi\Models\Sde\InvType;
 
 class GetCurrentAffiliationAction
 {
@@ -56,6 +57,17 @@ class GetCurrentAffiliationAction
                     'title_id' => $corporation_title->title_id,
                     'name' => $title_name,
                 ],
+            ]);
+        });
+
+        $seatgroup->skills->each(function ($skill) use ($affiliations, $seatgroup) {
+            $skillType = InvType::find($skill->skill_id);
+
+            $affiliations->push([
+                'seatgroup_id' => $seatgroup->id,
+                'skill_id' => $skill->skill_id,
+                'skill_level' => $skill->skill_level,
+                'name' => $skillType->typeName,
             ]);
         });
 

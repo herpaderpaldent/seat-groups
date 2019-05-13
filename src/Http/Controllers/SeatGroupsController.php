@@ -35,6 +35,8 @@ use Herpaderpaldent\Seat\SeatGroups\Http\Validation\DeleteSeatGroupRequest;
 use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Seat\Eveapi\Models\Sde\InvGroup;
+use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Services\Repositories\Character\Character;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Http\Controllers\Controller;
@@ -118,6 +120,8 @@ class SeatGroupsController extends Controller
      */
     public function edit($id, GetCorporationListAction $action, GetAllianceListAction $get_alliance_list_action)
     {
+        $all_available_skills = InvType::whereIn('groupID', InvGroup::select('groupID')->where('categoryID', 16)->where('groupID', '!=', 505)->get()->toArray())->orderBy('typeName')->get();
+
         $all_available_alliances = $get_alliance_list_action->execute([
             'seatgroup_id' =>$id,
         ]);
@@ -134,7 +138,7 @@ class SeatGroupsController extends Controller
         $available_seatgroups = SeatGroup::whereNotIn('id', $seatgroup->children->pluck('id')->push($id)->toArray())->get();
         $all_groups = Group::all();
 
-        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups', 'all_corporations_for_title', 'available_seatgroups', 'all_available_alliances'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups', 'all_corporations_for_title', 'available_seatgroups', 'all_available_alliances', 'all_available_skills'));
     }
 
     /**

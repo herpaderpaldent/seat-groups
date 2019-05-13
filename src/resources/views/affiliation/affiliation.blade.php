@@ -7,6 +7,7 @@
     <li><a href="#alliance-filter" data-toggle="tab">Alliance Filter</a></li>
     <li class="active"><a href="#corporation-filter" data-toggle="tab">Corporation Filter</a></li>
     <li><a href="#title-filter" data-toggle="tab">Corporation Title Filter</a></li>
+    <li><a href="#skills-filter" data-toggle="tab">Skills Filter</a></li>
   </ul>
   <div class="tab-content">
 
@@ -22,7 +23,11 @@
       @include('seatgroups::affiliation.partials.corporation-title-form')
     </div>
 
-    @include('seatgroups::affiliation.partials.current-affiliations')
+    <div class="tab-pane" id="skills-filter">
+      @include('seatgroups::affiliation.partials.skills-form')
+    </div>
+
+  @include('seatgroups::affiliation.partials.current-affiliations')
     <!-- /.tab-pane -->
   </div>
   <!-- /.tab-content -->

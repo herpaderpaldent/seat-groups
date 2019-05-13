@@ -127,6 +127,14 @@ Route::group([
             'as'    => 'affiliation.remove.alliance.affiliation',
             'uses'  => 'SeatGroupAllianceController@removeAllianceAffiliation',
         ]);
+        Route::post('/add/skill', [
+            'as'    => 'affiliation.add.skill.affiliation',
+            'uses'  => 'SeatGroupSkillsController@addSkillAffiliation',
+        ]);
+        Route::post('/remove/skill', [
+            'as'    => 'affiliation.remove.skill.affiliation',
+            'uses'  => 'SeatGroupSkillsController@removeSkill',
+        ]);
 
     });
 
