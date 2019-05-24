@@ -103,7 +103,7 @@ class GroupSync extends SeatGroupsJobBase
 
                 $this->onFinish($sync);
 
-                logger()->debug('Group has beend synced for ' . $this->main_character->name);
+                logger()->debug('Group has been synced for ' . $this->main_character->name);
 
             } catch (Exception $exception) {
 
