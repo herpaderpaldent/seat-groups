@@ -81,7 +81,7 @@ class DiscordSeatGroupSyncNotification extends AbstractSeatGroupSyncNotification
                     ->thumbnail($this->image)
                     ->color(self::INFO_COLOR)
                     ->description($users)
-                    ->field('Attachhed roles', $this->attached_roles, true)
+                    ->field('Attached roles', $this->attached_roles, true)
                     ->field('Detached roles', $this->detached_roles, true);
             });
     }
