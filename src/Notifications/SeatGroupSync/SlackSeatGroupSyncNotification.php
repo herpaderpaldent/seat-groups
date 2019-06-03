@@ -80,7 +80,7 @@ class SlackSeatGroupSyncNotification extends AbstractSeatGroupSyncNotification
                 $attachment
                     ->title($main_character, route('character.view.sheet', ['character_id' => $this->main_character->character_id]))
                     ->fields([
-                        'Attachhed roles' => $this->attached_roles,
+                        'Attached roles' => $this->attached_roles,
                         'Detached roles' => $this->detached_roles,
                     ])
                     ->content($users)
