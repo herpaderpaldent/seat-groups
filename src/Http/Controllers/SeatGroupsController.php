@@ -134,7 +134,7 @@ class SeatGroupsController extends Controller
         $available_seatgroups = SeatGroup::whereNotIn('id', $seatgroup->children->pluck('id')->push($id)->toArray())->get();
         $all_groups = Group::all();
 
-        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'corporations', 'all_groups', 'all_corporations_for_title', 'available_seatgroups', 'all_available_alliances'));
+        return view('seatgroups::edit', compact('seatgroup', 'id', 'all_corporations', 'roles', 'all_groups', 'all_corporations_for_title', 'available_seatgroups', 'all_available_alliances'));
     }
 
     /**
