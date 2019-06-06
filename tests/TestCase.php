@@ -9,6 +9,7 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test;
 
 use Herpaderpaldent\Seat\SeatGroups\GroupsServiceProvider;
+use Herpaderpaldent\Seat\SeatGroups\Test\Stubs\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -67,6 +68,18 @@ abstract class TestCase extends OrchestraTestCase
         ]);
     }
 
+    /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton('Illuminate\Contracts\Http\Kernel', Kernel::class);
+    }
+
+
 
     /**
      * Get application providers.
@@ -109,6 +122,8 @@ abstract class TestCase extends OrchestraTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        //$app['router']->aliasMiddleware('auth', Authenticate::class);
     }
 
 }
