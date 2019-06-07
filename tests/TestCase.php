@@ -11,7 +11,7 @@ namespace Herpaderpaldent\Seat\SeatGroups\Test;
 use Herpaderpaldent\Seat\SeatGroups\GroupsServiceProvider;
 use Herpaderpaldent\Seat\SeatGroups\Test\Stubs\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
@@ -39,6 +39,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function setUp()
     {
         parent::setUp();
+        Route::auth();
 
         // setup database
         $this->setupDatabase($this->app);
@@ -78,8 +79,6 @@ abstract class TestCase extends OrchestraTestCase
     {
         $app->singleton('Illuminate\Contracts\Http\Kernel', Kernel::class);
     }
-
-
 
     /**
      * Get application providers.
