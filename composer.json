@@ -12,7 +12,8 @@
         "orchestra/database" : "~3.5",
         "phpunit/phpunit": "~6.0",
         "spatie/phpunit-watcher": "^1.8",
-        "codeclimate/php-test-reporter": "^0.4.4"
+        "codeclimate/php-test-reporter": "^0.4.4",
+        "laravel/homestead": "^8.5"
     },
     "conflict": {
         "herpaderpaldent/seat-notifications": "<2.0.0"
