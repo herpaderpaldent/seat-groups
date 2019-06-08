@@ -1,3 +1,6 @@
+# Version 1.7.2
+Fix an issue with `SeatGroupsController` where an unused variable blocked the edit-view to be loaded.
+
 # Version 1.7.1
 This new version has two main purposes:
 1. introduce testing
