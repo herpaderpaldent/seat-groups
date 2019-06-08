@@ -3,6 +3,7 @@
 namespace Herpaderpaldent\Seat\SeatGroups\Test;
 
 
+use Herpaderpaldent\Seat\SeatGroups\Models\SeatGroup;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Seat\Services\Models\UserSetting;
@@ -36,17 +37,26 @@ class SeatGroupIndexTest extends TestCase
         $this->giveTestUserPermission('seatgroups.view');
         $this->setMainCharacter();
 
-        // Change path.public from Laravel IoC Container to point to proper laravel mix manifest.
-        //$this->app->instance('path.public', __DIR__ .'/vendor/src/public');
-
         $response = $this->actingAs($this->test_user)
             ->get(route('seatgroups.index'));
-            //->get(route('home'));
 
-        //$response->assertSee('Home');
+        $response->assertViewIs('seatgroups::index');
+    }
 
-        $response->assertSee('SeAT Groups');
-        //$response->assertViewIs('seatgroups::index');
+    /** @test */
+    public function testUserSeeEditPage()
+    {
+
+        $this->withoutExceptionHandling();
+        $this->giveTestUserPermission('seatgroups.view');
+        $this->setMainCharacter();
+
+        $seatgroup =  factory(SeatGroup::class)->create();
+
+        $response = $this->actingAs($this->test_user)
+            ->get(route('seatgroups.edit', ['group_id' => $seatgroup->id]));
+
+        $response->assertViewIs('seatgroups::edit');
     }
 
     private function giveTestUserPermission(string $permission_name)
