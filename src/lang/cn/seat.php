@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Mutterschiff
- * Date: 12.02.2018
- * Time: 00:15.
+ * Chinese Translate
+ * User: KagurazakaNyaa
+ * Date: 11.08.2019
+ * Time: 10:38.
  */
 
 return [
@@ -15,15 +15,15 @@ return [
     'seat_groups_autogroup_description' => '你将会根据你的军团关系被自动分配到这些 SeAT 组中',
 
     'seat_groups_opengroup' => '开放 SeAT 组',
-    'seat_groups_opengroup_description' => '你可以根据你自己的意愿加入或退出这些 SeAT 组',
+    'seat_groups_opengroup_description' => '你可以根据你自己的意愿随意加入或退出这些 SeAT 组',
 
-    'seat_groups_managedgroup'             => '托管 SeAT 组',
-    'seat_groups_managedgroup_description' => '你可以申请加入这类组，它们的管理员将会批准或拒绝你的请求。',
+    'seat_groups_managedgroup'             => '受管理的 SeAT 组',
+    'seat_groups_managedgroup_description' => '你可以申请加入这类组，它们的管理员将会审核你的请求。',
     'seat_groups_manager'                  => '管理员',
     'seat_join_opengroup'                  => '加入',
     'seat_leave_opengroup'                 => '退出',
-    'seat_leave_waitlist'                  => '离开等待列表',
-    'seat_join_waitlist'                   => '应用',
+    'seat_leave_waitlist'                  => '撤回申请',
+    'seat_join_waitlist'                   => '申请',
     'seat_leave_managedgroup'              => '离开',
     'seat_deny_managedgroup'               => '拒绝',
     'seat_accept_managedgroup'             => '接受',
@@ -31,7 +31,7 @@ return [
     'manage_members'                       => '管理成员',
     'available_seatgroups'                 => '可用作管理员的 SeAT 组',
 
-    'seat_groups_hiddengroup' => '隐藏 SeAT 组',
+    'seat_groups_hiddengroup' => '隐藏的 SeAT 组',
     'seat_groups_user'        => '用户',
     'seat_groups_adduser'     => '添加用户',
 
